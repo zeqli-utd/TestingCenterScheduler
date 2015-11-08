@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+      <!--<property name="connection.url">jdbc:mysql://studentdb.capjijo2fevl.us-east-1.rds.amazonaws.com:3306/TestingCenter</property>-->
+      <!--<property name="connection.driver_class">com.mysql.jdbc.Driver</property>-->
+      <!--<property name="connection.username">thedueteam</property>-->
+      <!--<property name="connection.password">thedueteam</property>-->
+      <!--<property name="dialect">org.hibernate.dialect.MySQLDialect</property>-->
+      <!--<property name="hbm2ddl.auto">create-drop</property>-->
+      <!--<property name="show_sql">true</property>-->
+
+      <!-- Backup Database -->
+      <property name="connection.url">jdbc:mysql://sbu-cse-308.capjijo2fevl.us-east-1.rds.amazonaws.com:3306/testing_center</property>
+      <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+      <property name="connection.username">thedueteam</property>
+      <property name="connection.password">thedueteam</property>
+      <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+      <property name="hbm2ddl.auto">create-drop</property>
+      <property name="show_sql">true</property>
+
+
+      <!-- Mapping Info -->
+      <mapping class="core.user.Administrator"/>
+      <mapping class="core.user.UserType"/>
+      <mapping class="core.user.Student"/>
+      <mapping class="core.user.Instructor"/>
+
+      <mapping class="core.event.Exam"/>
+      <mapping class="core.event.Course"/>
+      <mapping class="core.event.Utilization"/>
+      <mapping class="core.event.Appointment"/>
+      <mapping class="core.event.Reservation"/>
+
+      <!--<mapping class="core.event.Reservation"></mapping>-->
+      <mapping class="core.event.Course"/>
+
+  </session-factory>
+</hibernate-configuration>

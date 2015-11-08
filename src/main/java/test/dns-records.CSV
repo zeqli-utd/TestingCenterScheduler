@@ -1,0 +1,7 @@
+"Domain verification record set:"
+"Record name","Record type","Record Value"
+"_amazonses.sbu-testing-center","TXT","s6NTClUS5gxSXEGUBZhdOtXdhFl+I4AVsNY/wNsCw1U="
+
+"Alternate domain verification record:"
+"Record name","Record type","Record Value"
+"sbu-testing-center","TXT","amazonses:s6NTClUS5gxSXEGUBZhdOtXdhFl+I4AVsNY/wNsCw1U="
