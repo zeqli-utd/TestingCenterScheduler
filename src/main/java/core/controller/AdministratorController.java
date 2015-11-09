@@ -4,7 +4,6 @@ import core.event.AppointmentDao;
 import core.event.ReservationDao;
 import core.event.TestingCenterInfo;
 import core.service.TestingCenterInfoRetrieval;
-import core.user.SessionProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +17,6 @@ public class AdministratorController {
     private ReservationDao reservationAccess;
     @Autowired
     private AppointmentDao appointmentDao;
-    @Autowired
-    private SessionProfile profile;
     
     private ModelAndView modelAndView = new ModelAndView();
 
@@ -73,7 +70,6 @@ public class AdministratorController {
 
     @RequestMapping("admin-view-appointments")
     public ModelAndView viewAppointments() {
-        String netId = profile.getUserId();
         modelAndView.clear();
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("viewAppointments"));

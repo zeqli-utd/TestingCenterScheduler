@@ -1,10 +1,11 @@
 package core.event;
 
 import core.service.SessionManager;
-import org.apache.log4j.Logger;
-import org.hibernate.*;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
-import test.Log4J;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -14,9 +15,7 @@ import java.util.List;
 @Repository
 public class ReservationDaoImp implements ReservationDao {
 
-    private static final Logger log = Logger.getLogger(Log4J.class);
-
-    public ReservationDaoImp(){
+    public ReservationDaoImp() {
 
     }
 
@@ -92,7 +91,6 @@ public class ReservationDaoImp implements ReservationDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
             return false;
         } finally {
             session.close();
@@ -118,7 +116,6 @@ public class ReservationDaoImp implements ReservationDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
             return false;
         } finally {
             session.close();
@@ -142,7 +139,6 @@ public class ReservationDaoImp implements ReservationDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
             return false;
         } finally {
             session.close();
@@ -169,7 +165,6 @@ public class ReservationDaoImp implements ReservationDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
             return false;
         } finally {
             session.close();
@@ -196,7 +191,6 @@ public class ReservationDaoImp implements ReservationDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
         } finally {
             session.close();
         }
@@ -220,7 +214,6 @@ public class ReservationDaoImp implements ReservationDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
             return false;
         } finally {
             session.close();
@@ -246,7 +239,6 @@ public class ReservationDaoImp implements ReservationDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
         } finally {
             session.close();
         }

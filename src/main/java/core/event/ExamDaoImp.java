@@ -1,7 +1,6 @@
 package core.event;
 
 import core.service.SessionManager;
-import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -13,10 +12,10 @@ import java.util.List;
 
 @Repository
 public class ExamDaoImp implements ExamDao {
-    public static final Logger log = Logger.getLogger(ExamDaoImp.class);
-    List<Exam> exams;
+
     public ExamDaoImp() {
     }
+
     @Override
     public List<Exam> getAllExams() {//approved request
         Session session = SessionManager.getInstance().getOpenSession();
@@ -30,7 +29,6 @@ public class ExamDaoImp implements ExamDao {
             if (tx != null) {
                 tx.rollback();
             }
-            log.error("", he);
         } finally {
             session.close();
             return e;
@@ -82,7 +80,6 @@ public class ExamDaoImp implements ExamDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
             return false;
         } finally {
             session.close();
@@ -106,7 +103,6 @@ public class ExamDaoImp implements ExamDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
             return false;
         } finally {
             session.close();
@@ -130,7 +126,6 @@ public class ExamDaoImp implements ExamDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
             return false;
         } finally {
             session.close();
@@ -162,8 +157,6 @@ public class ExamDaoImp implements ExamDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
-
         } finally {
             session.close();
         }

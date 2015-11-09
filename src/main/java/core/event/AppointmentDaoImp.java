@@ -1,8 +1,10 @@
 package core.event;
 
 import core.service.SessionManager;
-import org.apache.log4j.Logger;
-import org.hibernate.*;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -10,7 +12,6 @@ import java.util.List;
 
 @Repository
 public class AppointmentDaoImp implements AppointmentDao {
-    private static final Logger log = Logger.getLogger(AppointmentDaoImp.class);
     List<Appointment> appointments;
 
     public AppointmentDaoImp(){}
@@ -65,7 +66,6 @@ public class AppointmentDaoImp implements AppointmentDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
             return false;
         } finally {
             session.close();
@@ -89,7 +89,6 @@ public class AppointmentDaoImp implements AppointmentDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
             return false;
         } finally {
             session.close();
@@ -114,7 +113,6 @@ public class AppointmentDaoImp implements AppointmentDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
             return false;
         } finally {
             session.close();

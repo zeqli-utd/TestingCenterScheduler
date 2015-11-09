@@ -2,7 +2,6 @@ package core.controller;
 
 import core.service.AuthenticationService;
 import core.user.Authorization;
-import core.user.SessionProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -10,21 +9,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class LoginController{
     @Autowired
     private AuthenticationService authenticationService;//injected service
 
     private ModelMap model = new ModelMap();
-    @Autowired
-    private SessionProfile profile;
 
     @RequestMapping(value = "authorizing", method = RequestMethod.POST)
     public String authorizeUser (@RequestParam("netId") String userId,
-                                 @RequestParam("password") String password) {
+                                 @RequestParam("password") String password,
+                                 HttpServletRequest request) {
         Authorization authorization = authenticationService.login(userId, password);
+        request.getSession().setAttribute("sessionUserId", userId);
         if (authorization != null) {
-            profile.setUserId(userId);
             switch (authorization) {
                 case STUDENT:
                     return "student-home";

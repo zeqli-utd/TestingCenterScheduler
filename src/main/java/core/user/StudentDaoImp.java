@@ -2,7 +2,6 @@ package core.user;
 
 import core.event.Appointment;
 import core.service.SessionManager;
-import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -13,7 +12,6 @@ import java.util.List;
 
 @Repository
 public class StudentDaoImp implements StudentDao{
-    private static Logger log = Logger.getLogger(StudentDaoImp.class);
     private List<Student> students;
 
     public StudentDaoImp(){
@@ -31,11 +29,9 @@ public class StudentDaoImp implements StudentDao{
         try {
             tx = session.beginTransaction();
             session.save(student);
-            log.info(student.toString());
             tx.commit();
             session.close();
         }catch (HibernateException he){
-            log.error("", he);
             if(tx != null){
                 tx.rollback();
             }
@@ -60,7 +56,6 @@ public class StudentDaoImp implements StudentDao{
             if(tx != null) {
                 tx.rollback();
             }
-            log.error("", he);
             return false;
         } finally {
             session.close();

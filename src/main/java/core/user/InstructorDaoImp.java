@@ -2,7 +2,6 @@ package core.user;
 
 
 import core.service.SessionManager;
-import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -11,15 +10,15 @@ import org.hibernate.Transaction;
 import java.util.List;
 
 public class InstructorDaoImp implements InstructorDao {
-    public static final Logger log = Logger.getLogger(InstructorDaoImp.class);
+
     List<Instructor> instructors;
-    public InstructorDaoImp(){
+
+    public InstructorDaoImp() {
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;
         tx = session.beginTransaction();
         instructors = session.createQuery("FROM Instructor ").list();
         session.close();
-
     }
     @Override
     public List<Instructor> findAll() {
@@ -45,7 +44,6 @@ public class InstructorDaoImp implements InstructorDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
             return false;
         }finally {
             session.close();
@@ -70,7 +68,6 @@ public class InstructorDaoImp implements InstructorDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
             return false;
         } finally {
             session.close();
@@ -94,16 +91,10 @@ public class InstructorDaoImp implements InstructorDao {
             if(tx != null){
                 tx.rollback();
             }
-            //log.error("Error with addExam ", he);
             return false;
         } finally {
             session.close();
         }
         return true;
     }
-
-   // @Autowired
-   // ReservationDao reservationDao;
-
-
 }

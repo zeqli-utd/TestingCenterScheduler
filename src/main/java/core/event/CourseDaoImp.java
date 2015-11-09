@@ -1,18 +1,16 @@
 package core.event;
 
 import core.service.SessionManager;
-import org.apache.log4j.Logger;
-import org.hibernate.*;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * Created by eson_wang on 11/2/15.
- */
 @Repository
 public class CourseDaoImp implements CourseDao {
-    private static final Logger log = Logger.getLogger(CourseDaoImp.class);
     List<Course> courses;
 
     public CourseDaoImp(){}
@@ -51,7 +49,6 @@ public class CourseDaoImp implements CourseDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
             return false;
         } finally {
             session.close();
@@ -76,7 +73,6 @@ public class CourseDaoImp implements CourseDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
             return false;
         } finally {
             session.close();
@@ -98,7 +94,6 @@ public class CourseDaoImp implements CourseDao {
             if(tx != null){
                 tx.rollback();
             }
-            log.error("Error with addExam ", he);
             return false;
         } finally {
             session.close();

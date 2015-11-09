@@ -11,15 +11,13 @@ public class StudentAppointmentController {
     @RequestMapping(value = "find-exam/by-instructor",
             method = RequestMethod.POST, params = "by-instructor")
     public ModelAndView findExamByInstructor() {
-        ModelAndView model = new ModelAndView("student-make-appointment");
+        return new ModelAndView("student-make-appointment");
 
-        return model;
     }
 
     @RequestMapping(value = "find-exam/by-course",
             method = RequestMethod.POST, params = "by-course")
     public ModelAndView findExamByCourse() {
-        ModelAndView model = new ModelAndView("student-make-appointment");
-        return model;
+        return new ModelAndView("student-make-appointment");
     }
 }
