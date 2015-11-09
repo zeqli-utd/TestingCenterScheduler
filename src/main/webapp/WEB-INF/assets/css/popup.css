@@ -1,0 +1,40 @@
+.popup-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 0.5s;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.popup-overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+.popup {
+    margin: 15em auto;
+    padding: 20px 20px 5px 20px;
+    background: #fff;
+    border: 1px solid #b5b5b5;
+    border-radius: 2px;
+    width: 50em;
+    max-width: 80%;
+    height: auto;
+    position: relative;
+    transition: all 0.5s ease-in-out;
+    overflow: scroll;
+}
+
+.close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.close:hover {
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+}

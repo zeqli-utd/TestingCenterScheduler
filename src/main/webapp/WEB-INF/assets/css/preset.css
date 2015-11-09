@@ -1,0 +1,56 @@
+body {
+    font-family: 'Roboto';
+    font-weight: 300;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+table,th,td {
+    border-left: 1px solid #b5b5b5;
+    border-right: 1px solid #b5b5b5;
+    border-collapse: collapse;
+    color: black;
+    font-family: 'Roboto';
+    text-align: center;
+}
+
+input[type=text],input[type=password] {
+    padding: 2px;
+    border: 1px solid #b5b5b5;
+    font-family: 'Roboto';
+    font-weight: 300;
+}
+
+::-webkit-input-placeholder {
+    font-family: 'Roboto';
+    font-weight: 300;
+    font-size: 1.2em;
+}
+
+input[type=submit] {
+    background-color: #fff;
+    border: 1px solid #b5b5b5;
+    font-size: 1em;
+    font-family: 'Roboto';
+    font-weight: 300;
+    transition: all 0.3s ease;
+}
+
+input[type=submit]:hover {
+    background-color: #b5b5b5;
+}
+
+i {
+    display: block;
+    width: 1em;
+}
+
+h3 {
+    font-family: 'Roboto';
+    font-weight: 300;
+}
+
+ul {
+    list-style: none;
+}

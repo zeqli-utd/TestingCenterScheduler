@@ -1,0 +1,26 @@
+.container {
+    display: flex;
+    margin: 0;
+}
+
+.sidebar {
+    width: 15em;
+}
+
+.sidebar ul{
+    line-height: 2.5em;
+    padding: 5px;
+}
+
+.sidebar ul li a{
+    display: block;
+    padding: 0.1em;
+    width: 12em;
+    margin-bottom: 1em;
+}
+
+@media screen and(max-width: 480px) {
+    .sidebar {
+        background-color: aqua;
+    }
+}
