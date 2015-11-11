@@ -14,7 +14,7 @@ public class AdministratorController {
     @Autowired
     private TestingCenterInfoRetrieval infoRetrieval;
     @Autowired
-    private ReservationDao reservationAccess;
+    private ReservationDao reservationDao;
     @Autowired
     private AppointmentDao appointmentDao;
     
@@ -64,7 +64,7 @@ public class AdministratorController {
                by selecting different tabs on top of the list, the user is able to view the list
                in different orders: by alphabetical order of instructors' last names, number of attendants,
                utilization, or, display only the ones made by one instructor by search the instructor's name*/
-        modelAndView.addObject("main_content", reservationAccess.findAll());
+        modelAndView.addObject("main_content", reservationDao.findAll());
         return modelAndView;
     }
 

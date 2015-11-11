@@ -8,38 +8,42 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class LoginController{
     @Autowired
-    private AuthenticationService authenticationService;//injected service
+    private AuthenticationService authenticationService;
 
-    private ModelMap model = new ModelMap();
+    private ModelAndView model = new ModelAndView("login");
 
     @RequestMapping(value = "authorizing", method = RequestMethod.POST)
-    public String authorizeUser (@RequestParam("netId") String userId,
-                                 @RequestParam("password") String password,
-                                 HttpServletRequest request) {
+    public ModelAndView authorizeUser (@RequestParam("netId") String userId,
+                                       @RequestParam("password") String password,
+                                       HttpServletRequest request) {
         Authorization authorization = authenticationService.login(userId, password);
         request.getSession().setAttribute("sessionUserId", userId);
         if (authorization != null) {
             switch (authorization) {
                 case STUDENT:
-                    return "student-home";
+                    model.setViewName("student-home");
+                    return model;
                 case INSTRUCTOR:
-                    return "instructor-home";
+                    model.setViewName("instructor-home");
+                    return model;
                 case ADMINISTRATOR:
-                    return "admin-home";
+                    model.setViewName("admin-home");
+                    return model;
             }
         }else {
             if (authenticationService.registeredUserId(userId)) {
-                model.addAttribute("errorMessage", StringResources.LOGIN_PASSWORD_ERROR);
+                model.addObject("errorMessage", StringResources.LOGIN_PASSWORD_ERROR);
             }else {
-                model.addAttribute("errorMessage", StringResources.LOGIN_USER_ERROR);
+                model.addObject("errorMessage", StringResources.LOGIN_USER_ERROR);
             }
         }
-        return "login";
+        return model;
     }
 }

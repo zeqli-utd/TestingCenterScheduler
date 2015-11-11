@@ -1,12 +1,10 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--@elvariable id="errorMessage" type="java.lang.String"--%>
 <html>
 <head>
     <title>Testing Center Scheduler</title>
-    <%--
     <link rel="stylesheet" href="assets/css/styles.css" type="text/css">
-    --%>
 </head>
-
 <body>
 <div class="header-wrapper">
     <div class="header-logo">

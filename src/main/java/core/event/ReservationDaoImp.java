@@ -75,7 +75,7 @@ public class ReservationDaoImp implements ReservationDao {
     }
 
     @Override
-    public boolean insertReservation(Reservation reservation){
+    public void insertReservation(Reservation reservation){
         //how to know which table we add in
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;
@@ -91,11 +91,9 @@ public class ReservationDaoImp implements ReservationDao {
             if(tx != null){
                 tx.rollback();
             }
-            return false;
         } finally {
             session.close();
         }
-        return  true;
     }
 
     @Override

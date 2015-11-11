@@ -1,5 +1,7 @@
 package core.event;
 
+import org.hibernate.HibernateException;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,7 +14,7 @@ public interface ReservationDao {
 
     List<Reservation> findByInstructorId(String InstructorID);
 
-    boolean insertReservation(Reservation reservation);
+    void insertReservation(Reservation reservation) throws HibernateException;
 
     boolean updateReservation(Reservation reservation, String id);
 
