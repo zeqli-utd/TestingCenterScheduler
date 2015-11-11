@@ -22,6 +22,8 @@
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
+          <unit-entry name="LoginDatabase.xml" />
+          <unit-entry name="hibernate.cfg.xml" />
           <unit-entry name="src:LoginDatabase.xml" />
           <unit-entry name="src:hibernate.cfg.xml" />
         </datasource-map>

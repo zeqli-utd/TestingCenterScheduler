@@ -3,9 +3,9 @@ package core.event;
 import java.util.List;
 
 public interface AppointmentDao {
-    List findAllAppointment();
+    List<Appointment> findAllAppointment();
 
-    List findAllByStudent(String netId);
+    List<Appointment> findAllByStudent(String netId);
 
     //List<Appointment> findAllByInstructor(String netId);   why???
 

@@ -3,11 +3,11 @@ package core.event;
 import java.util.List;
 
 public interface ExamDao {
-    public List getAllExams();
+    public List<Exam> getAllExams();
 
     public Exam findByExamId(String examId);
 
-    public List findByInstructorId(String instructorId);
+    public List<Exam> findByInstructorId(String instructorId);
 
     public boolean addExam(Exam exam);
 

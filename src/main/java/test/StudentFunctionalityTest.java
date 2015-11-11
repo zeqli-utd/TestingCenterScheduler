@@ -15,9 +15,6 @@ import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * This Class Contains Test
- */
 public class StudentFunctionalityTest {
 
     public static final Logger log = Logger.getLogger(Log4J.class);

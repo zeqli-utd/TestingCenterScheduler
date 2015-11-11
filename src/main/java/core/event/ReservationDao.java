@@ -14,7 +14,7 @@ public interface ReservationDao {
 
     List findByInstructorId(String InstructorID);
 
-    void insertReservation(Reservation reservation) throws HibernateException;
+    boolean insertReservation(Reservation reservation) throws HibernateException;
 
     boolean updateReservation(Reservation reservation, String id);
 

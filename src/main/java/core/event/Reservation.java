@@ -53,19 +53,18 @@ public class Reservation {
      * @param terms Term
      */
     public Reservation(
+            String id,
             LocalDateTime startTime,
             LocalDateTime endTime,
             String insId,
-            String terms,
-            String types,
-            int duration){
+            String terms) {
+        this.reservationID = id;
         this.setStartDateTime(startTime);
         this.setEndDateTime(endTime);
         instructorId = insId;
         this.terms = terms;
         this.status = "Pending";
         this.types = "Course";
-        this.duration = duration;
     }
 
     public String getType() {
