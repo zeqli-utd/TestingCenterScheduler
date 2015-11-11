@@ -1,11 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Welcome</title>
+    <meta http-equiv="refresh" content="3;login"/>
     <link rel="stylesheet" type="text/css" href="assets/css/styles.css">
 </head>
 <body>
-    <p>Welcome To Testing Center</p>
-    <a href="login">login</a>
+    <p class="welcome-message">Welcome To Testing Center</p>
 </body>
 </html>

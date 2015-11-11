@@ -7,34 +7,35 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class AppointmentDaoImp implements AppointmentDao {
-    List<Appointment> appointments;
 
-    public AppointmentDaoImp(){}
+    public AppointmentDaoImp() {
+
+    }
 
     @Override
-    public List<Appointment> findAllAppointment() {
+    public List findAllAppointment() {
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = session.beginTransaction();
-        appointments = session.createQuery("FROM Appointment").list();
+        List appointments = session.createQuery("FROM Appointment").list();
         session.close();
         return appointments;
     }
 
     @Override
-    public List<Appointment> findAllByStudent(String NetId) {
-        ArrayList<Appointment> result;
+    public List findAllByStudent(String NetId) {
+        List result;
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("FROM Appointment A WHERE A.studentId = :stuId");
+        Query query = session.createQuery
+                ("FROM Appointment A WHERE A.studentId = :stuId");
 
         query.setParameter("stuId", NetId);
         tx.commit();
-        result = (ArrayList<Appointment>)query.list();
+        result = query.list();
         session.close();
         return result;
     }
@@ -51,10 +52,8 @@ public class AppointmentDaoImp implements AppointmentDao {
         return result;
     }
 
-
-
     @Override
-    public boolean insertAppointment(Appointment appointment) {// how to know which table we add in
+    public boolean insertAppointment(Appointment appointment) {
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;
         try {
@@ -80,7 +79,8 @@ public class AppointmentDaoImp implements AppointmentDao {
         try {
             tx = session.beginTransaction();
 
-            Query query = session.createQuery("delete from Appointment R where R.appointmentID = :appointmentID");
+            Query query = session.createQuery
+                    ("delete from Appointment R where R.appointmentID = :appointmentID");
             query.setParameter("appointmentID", appointment.getAppointmentID());
 
             tx.commit();
@@ -103,7 +103,8 @@ public class AppointmentDaoImp implements AppointmentDao {
         try {
             tx = session.beginTransaction();
 
-            Query query = session.createQuery("update Appointment A set A  = :A where A.appointmentID = :appointmentID");
+            Query query = session.createQuery
+                    ("update Appointment A set A  = :A where A.appointmentID = :appointmentID");
             query.setParameter("A", appointment);
             query.setParameter("appointmentID", id);
             query.executeUpdate();
@@ -119,9 +120,4 @@ public class AppointmentDaoImp implements AppointmentDao {
         }
         return  true;
     }
-
-
-
-
-
 }

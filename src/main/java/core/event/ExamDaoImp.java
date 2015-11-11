@@ -7,23 +7,23 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class ExamDaoImp implements ExamDao {
 
     public ExamDaoImp() {
+
     }
 
     @Override
-    public List<Exam> getAllExams() {//approved request
+    public List getAllExams() {
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;
-        List<Exam> e = null;
+        List exams = null;
         try {
             tx = session.beginTransaction();
-            e = session.createQuery("FROM Exam ").list();
+            exams = session.createQuery("FROM Exam ").list();
             tx.commit();
         } catch (HibernateException he) {
             if (tx != null) {
@@ -31,18 +31,16 @@ public class ExamDaoImp implements ExamDao {
             }
         } finally {
             session.close();
-            return e;
+            return exams;
         }
-
     }
-
 
     @Override
     public Exam findByExamId(String examId) {
-
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("FROM Exam E WHERE E.examId = :eId");
+        Query query = session.createQuery
+                ("FROM Exam E WHERE E.examId = :eId");
         query.setParameter("eId", examId);
         tx.commit();
         Exam result = (Exam)query.uniqueResult();
@@ -51,25 +49,22 @@ public class ExamDaoImp implements ExamDao {
     }
 
     @Override
-    public List<Exam> findByInStructorId(String instructorId) {
-        ArrayList<Exam> result;
+    public List findByInstructorId(String instructorId) {
+        List result;
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("FROM Exam E WHERE E.instructorId = :insId");
+        Query query = session.createQuery
+                ("FROM Exam E WHERE E.instructorId = :insId");
 
         query.setParameter("insId", instructorId);
         tx.commit();
-        result = (ArrayList<Exam>)query.list();
+        result = query.list();
         session.close();
         return result;
     }
 
-
     @Override
-    public boolean addExam(Exam exam) {// return should have different cases
-//        exams.add(exam);
-//        return true;
-// Comment off by Zeqing Li.
+    public boolean addExam(Exam exam) {
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;
         try {
@@ -93,7 +88,8 @@ public class ExamDaoImp implements ExamDao {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            Query query = session.createQuery("update Exam E set E  = :E where E.examId = :examId");
+            Query query = session.createQuery
+                    ("update Exam E set E  = :E where E.examId = :examId");
             query.setParameter("E", exam);
             query.setParameter("examId", id);
             query.executeUpdate();
@@ -117,7 +113,8 @@ public class ExamDaoImp implements ExamDao {
         try {
             tx = session.beginTransaction();
 
-            Query query = session.createQuery("delete from Exam E where E.examId = :examId");
+            Query query = session.createQuery
+                    ("delete from Exam E where E.examId = :examId");
             query.setParameter("examId", exam.getExamId());
 
             tx.commit();
@@ -132,13 +129,15 @@ public class ExamDaoImp implements ExamDao {
         }
         return true;
     }
+
     @Override
     public void listExamByApprovedRequest(String exId){//listReservationByApprovedRequest
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            Query query = session.createQuery("FROM Exam E WHERE E.examId = :examId");
+            Query query = session.createQuery
+                    ("FROM Exam E WHERE E.examId = :examId");
             query.setParameter("examId", exId);
             tx.commit();
             Exam ex = (Exam)query.uniqueResult();
@@ -151,7 +150,6 @@ public class ExamDaoImp implements ExamDao {
             System.out.println("|  -Duration: " + ex.getDuration());
             System.out.println("|  -Attendence " + ex.getAttendance());
             System.out.println("----------------------------------------------------------------------");
-
         }
         catch (HibernateException he){
             if(tx != null){

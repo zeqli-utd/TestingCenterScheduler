@@ -11,14 +11,13 @@ import java.util.List;
 
 @Repository
 public class CourseDaoImp implements CourseDao {
-    List<Course> courses;
+    List courses;
 
     public CourseDaoImp(){}
 
     @Override
-    public List<Course> getAllCourse() {
+    public List getAllCourse() {
         Session session = SessionManager.getInstance().getOpenSession();
-        Transaction tx = session.beginTransaction();
         courses = session.createQuery("FROM Course ").list();
         session.close();
         return courses;
@@ -28,7 +27,8 @@ public class CourseDaoImp implements CourseDao {
     public Course findByCourseId(String courseId) {
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("FROM Course C WHERE C.courseId = :coId");
+        Query query = session.createQuery
+                ("FROM Course C WHERE C.courseId = :coId");
         query.setParameter("coId", courseId);
         tx.commit();
         Course result = (Course)query.uniqueResult();
@@ -63,7 +63,8 @@ public class CourseDaoImp implements CourseDao {
         try {
             tx = session.beginTransaction();
 
-            Query query = session.createQuery("update Course C set C  = :C where C.courseId = :courseId");
+            Query query = session.createQuery
+                    ("update Course C set C  = :C where C.courseId = :courseId");
             query.setParameter("C", course);
             query.setParameter("courseId", id);
             query.executeUpdate();
@@ -86,8 +87,10 @@ public class CourseDaoImp implements CourseDao {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            Query query = session.createQuery("delete from Course R where R.courseId = :courseId");
-            query.setParameter("courseId", course.getCourseId());
+            Query query = session.createQuery
+                    ("delete from Course R where R.courseId = :courseId");
+            query.setParameter
+                    ("courseId", course.getCourseId());
             tx.commit();
         }
         catch (HibernateException he){
@@ -98,6 +101,6 @@ public class CourseDaoImp implements CourseDao {
         } finally {
             session.close();
         }
-        return  true;
+        return true;
     }
 }

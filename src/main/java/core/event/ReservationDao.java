@@ -6,13 +6,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ReservationDao {
-    List<Reservation> findAll();
+    List findAll();
 
     Reservation findByID(String reservationID);
 
-    List<Reservation> findByDate(LocalDate date);
+    List findByDate(LocalDate date);
 
-    List<Reservation> findByInstructorId(String InstructorID);
+    List findByInstructorId(String InstructorID);
 
     void insertReservation(Reservation reservation) throws HibernateException;
 

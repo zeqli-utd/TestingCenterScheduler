@@ -27,16 +27,14 @@ public class AdministratorController {
     /**
      * this is a controller method for view and edit information
      * this functionality is for administrator only
-     * @return
+     * @return modelAndView
      */
     @RequestMapping(value = "edit-info")
     public ModelAndView viewCenterInfo() {
         modelAndView.clear();
         modelAndView.setViewName("edit-info");
-        //set the heading to that of view information page
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("viewInfo"));
-        //infoRetrieval method will get a Map of testing center information
         TestingCenterInfo centerInfo = infoRetrieval.retrieveInfo();
         modelAndView.addObject("centerInfo", centerInfo);
         return modelAndView;

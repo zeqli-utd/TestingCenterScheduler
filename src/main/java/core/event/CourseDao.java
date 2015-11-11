@@ -3,7 +3,7 @@ package core.event;
 import java.util.List;
 
 public interface CourseDao {
-    List<Course> getAllCourse();
+    List getAllCourse();
 
     Course findByCourseId(String courseId);
 

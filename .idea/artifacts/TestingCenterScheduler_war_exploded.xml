@@ -15,12 +15,12 @@
           <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.1.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context:4.1.1.RELEASE" />
-          <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.5" />
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.1.1.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.1.1.RELEASE" />
           <element id="library" level="project" name="Hibernate 4.2.2-4.2.2" />
           <element id="library" level="project" name="com.google.code.gson:gson:2.4" />
           <element id="library" level="project" name="mysql:mysql-connector-java:5.1.36" />
+          <element id="file-copy" path="$USER_HOME$/Documents/jstl-1.2.jar" />
         </element>
       </element>
       <element id="directory" name="META-INF">

@@ -8,8 +8,6 @@ import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Repository
@@ -20,11 +18,11 @@ public class ReservationDaoImp implements ReservationDao {
     }
 
     @Override
-    public List<Reservation> findAll() {
+    public List findAll() {
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;
         tx = session.beginTransaction();
-        List<Reservation> reservations = session.createQuery("FROM Reservation").list();
+        List reservations = session.createQuery("FROM Reservation").list();
         session.close();
         return reservations;
     }
@@ -43,8 +41,8 @@ public class ReservationDaoImp implements ReservationDao {
     }
 
     @Override
-    public List<Reservation> findByDate(LocalDate date) {
-        ArrayList<Reservation> result;
+    public List findByDate(LocalDate date) {
+        List result;
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery
@@ -54,14 +52,14 @@ public class ReservationDaoImp implements ReservationDao {
         query.setParameter("endDate", date);
 
         tx.commit();
-        result = (ArrayList<Reservation>)query.list();
+        result = query.list();
         session.close();
         return result;
     }
 
     @Override
-    public List<Reservation> findByInstructorId(String InstructorID) {
-        ArrayList<Reservation> result;
+    public List findByInstructorId(String InstructorID) {
+        List result;
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery
@@ -69,7 +67,7 @@ public class ReservationDaoImp implements ReservationDao {
 
         query.setParameter("insId", InstructorID);
         tx.commit();
-        result = (ArrayList<Reservation>)query.list();
+        result = query.list();
         session.close();
         return result;
     }
@@ -254,10 +252,8 @@ public class ReservationDaoImp implements ReservationDao {
         List result = query.list();
         session.close();
 
-        Iterator resultIter = result.iterator();
-
-        while(resultIter.hasNext()){
-            Reservation re = (Reservation)resultIter.next();
+        for (Object aResult : result) {
+            Reservation re = (Reservation) aResult;
 
             System.out.println("|  -Reservation Id: " + re.getReservationID());
             System.out.println("|  -StartDateTime: " + re.getStartDateTime());
