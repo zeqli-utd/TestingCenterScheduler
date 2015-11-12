@@ -20,7 +20,7 @@ public class ReportTest {
 
 
         Appointment walApp = new Appointment("cse308examWal", "cse_308", "wal",
-                LocalDateTime.of(2015, 10,29, 1, 0),
+                LocalDateTime.of(2015,10,29,1, 0),
                 LocalDateTime.of(2015,10,29,2,20),"wal", "5R13", false);
 
         Appointment yimApp = new Appointment("cse308examYim", "cse_308", "yim",
@@ -72,10 +72,10 @@ public class ReportTest {
         report.showTermRangeReport(terms);
 
         // 5. Concatenate All Four Reports Into A Single List to Out Put in File
-        String doc = "" + report.showDayReport(term1) + ""
-                + report.showWeekReport(term1) + ""
-                + report.showTermReport(term1) + ""
+        String doc = "" + report.showDayReport(term1) + "\n"
+                + report.showWeekReport(term1) + "\n"
+                + report.showTermReport(term1) + "\n"
                 + report.showTermRangeReport(terms);
-        log.info(doc);
+        log.debug("\n" + doc);
     }
 }

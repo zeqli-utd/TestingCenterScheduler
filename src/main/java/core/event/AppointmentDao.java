@@ -7,6 +7,8 @@ public interface AppointmentDao {
 
     List<Appointment> findAllByStudent(String netId);
 
+    List<Appointment> findAllAppointmentsByTerm(Term term);
+
     //List<Appointment> findAllByInstructor(String netId);   why???
 
     Appointment findByAppointmentID(String AppointmentID);
@@ -16,5 +18,7 @@ public interface AppointmentDao {
     boolean updateAppointment(Appointment appointment, String id);
 
     boolean deleteAppointment(Appointment appointment);
+
+
 
 }
