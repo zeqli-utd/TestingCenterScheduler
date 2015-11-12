@@ -26,7 +26,6 @@ public class ScheduleController {
     @RequestMapping("submit")
     public ModelAndView SubmitScheduleRequestForm(@RequestParam Map<String, Object> reservationParam) {
         ModelAndView model = new ModelAndView("schedule-event");
-        model.addObject("message", "Schedule another event.");
         String reservationId = new IdGenerator().generateReservationId(reservationParam);
 
         Reservation reservation = new Reservation(
@@ -37,7 +36,12 @@ public class ScheduleController {
                 (String)reservationParam.get("term")
         );
 
-        reservationDao.insertReservation(reservation);
-        return model;
+        if (reservationDao.insertReservation(reservation)) {
+            model.addObject("message", Schedule another event.);
+            return model;
+        } else {
+            model.addObject("message", "Error: Schedule failure");
+            return model;
+        }
     }
 }
