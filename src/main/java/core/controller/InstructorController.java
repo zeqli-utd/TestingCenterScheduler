@@ -19,14 +19,14 @@ public class InstructorController {
 
     private ModelAndView model = new ModelAndView();
 
-    @RequestMapping("/INSTRUCTOR/view-requests")
+    @RequestMapping("view-requests")
     public ModelAndView viewRequests() {
         model.clear();
-        model.setViewName("instructor-view-requests");
+        model.setViewName("view-requests");
         return model;
     }
 
-    @RequestMapping("/INSTRUCTOR/schedule-event")
+    @RequestMapping("schedule-event")
     public ModelAndView scheduleEvent() {
         model.clear();
         model.setViewName("schedule-event");

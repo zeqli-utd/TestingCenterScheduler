@@ -1,8 +1,9 @@
 package core.event;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -38,18 +39,18 @@ public class TestingCenterInfo {
         return null;
     }
 
-    //public void serialize() {
-    //    GsonBuilder gsonBuilder = new GsonBuilder();
-    //    Gson gson = gsonBuilder.create();
-    //    String json = gson.toJson(this);
-    //    System.out.println(json);
-    //
-    //    try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(PATH)))) {
-    //        writer.write(json);
-    //    } catch (IOException e) {
-    //        e.printStackTrace();
-    //    }
-    //}
+    public void serialize() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        String json = gson.toJson(this);
+        System.out.println(json);
+
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(PATH)))) {
+            writer.write(json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public boolean update(TestingCenterInfo info) {
         if (this != null) {

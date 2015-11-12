@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="path" value="${pageContext.request.contextPath}"/>
+<%--@elvariable id="reservation" type="core.event.Reservation"--%>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -27,8 +27,8 @@
     <div class="container">
         <div class="sidebar">
             <ul class="side-nav">
-                <li><a class="button" href="INSTRUCTOR/home"><i class="fa fa-home"></i>&nbsp;Home</a></li>
-                <li><a class="button" href=""><i class="fa fa-#"></i>&nbsp;Schedule an Event</a></li>
+                <li><a class="button" href="instructor-home"><i class="fa fa-home"></i>&nbsp;Home</a></li>
+                <li><a class="button" href="schedule-event"><i class="fa fa-#"></i>&nbsp;Schedule an Event</a></li>
                 <li><a class="button" href="#"><i class="fa fa-#"></i>&nbsp;Pending Requests</a></li>
                 <li><a class="button" href="#"><i class="fa fa-#"></i>&nbsp;View appointments</a></li>
             </ul>
@@ -50,6 +50,13 @@
                 <div class="info-column"><input type="submit" class="submit-button" value="Submit"></div>
             </form>
         </div>
+    </div>
+</div>
+
+<div class="popup-overlay" id="popup1">
+    <div class="popup">
+        <a class="close" href="#"><i class="fa fa-times"></i></a>
+
     </div>
 </div>
 

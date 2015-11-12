@@ -50,6 +50,7 @@ public class AdministratorController {
         modelAndView.clear();
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("uploadFile"));
+        modelAndView.setViewName("upload");
         return modelAndView;
     }
 
@@ -63,6 +64,7 @@ public class AdministratorController {
                in different orders: by alphabetical order of instructors' last names, number of attendants,
                utilization, or, display only the ones made by one instructor by search the instructor's name*/
         modelAndView.addObject("main_content", reservationDao.findAll());
+        modelAndView.setViewName("admin-view-requests");
         return modelAndView;
     }
 
@@ -80,6 +82,13 @@ public class AdministratorController {
         modelAndView.clear();
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("checkIn"));
+        return modelAndView;
+    }
+
+    @RequestMapping("make-appointment")
+    public ModelAndView makeAppointment() {
+        modelAndView.clear();
+
         return modelAndView;
     }
 

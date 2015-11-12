@@ -16,21 +16,13 @@ public class SchedulingRequestTest {
         Reservation R3 = new Reservation("resId3", LocalDateTime.of(2015,11,3,10,0), LocalDateTime.of(2015,11,1,14,30),"ins1", "Fall 2015");
         Reservation R4 = new Reservation("resId4", LocalDateTime.of(2015,11,4,10,0), LocalDateTime.of(2015,11,1,14,30),"ins4", "Fall 2015");
         Reservation R5 = new Reservation("resId5", LocalDateTime.of(2015,11,5,10,0), LocalDateTime.of(2015,11,1,14,30),"ins5", "Fall 2015");
-        //Reservation R1 = new Reservation("1", LocalDateTime.of(2015,11,1,10,0), LocalDateTime.of(2015,11,1,14,30),"1", "Fall 2015");
-        //Reservation R1 = new Reservation("1", LocalDateTime.of(2015,11,1,10,0), LocalDateTime.of(2015,11,1,14,30),"1", "Fall 2015");
 
         Exam E1 = new Exam("ex1", "Course", LocalDateTime.of(2015,11,1,10,0), LocalDateTime.of(2015,11,1,12,00), 2, 60, 100);
         Exam E2 = new Exam("ex2", "Ad Hoc", LocalDateTime.of(2015,11,2,10,0), LocalDateTime.of(2015,11,2,12,00), 2, 60, 100);
 
-        Administrator Admin = new Administrator();
-        Instructor Ins = new Instructor();
-
         ReservationDao reservationDao = new ReservationDaoImp();
         ExamDao examDao = new ExamDaoImp();
-        //AdministratorDao administratorDao = new AppointmentDaoImp();
-        //System.out.println(reservationDao.insertReservation(R1));
 
-        //Test Scheduling Activity Flow
         boolean b1 = reservationDao.insertReservation(R1);
         Reservation t1 = reservationDao.findByID("resId1");
         String status = reservationDao.getStatusById("resId1");

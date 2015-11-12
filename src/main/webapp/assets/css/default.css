@@ -32,9 +32,9 @@
     z-index: 50;
     margin-top: 3.5em;
     position: fixed;
-    max-height: 29em;
+    height: auto;
     min-height: 0;
-    overflow: scroll;
+    overflow: auto;
 }
 
 .card {
@@ -50,10 +50,14 @@
 }
 
 .content {
-    max-width: 60em;
-    width: 70%;
+    width: 100%;
     margin-top: 5em;
     margin-left: 15em;
+    height: 90%;
+    z-index: 20;
+    position: fixed;
+    overflow: scroll;
+    box-shadow: 0 3px 3px rgba(0,0,0,0.1);
 }
 
 .card:hover {
@@ -150,10 +154,10 @@
 }
 
 .main-wrapper {
+    width: 100%;
     min-height: 40em;
-    box-shadow: 0 3px 3px rgba(0,0,0,0.1);
-    overflow: scroll;
-    margin-bottom: 5em;
+    margin-bottom: 1em;
+    height: 80%;
 }
 
 .popup-submit {
