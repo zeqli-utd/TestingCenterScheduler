@@ -41,6 +41,7 @@
                     <li>Reservation Type
                         <select name="type">
                             <option value="Course">Course</option>
+                            <option value="Other">Other</option>
                         </select>
                     </li>
                     <li>Start Date Time <input class="input-info" type="datetime" placeholder="Start Time" name="start_date_time"></li>
