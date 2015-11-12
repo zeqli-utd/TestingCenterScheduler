@@ -38,10 +38,9 @@ public class ScheduleController {
 
         if (reservationDao.insertReservation(reservation)) {
             model.addObject("message", "Schedule another event");
-            return model;
         } else {
             model.addObject("message", "Error: Schedule failure");
-            return model;
         }
+        return model;
     }
 }
