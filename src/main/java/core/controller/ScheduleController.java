@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 @Controller
@@ -22,14 +21,7 @@ public class ScheduleController {
         model.addObject("message", "Schedule another event.");
 
         Reservation reservation;
-        reservation = new Reservation(
-                (LocalDateTime) scheduleParams.get("start_date_time"),
-                (LocalDateTime) scheduleParams.get("end_date_time"),
-                (String) scheduleParams.get("instructor_id"),
-                (String) scheduleParams.get("term"),
-                (String) scheduleParams.get("type"),
-                (int) scheduleParams.get("duration")
-        );
+        reservation = new Reservation();
 
         reservationDao.insertReservation(reservation);
 

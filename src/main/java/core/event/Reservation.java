@@ -24,8 +24,6 @@ public class Reservation {
     @Basic(optional = false)
     private Date endDateTime;
 
-    private int duration;
-
     @Column(name="instructor_id")
     @Basic(optional = false)
     private String instructorId;
@@ -103,14 +101,6 @@ public class Reservation {
     public void setEndDateTime(LocalDateTime endDateTime) {
         Instant instant = endDateTime.atZone(ZoneId.systemDefault()).toInstant();
         this.endDateTime = Date.from(instant);
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public int getDuration() {
-        return duration;
     }
 
     public void setReservationID(String reservationID) {
