@@ -49,12 +49,6 @@ public class Appointment {
     @Basic(optional = false)
     private boolean isAttend;
 
-//    @Basic?optional=false?
-////TODO change to StudentId
-//    @ManyToOne
-//    @JoinColumn(name="studentId")
-//    private Student student;
-
     @Column(name="status")
     private String status;
 
