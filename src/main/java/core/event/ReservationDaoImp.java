@@ -74,15 +74,11 @@ public class ReservationDaoImp implements ReservationDao {
 
     @Override
     public boolean insertReservation(Reservation reservation){
-        //how to know which table we add in
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;
         try {
-            System.out.println("CAO1");
             tx = session.beginTransaction();
-            System.out.println("CAO2");
             session.save(reservation);
-            System.out.println("CAO3");
             tx.commit();
         }
         catch (HibernateException he){

@@ -16,21 +16,11 @@ public class SchedulingRequestTest {
         Reservation R3 = new Reservation("resId3", LocalDateTime.of(2015,11,3,10,0), LocalDateTime.of(2015,11,1,14,30),"ins1", "Fall 2015");
         Reservation R4 = new Reservation("resId4", LocalDateTime.of(2015,11,4,10,0), LocalDateTime.of(2015,11,1,14,30),"ins4", "Fall 2015");
         Reservation R5 = new Reservation("resId5", LocalDateTime.of(2015,11,5,10,0), LocalDateTime.of(2015,11,1,14,30),"ins5", "Fall 2015");
-        //Reservation R1 = new Reservation("1", LocalDateTime.of(2015,11,1,10,0), LocalDateTime.of(2015,11,1,14,30),"1", "Fall 2015");
-        //Reservation R1 = new Reservation("1", LocalDateTime.of(2015,11,1,10,0), LocalDateTime.of(2015,11,1,14,30),"1", "Fall 2015");
 
-        Exam E1 = new Exam("ex1", "Course", LocalDateTime.of(2015,11,1,10,0), LocalDateTime.of(2015,11,1,12,00), 2, 60, 100);
-        Exam E2 = new Exam("ex2", "Ad Hoc", LocalDateTime.of(2015,11,2,10,0), LocalDateTime.of(2015,11,2,12,00), 2, 60, 100);
-
-        Administrator Admin = new Administrator();
-        Instructor Ins = new Instructor();
 
         ReservationDao reservationDao = new ReservationDaoImp();
         ExamDao examDao = new ExamDaoImp();
-        //AdministratorDao administratorDao = new AppointmentDaoImp();
-        //System.out.println(reservationDao.insertReservation(R1));
 
-        //Test Scheduling Activity Flow
         boolean b1 = reservationDao.insertReservation(R1);
         Reservation t1 = reservationDao.findByID("resId1");
         String status = reservationDao.getStatusById("resId1");
@@ -46,7 +36,7 @@ public class SchedulingRequestTest {
         log.info("|  Here we set the type to be Ad Hoc");
 
 
-        // Set Reservation 1 to Ad Hoc Type
+       /* // Set Reservation 1 to Ad Hoc Type
         reservationDao.setType("resId1", "Ad Hoc");
         status = reservationDao.getStatusById("resId1");
         type = reservationDao.getTypeById("resId1");
@@ -57,7 +47,7 @@ public class SchedulingRequestTest {
         log.info("|  -Term: " + t1.getTerms());
         log.info("|  -Status " + status);
         log.info("|  -Type: " + type);
-
+*/
         // Add Reservation
         boolean b2 = reservationDao.insertReservation(R2);
 
@@ -73,11 +63,11 @@ public class SchedulingRequestTest {
         log.info("|  -Term: " + t2.getTerms());
         log.info("|  -Status " + status);
         log.info("|  -Type: " + type);
-        log.info("|  Here we set the status of R2 to be Approved");
-        reservationDao.setStatus("resId2", "Approved");
+        //log.info("|  Here we set the status of R2 to be Approved");
+       // reservationDao.setStatus("resId2", "Approved");
 
 
-        boolean be2 = reservationDao.insertReservation(R2);
+        /*boolean be2 = reservationDao.insertReservation(R2);
         status = reservationDao.getStatusById("resId2");
         type = reservationDao.getTypeById("resId2");
         log.info("|  -Reservation Id: " + t2.getReservationID());
@@ -86,7 +76,7 @@ public class SchedulingRequestTest {
         log.info("|  -Instructor Id: " + t2.getInstructorId());
         log.info("|  -Term: " + t2.getTerms());
         log.info("|  -Status " + status);
-        log.info("|  -Type: " + type);
+        log.info("|  -Type: " + type);*/
 
 
         boolean b3 = reservationDao.insertReservation(R3);
@@ -101,7 +91,7 @@ public class SchedulingRequestTest {
         log.info("|  -Term: " + t3.getTerms());
         log.info("|  -Status " + status);
         log.info("|  -Type: " + type);
-        log.info("|  Here we set the status of R2 to be Denied");
+        /*log.info("|  Here we set the status of R2 to be Denied");
         reservationDao.setStatus("resId3", "Denied");
         status = reservationDao.getStatusById("resId3");
         type = reservationDao.getTypeById("resId3");
@@ -111,7 +101,7 @@ public class SchedulingRequestTest {
         log.info("|  -Instructor Id: " + t3.getInstructorId());
         log.info("|  -Term: " + t3.getTerms());
         log.info("|  -Status " + status);
-        log.info("|  -Type: " + type);
+        log.info("|  -Type: " + type);*/
 
 
         // Test Cancel a Reservation, simply just remove it from table.
@@ -145,6 +135,8 @@ public class SchedulingRequestTest {
 
         // Test List all Reservations requested by an Instructor
         reservationDao.listAllReservationByInstructorId("ins1");
+        Exam E1 = new Exam("ex1", "Course", LocalDateTime.of(2015,11,1,10,0), LocalDateTime.of(2015,11,1,12,00), 2, 60, 100);
+        Exam E2 = new Exam("ex2", "Ad Hoc", LocalDateTime.of(2015,11,2,10,0), LocalDateTime.of(2015,11,2,12,00), 2, 60, 100);
 
         E1.setAttendance(1);
         E2.setAttendance(0);

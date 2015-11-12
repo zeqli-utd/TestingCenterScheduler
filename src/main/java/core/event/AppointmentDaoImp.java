@@ -7,6 +7,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -120,4 +123,31 @@ public class AppointmentDaoImp implements AppointmentDao {
         }
         return  true;
     }
+
+    @Override
+    public List<Appointment> findAllAppointmentsByTerm(Term term) {
+        Session session = SessionManager.getInstance().getOpenSession();
+        Transaction tx = null;
+        List<Appointment> appointments = new ArrayList<>();
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("from Appointment a where a.startDateTime >= :startDate and :endDate >= a.endDateTime");
+            query.setTimestamp("endDate", Date.from(term.getTermEndDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+            query.setTimestamp("startDate", Date.from(term.getTermStartDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+
+            // If query won't get any record from table, the result will be an empty list.
+            appointments = query.list();
+            tx.commit();
+        } catch (HibernateException he) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return appointments;
+    }
+
+
+
 }

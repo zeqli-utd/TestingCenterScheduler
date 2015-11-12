@@ -22,15 +22,7 @@ public class DataCollection {
     static final private String PATH = "/course_registration_data/";
     static final private String fileExt = ".csv";
 
-    //private List<String[]> users;
-    //private List<String[]> courses;
-    //private List<String[]> rosters;
-
     private List<String[]> list;
-
-    //private String path_usersCSV;
-    //private String path_coursesCSV;
-    //private String path_rostersCSV;
 
     private AppointmentDaoImp appointmentDaoImpl = new AppointmentDaoImp();
 

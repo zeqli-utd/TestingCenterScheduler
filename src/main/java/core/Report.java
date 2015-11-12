@@ -1,9 +1,6 @@
 package core;
 
-import core.event.Appointment;
-import core.event.Course;
-import core.event.Exam;
-import core.event.Term;
+import core.event.*;
 import core.service.SessionManager;
 import org.apache.log4j.Logger;
 import org.hibernate.*;
@@ -28,161 +25,115 @@ public class Report {
 
     }
 
-    public List<Exam> getExams() {
-        return exams;
-    }
-
-    public void setExams(List<Exam> exams) {
-        this.exams = exams;
-    }
-
-    public List<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
-    }
-
-    public List<Appointment> getAppointments() {
-        return appointments;
-    }
-
-    public void setAppointments(List<Appointment> appointments) {
-        this.appointments = appointments;
-    }
-
-    public Term getEndTerm() {
-        return endTerm;
-    }
-
-    public void setEndTerm(Term endTerm) {
-        this.endTerm = endTerm;
-    }
-
-    public Term getStartTerm() {
-        return startTerm;
-    }
-
-    public void setStartTerm(Term startTerm) {
-        this.startTerm = startTerm;
-    }
-
-    public List<Appointment> getAppointments(Term term) {
-        Session session = SessionManager.getInstance().getOpenSession();
-        Transaction tx = null;
-
-        try {
-            tx = session.beginTransaction();
-            Query query = session.createQuery("from Appointment a where a.startDateTime >= :startDate and :endDate >= a.endDateTime");
-            query.setTimestamp("endDate", Date.from(term.getTermEndDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-            query.setTimestamp("startDate", Date.from(term.getTermStartDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-            // If query won't get any record from table, the result will be an empty list.
-            appointments = query.list();
-
-
-            tx.commit();
-        } catch (HibernateException he) {
-            if (tx != null) {
-                tx.rollback();
-            }
-        } finally {
-            session.close();
-        }
-        return appointments;
-    }
-
-
+    /**
+     * Show day report
+     * @param term Specified term
+     * @return
+     */
     public String showDayReport(Term term) {
-        appointments = getAppointments(term);
-        String s = "";
-        s += "| - " + "------------Show report by Day------------\n";
-        // Print A List of Entire Semester, and Appointment corresponding to each day.
-        for (LocalDate localDate = term.getTermStartDate(); localDate.isBefore(term.getTermEndDate().plusDays(1)); localDate = localDate.plusDays(1)) {
+        // First get all appointments in a specified term.
+        AppointmentDao appointmentDao = new AppointmentDaoImp();
+        appointments = appointmentDao.findAllAppointmentsByTerm(term);
 
+        // Output the result in a String
+        String sDayReport = "";
+        sDayReport += "### Reports by Day ###\n";
+        sDayReport += String.format("%10s | %20s", "Date ", "# of Appointments" ) + "\n";
 
-            List<Appointment> list = new LinkedList<>();
-            int i = 0;
-            for (Appointment appt : appointments) {
-                i = 0;
+        // Print a list of day in entire semester, and number of appointments corresponding to each day.
+        for (LocalDate localDate = term.getTermStartDate(); localDate.isBefore(term.getTermEndDate().plusDays(1));
+             localDate = localDate.plusDays(1)) {
+            List<Appointment> apptsOnCertainDay = new LinkedList<>();
+            int numAppts = 0;
+
+            // Walk through the appointments list of this term.
+            for (Appointment appt : this.appointments) {
                 // Check if the appointment meet up today.
                 if (appt.getStartDateTime().toLocalDate().equals(localDate)) {
-                    i++;
-                    list.add(appt);
+                    numAppts++;
+                    apptsOnCertainDay.add(appt);
                 }
             }
 
-            s += "| - Date: " + localDate.toString() + " - - - - - - " + i + " Appointments \n";
-            for(Appointment appt:list){
-                s += "  | - ExamId: " + appt.getExamId() + "\n";
-                s += "  | - AppointmentId: " + appt.getAppointmentID() + "\n";
-                s += "  | - MadeBy: " + appt.getMadeBy() + "\n";
+            sDayReport += String.format("%s%13d",localDate.toString(), numAppts) + "\n";
+            for(Appointment appt:apptsOnCertainDay){
+                sDayReport += "  | - ExamId: " + appt.getExamId() + "\n";
+                sDayReport += "  | - AppointmentId: " + appt.getAppointmentID() + "\n";
+                sDayReport += "  | - MadeBy: " + appt.getMadeBy() + "\n";
             }
-
         }
-        s += "| - End of report...\n";
-        log.info("\n" + s);
-        return s;
+        sDayReport += "### End of report... ###\n";
+        log.debug("\n\n" + sDayReport);
+        return sDayReport;
     }
 
+    /**
+     * Show Weekly Report
+     * @param term Specified Term
+     * @return
+     */
     public String showWeekReport(Term term) {
-        appointments = getAppointments(term);
-        String s = "";
-        s += "| - ------------Show report by Week------------\n";
+        AppointmentDao appointmentDao = new AppointmentDaoImp();
+        appointments = appointmentDao.findAllAppointmentsByTerm(term);
+        String sWeekReport = "";
+        sWeekReport += "### Reports by Week ###\n";
 
-        // Assume Each Semester Starts on Monday
+        // Assume each semester starts on Monday
         for (LocalDate date = term.getTermStartDate(); date.isBefore(term.getTermEndDate().plusDays(1)); date = date.plusWeeks(1)) {
-
             List<Appointment> list = new LinkedList<>();
             for (Appointment appt : appointments) {
                 if (appt.getStartDateTime().toLocalDate().isAfter(date) && appt.getEndDateTime().toLocalDate().isBefore(date.plusWeeks(1))) {
                     list.add(appt);
                 }
             }
-
-            // Count courses.
+            // Count the number of appointments for each course.
             HashMap<String, Integer> courseCount = new HashMap<>();
             for (Appointment a:list){
-                String cName = a.getExamId();
+                String sCourseName = a.getExamId();
 
-                // If Key exist
-                if (courseCount.get(cName)!=null){
-                    courseCount.put(cName, courseCount.get(cName) + 1);
+                if (courseCount.get(sCourseName)!=null){
+                    courseCount.put(sCourseName, courseCount.get(sCourseName) + 1);
                 }
                 else {
-                    courseCount.put(cName, 1);
+                    courseCount.put(sCourseName, 1);
                 }
             }
-            s += "| - Week of " + date.format(DateTimeFormatter.ofPattern("LLLL dd, yyyy")) + " ------------ " + list.size() + "Appointments\n";
 
+            sWeekReport += "| - Week of " + String.format("%11s", date.format(DateTimeFormatter.ofPattern("LLLL dd, yyyy"))) +
+                    String.format("%12d", list.size()).replace(' ', '-') + " Appointments\n";
 
-            // Read Course
+            // Iterate through hash table and get the appointments counts.
             Iterator it = courseCount.entrySet().iterator();
             while (it.hasNext()){
                 Map.Entry pair = (Map.Entry)it.next();
-                s += "  | - " + pair.getKey() + " - - - - - - - - - - - " + pair.getValue() + " Appointments\n";
+                sWeekReport += "  | - " + pair.getKey() + String.format("%12d", pair.getValue()).replace(' ', '-')
+                 + " Appointments\n";
             }
-
         }
-        s += "| - End of report...\n";
-        log.info("\n" + s);
-        return s;
+        sWeekReport += "### End of report... ###\n";
+        log.debug("\n\n" + sWeekReport);
+        return sWeekReport;
     }
 
-    // Report Date
+    /**
+     * Show Term Report
+     * @param term
+     * @return
+     */
     public String showTermReport(Term term){
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;
-        Set<String> courses = new LinkedHashSet<>();
+        Set<String> courses = new HashSet<>();
         try{
             tx = session.beginTransaction();
-            Query query = session.createQuery("select e.examId from Exam e where  :startDate <= e.startDateTime and e.endDateTime <= :endDate");
 
-            log.debug("Begin Term " + Date.from(term.getTermStartDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-            log.debug("End Term " + Date.from(term.getTermEndDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+            // Get all exams for this term.
+            Query query = session.createQuery("select e.examId from Exam e where  :startDate <= e.startDateTime and e.endDateTime <= :endDate");
             query.setTimestamp("endDate", Date.from(term.getTermEndDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
             query.setTimestamp("startDate", Date.from(term.getTermStartDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
 
+            log.debug("Begin Term " + Date.from(term.getTermStartDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+            log.debug("End Term " + Date.from(term.getTermEndDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
 
             List<String> listResult = query.list();
             for(String row : listResult){
@@ -197,60 +148,63 @@ public class Report {
             }
             log.error("Error with Table Join", he);
         }
+//          finally {
+//            if(session.isOpen()) {
+//                session.close();
+//            }
+//        }
 
-        String s = "";
-        s += "| - ------------Show report by Term------------\n";
-        s += "| - " + term.getTermName() + " starts from " + term.getTermStartDate().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")) + "\n";
+        String sTermReport = "";
+        sTermReport += "### Reports by Term ###\n";
+        sTermReport += "| - " + term.getTermName() + " starts from " + term.getTermStartDate().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")) + "\n";
         Iterator<String> it = courses.iterator();
         while (it.hasNext()){
-            s += "| - ExamId: " + it.next() + "\n";
+            sTermReport += "| - ExamId: " + it.next() + "\n";
         }
-        s += "| - " + term.getTermName() + " ends on " + term.getTermEndDate().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")) + "\n";
+        sTermReport += "| - " + term.getTermName() + " ends on " + term.getTermEndDate().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")) + "\n";
 
-        s += "| - End of report...\n";
-        log.info("\n" + s);
-        return s;
+        sTermReport += "### End of report... ###\n";
+        log.debug("\n" + sTermReport);
+        return sTermReport;
     }
 
-    // Report Date
+    /**
+     * Show Term Range Report
+     * @param terms List of Terms
+     * @return
+     */
     public String showTermRangeReport(List<Term> terms){
-        String s = "";
-        s += "| - ------------Show report by Term Range------------\n";
+        String sTermRangeReport = "";
+        sTermRangeReport += "### Reports by Term Range ###\n";
 
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;
-        Set<String> courses = new LinkedHashSet<>();
 
         for (Term term: terms){
             try{
                 tx = session.beginTransaction();
                 Query query = session.createQuery("select count(*) from Appointment a where  :startDate <= a.startDateTime and a.endDateTime <= :endDate");
-
-                log.debug("Begin Term " + term.getTermName() + " " + Date.from(term.getTermStartDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-                log.debug("End Term " + term.getTermName() + " " + Date.from(term.getTermEndDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-
                 query.setTimestamp("startDate", Date.from(term.getTermStartDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
                 query.setTimestamp("endDate", Date.from(term.getTermEndDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
 
-                try {
-                    Long apptInTerm = (Long) query.uniqueResult();
-                    s += "| - " +  "In Term " + term.getTermName() + " - - - - - - - - - - " + apptInTerm + " Appointments\n";
-                } catch (NonUniqueResultException nre){
-                    log.error("" + nre);
-                }
+                Long apptInTerm = (Long) query.uniqueResult();
+                sTermRangeReport += String.format("| - Term %11s", term.getTermName()) +
+                        String.format("%12d", apptInTerm).replace(' ', '-') + " Appointments\n";
 
                 tx.commit();
             } catch (HibernateException he) {
-                if(tx!=null){
+                if (tx != null) {
                     tx.rollback();
                 }
                 log.error("Error with Table Join", he);
             }
+//            finally {
+//                if(session.isOpen()) {
+//                    session.close();
+//                }
+//            }
         }
-        s += "| - End of report...\n";
-        log.info("\n" + s);
-        return s;
+        sTermRangeReport += "### End of report... ###\n";
+        return sTermRangeReport;
     }
-
-
 }

@@ -1,11 +1,10 @@
 package core.event;
 
-import com.google.gson.Gson;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;

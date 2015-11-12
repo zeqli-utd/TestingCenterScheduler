@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Welcome</title>
-    <meta http-equiv="refresh" content="3;login"/>
+    <meta http-equiv="refresh" content="1;login"/>
     <link rel="stylesheet" type="text/css" href="assets/css/styles.css">
 </head>
 <body>
