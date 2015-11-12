@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--@elvariable id="reservation" type="core.event.Reservation"--%>
+<%--@elvariable id="message" type="java.lang.String"--%>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -34,6 +35,7 @@
             </ul>
         </div>
         <div class="content">
+            <p class="error-message">${message}</p>
             <form class="edit-info" action="schedule-event/submit">
                 <ul>
                     <li>Instructor NetID <input class="input-info" type="text" placeholder="NetID" name="instructor_id"></li>
