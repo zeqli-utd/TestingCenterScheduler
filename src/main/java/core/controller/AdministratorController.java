@@ -32,7 +32,7 @@ public class AdministratorController {
     @RequestMapping(value = "edit-info")
     public ModelAndView viewCenterInfo() {
         modelAndView.clear();
-        modelAndView.setViewName("edit-info");
+        modelAndView.setViewName("include/edit-info");
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("viewInfo"));
         TestingCenterInfo centerInfo = infoRetrieval.retrieveInfo();
@@ -64,7 +64,7 @@ public class AdministratorController {
                in different orders: by alphabetical order of instructors' last names, number of attendants,
                utilization, or, display only the ones made by one instructor by search the instructor's name*/
         modelAndView.addObject("main_content", reservationDao.findAll());
-        modelAndView.setViewName("admin-view-requests");
+        modelAndView.setViewName("include/admin-view-requests");
         return modelAndView;
     }
 
