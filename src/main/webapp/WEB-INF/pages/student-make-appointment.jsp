@@ -28,7 +28,7 @@
   <div class="container">
     <div class="sidebar">
       <ul class="side-nav">
-        <li><a class="button" href="${path}/ADMINISTRATOR/home"><i class="fa fa-home"></i>&nbsp;Home</a></li>
+        <li><a class="button" href="ADMINISTRATOR/home"><i class="fa fa-home"></i>&nbsp;Home</a></li>
         <li><a class="button" href="${path}/student-make-appointment"><i class="fa fa-plus-square"></i>&nbsp;Make Appointment</a></li>
         <li><a class="button" href="${path}/student-view-appointments"><i class="fa fa-eye"></i>&nbsp;View Appointments</a></li>
       </ul>

@@ -13,17 +13,12 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 @Controller
-@RequestMapping("schedule-event")
+@RequestMapping("/schedule-event")
 public class ScheduleController {
     @Autowired
     private ReservationDao reservationDao;
 
-    @RequestMapping
-    public ModelAndView scheduleRequest() {
-        return new ModelAndView("schedule-event");
-    }
-
-    @RequestMapping("submit")
+    @RequestMapping("/submit")
     public ModelAndView SubmitScheduleRequestForm(@RequestParam Map<String, Object> reservationParam) {
         ModelAndView model = new ModelAndView("schedule-event");
         String reservationId = new IdGenerator().generateReservationId(reservationParam);

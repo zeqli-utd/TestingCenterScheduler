@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--@elvariable id="page_heading" type="java.lang.String"--%>
+<%--@elvariable id="content" type="java.lang.String"--%>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -15,7 +16,7 @@
         </a>
     </div>
     <div class="main-heading">
-        <h1>View Requests</h1>
+        <h1>${page_heading}</h1>
     </div>
     <div class="header-menu">
         <a>Logout</a>
@@ -25,19 +26,10 @@
 <div class="main-wrapper">
     <div class="container">
         <div class="sidebar">
-            <ul class="side-nav">
-                <li><a class="button" href="admin-home"><i class="fa fa-home"></i>&nbsp;Home</a></li>
-                <li><a class="button" href="edit-info"><i class="fa fa-info"></i>&nbsp;View testing center info</a></li>
-                <li><a class="button" href="upload"><i class="fa fa-upload"></i>&nbsp;Upload a file</a></li>
-                <li><a class="button" href="admin-view-requests"><i class="fa fa-spinner"></i>&nbsp;View requests</a></li>
-                <li><a class="button" href="admin-view-appointments"><i class="fa fa-eye"></i>&nbsp;View appointments</a></li>
-                <li><a class="button" href="make-appointment"><i class="fa fa-plus-square"></i>&nbsp;Make an appointment</a></li>
-                <li><a class="button" href="check-in"><i class="fa fa-sign-in"></i>&nbsp;Check in</a></li>
-                <li><a class="button" href="generate-report"><i class="fa fa-file"></i>&nbsp;Generate Report</a></li>
-            </ul>
+            <jsp:include page="sidebar.jsp"/>
         </div>
         <div class="content">
-
+            <jsp:include page="${content}"/>
         </div>
     </div>
 </div>

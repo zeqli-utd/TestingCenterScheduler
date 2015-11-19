@@ -7,16 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
     @RequestMapping("admin-home")
     public String goToAdminHome() {
-        return "admin-home";
+        return "admin";
     }
 
     @RequestMapping("instructor-home")
     public String goToInstructorHome() {
-        return "instructor-home";
+        return "instructor";
     }
 
     @RequestMapping("student-home")
     public String goToStudentHome() {
-        return "student-home";
+        return "student";
     }
 }
