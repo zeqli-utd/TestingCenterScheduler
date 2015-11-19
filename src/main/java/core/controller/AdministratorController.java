@@ -31,6 +31,7 @@ public class AdministratorController {
         modelAndView.setViewName("admin/home");
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("home"));
+        modelAndView.addObject("content", "home-content.jsp");
         return modelAndView;
     }
 
@@ -42,7 +43,7 @@ public class AdministratorController {
     @RequestMapping(value = "edit-info")
     public ModelAndView viewCenterInfo() {
         modelAndView.clear();
-        modelAndView.setViewName("include/admin/edit-info");
+        modelAndView.setViewName("admin/include/edit-info");
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("viewInfo"));
         TestingCenterInfo centerInfo = infoRetrieval.retrieveInfo();
@@ -60,7 +61,7 @@ public class AdministratorController {
         modelAndView.clear();
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("uploadFile"));
-        modelAndView.setViewName("admin/upload");
+        modelAndView.setViewName("admin/include/upload");
         return modelAndView;
     }
 
@@ -74,7 +75,7 @@ public class AdministratorController {
                in different orders: by alphabetical order of instructors' last names, number of attendants,
                utilization, or, display only the ones made by one instructor by search the instructor's name*/
         modelAndView.addObject("main_content", reservationDao.findAll());
-        modelAndView.setViewName("include/admin/admin-view-requests");
+        modelAndView.setViewName("admin/include/view-requests");
         return modelAndView;
     }
 

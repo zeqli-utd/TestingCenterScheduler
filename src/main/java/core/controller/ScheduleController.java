@@ -20,7 +20,7 @@ public class ScheduleController {
 
     @RequestMapping("/submit")
     public ModelAndView SubmitScheduleRequestForm(@RequestParam Map<String, Object> reservationParam) {
-        ModelAndView model = new ModelAndView("include/instructor/schedule-event");
+        ModelAndView model = new ModelAndView("instructor/include/schedule-event");
         String reservationId = new IdGenerator().generateReservationId(reservationParam);
 
         Reservation reservation = new Reservation(

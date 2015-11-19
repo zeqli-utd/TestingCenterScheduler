@@ -27,7 +27,7 @@
 <div class="main-wrapper">
     <div class="container">
         <div class="sidebar">
-            <jsp:include page="../include/admin/sidebar.jsp" flush="true"/>
+            <jsp:include page="include/sidebar.jsp" flush="true"/>
         </div>
         <div class="content">
             <jsp:include page="${content}" flush="true"/>
