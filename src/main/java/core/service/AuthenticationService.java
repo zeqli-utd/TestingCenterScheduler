@@ -1,6 +1,7 @@
 package core.service;
 
 import core.user.Authorization;
+import org.springframework.security.access.annotation.Secured;
 
 public interface AuthenticationService {
     /**
@@ -19,7 +20,6 @@ public interface AuthenticationService {
      */
     boolean userMatchPassword(String userId, String password);
 
-
     /**
      * determine the user's permission level
      * @param userId
@@ -28,5 +28,6 @@ public interface AuthenticationService {
      *         userId and password, returns null if password does not
      *         match the userId
      */
+    @Secured("authorized")
     Authorization login(String userId, String password);
 }

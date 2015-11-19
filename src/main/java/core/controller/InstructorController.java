@@ -29,7 +29,7 @@ public class InstructorController {
     @RequestMapping("schedule-event")
     public ModelAndView scheduleEvent() {
         model.clear();
-        model.setViewName("schedule-event");
+        model.setViewName("include/instructor/schedule-event");
         return model;
     }
 }

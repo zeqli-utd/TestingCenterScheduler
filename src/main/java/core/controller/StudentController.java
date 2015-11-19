@@ -22,14 +22,14 @@ public class StudentController {
     @RequestMapping("/student-view-appointments")
     public ModelAndView viewAppointments() {
         model.clear();
-        model.setViewName("student-view-appointments");
+        model.setViewName("include/student/student-view-appointments");
         return model;
     }
 
     @RequestMapping("/student-make-appointment")
     public ModelAndView makeAppointment() {
         model.clear();
-        model.setViewName("student-make-appointment");
+        model.setViewName("include/student/student-make-appointment");
         return model;
     }
 }

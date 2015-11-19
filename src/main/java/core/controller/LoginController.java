@@ -25,11 +25,11 @@ public class LoginController{
         if (authorization != null) {
             switch (authorization) {
                 case STUDENT:
-                    return "student";
+                    return "student/home";
                 case INSTRUCTOR:
-                    return "instructor";
+                    return "instructor/home";
                 case ADMINISTRATOR:
-                    return "admin";
+                    return "admin/home";
             }
         }else {
             if (authenticationService.registeredUserId(userId)) {

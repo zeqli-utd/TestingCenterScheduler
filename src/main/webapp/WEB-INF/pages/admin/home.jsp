@@ -1,6 +1,7 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%--@elvariable id="page_heading" type="java.lang.String"--%>
 <%--@elvariable id="content" type="java.lang.String"--%>
+<%--@elvariable id="popup_content" type="java.lang.String"--%>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -26,10 +27,10 @@
 <div class="main-wrapper">
     <div class="container">
         <div class="sidebar">
-            <jsp:include page="include/sidebar.jsp"/>
+            <jsp:include page="../include/admin/sidebar.jsp" flush="true"/>
         </div>
         <div class="content">
-            <jsp:include page="${content}"/>
+            <jsp:include page="${content}" flush="true"/>
         </div>
     </div>
 </div>
@@ -37,31 +38,7 @@
 <div class="popup-overlay" id="popup1">
     <div class="popup">
         <a class="close" href="#"><i class="fa fa-times"></i></a>
-        <form>
-            <table class="card-table">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Made By</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                    <th>Attendance</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-
-                </tr>
-                </tbody>
-            </table>
-            <input type="submit" value="Modify" class="popup-submit">
-            <input type="submit" value="Submit" class="popup-submit">
-            <input type="submit" value="Cancel Request" class="popup-submit">
-            <input type="submit" value="Approve" class="popup-submit">
-            <a href="#" class="button">Back</a>
-        </form>
+        <jsp:include page="${popup_content}" flush="true"/>
     </div>
 </div>
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping("/admin")
 public class AdministratorController {
     @Autowired
     private TestingCenterInfoRetrieval infoRetrieval;
@@ -24,6 +25,15 @@ public class AdministratorController {
 
     }
 
+    @RequestMapping("home")
+    public ModelAndView goToHome() {
+        modelAndView.clear();
+        modelAndView.setViewName("admin/home");
+        modelAndView.addObject("page_heading",
+                StringResources.ADMINISTRATOR_OPERATIONS.get("home"));
+        return modelAndView;
+    }
+
     /**
      * this is a controller method for view and edit information
      * this functionality is for administrator only
@@ -32,7 +42,7 @@ public class AdministratorController {
     @RequestMapping(value = "edit-info")
     public ModelAndView viewCenterInfo() {
         modelAndView.clear();
-        modelAndView.setViewName("include/edit-info");
+        modelAndView.setViewName("include/admin/edit-info");
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("viewInfo"));
         TestingCenterInfo centerInfo = infoRetrieval.retrieveInfo();
@@ -50,7 +60,7 @@ public class AdministratorController {
         modelAndView.clear();
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("uploadFile"));
-        modelAndView.setViewName("upload");
+        modelAndView.setViewName("admin/upload");
         return modelAndView;
     }
 
@@ -64,7 +74,7 @@ public class AdministratorController {
                in different orders: by alphabetical order of instructors' last names, number of attendants,
                utilization, or, display only the ones made by one instructor by search the instructor's name*/
         modelAndView.addObject("main_content", reservationDao.findAll());
-        modelAndView.setViewName("include/admin-view-requests");
+        modelAndView.setViewName("include/admin/admin-view-requests");
         return modelAndView;
     }
 
