@@ -1,4 +1,4 @@
-package core.controller;
+package core.controller.administrator;
 
 import core.service.TestingCenterInfoRetrieval;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,12 @@ import java.time.LocalDateTime;
  * as well as testing center information
  */
 @Controller
-public class ModificationController {
+@RequestMapping("admin/edit-info")
+public class EditInfoController {
     @Autowired
     private TestingCenterInfoRetrieval infoRetrieval;
     
-    private String viewName = "redirect:/edit-info";
+    private String viewName = "redirect:/admin/edit-info";
     
     /**
      * this method is called when a information cell is clicked and
@@ -30,13 +31,15 @@ public class ModificationController {
      * testing center information. To prompt the user to change the selected
      * field, a popup window will appear, asking for input for the specified
      * field.
-     * @return
+     * @param closedDateStart start of the closed dates
+     * @param closedDateEnd end of the closed dates
+     * @return view name
      */
-    @RequestMapping(value = "edit-info/closed-dates/add", method = RequestMethod.POST)
+    @RequestMapping(value = "closed-dates/add", method = RequestMethod.POST)
     public String addCloseDate(@RequestParam("add-closed-date-start")
-                               @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate closedDateStart,
+                                    @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate closedDateStart,
                                @RequestParam("add-closed-date-start")
-                               @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate closedDateEnd) {
+                                    @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate closedDateEnd) {
         infoRetrieval.addCloseDates(new LocalDate[]{closedDateStart, closedDateEnd});
         return viewName;
     }
@@ -47,11 +50,11 @@ public class ModificationController {
      * @param reservedDateEnd
      * @return
      */
-    @RequestMapping(value = "edit-info/reserve-dates/add", method = RequestMethod.POST)
+    @RequestMapping(value = "reserve-dates/add", method = RequestMethod.POST)
     public String addReservedDate(@RequestParam("add-reserved-date-start")
-                                  @DateTimeFormat(pattern = "MM/dd/yyyy|HH:mm") LocalDateTime reservedDateStart,
+                                        @DateTimeFormat(pattern = "MM/dd/yyyy|HH:mm") LocalDateTime reservedDateStart,
                                   @RequestParam("add-reserved-date-end")
-                                  @DateTimeFormat(pattern = "MM/dd/yyyy|HH:mm") LocalDateTime reservedDateEnd) {
+                                        @DateTimeFormat(pattern = "MM/dd/yyyy|HH:mm") LocalDateTime reservedDateEnd) {
         infoRetrieval.addReserveDateTimes(new LocalDateTime[]{reservedDateStart, reservedDateEnd});
         return viewName;
     }
@@ -62,7 +65,7 @@ public class ModificationController {
      * @param openHour
      * @return
      */
-    @RequestMapping(value = "edit-info/open/modify", method = RequestMethod.POST)
+    @RequestMapping(value = "open/modify", method = RequestMethod.POST)
     public String modifyOpenHour(@RequestParam("modify-open-hour")
                                        @DateTimeFormat(pattern = "HH:mm") LocalDate openHour) {
         infoRetrieval.updateField("open", openHour);
@@ -74,7 +77,7 @@ public class ModificationController {
      * @param closeHour
      * @return
      */
-    @RequestMapping(value = "edit-info/close/modify", method = RequestMethod.POST)
+    @RequestMapping(value = "close/modify", method = RequestMethod.POST)
     public String modifyCloseHour(@RequestParam("modify-close-hour")
                                         @DateTimeFormat(pattern = "HH:mm") LocalDate closeHour) {
         infoRetrieval.updateField("close", closeHour);
@@ -86,7 +89,7 @@ public class ModificationController {
      * @param numSeats
      * @return
      */
-    @RequestMapping(value = "edit-info/num-of-seats/modify", method = RequestMethod.POST)
+    @RequestMapping(value = "num-of-seats/modify", method = RequestMethod.POST)
     public String modifyNumberOfSeats(@RequestParam("modify-seats") int numSeats) {
         infoRetrieval.updateField("numSeats", numSeats);
         return viewName;
@@ -97,7 +100,7 @@ public class ModificationController {
      * @param numAside
      * @return
      */
-    @RequestMapping(value = "edit-info/set-aside/modify", method = RequestMethod.POST)
+    @RequestMapping(value = "set-aside/modify", method = RequestMethod.POST)
     public String modifySetAsideSeats(@RequestParam("modify-aside") int numAside) {
         infoRetrieval.updateField("numSetAsideSeats", numAside);
         return viewName;
@@ -108,7 +111,7 @@ public class ModificationController {
      * @param gap
      * @return
      */
-    @RequestMapping(value = "edit-info/gap/modify", method = RequestMethod.POST)
+    @RequestMapping(value = "gap/modify", method = RequestMethod.POST)
     public String modifyGapTime(@RequestParam("gap-time") int gap) {
         infoRetrieval.updateField("gap", gap);
         return viewName;
@@ -119,7 +122,7 @@ public class ModificationController {
      * @param interval
      * @return
      */
-    @RequestMapping(value = "edit-info/interval/modify", method = RequestMethod.POST)
+    @RequestMapping(value = "interval/modify", method = RequestMethod.POST)
     public String modifyReminderInterval(@RequestParam("modify-interval") int interval) {
         infoRetrieval.updateField("reminderInterval", interval);
         return viewName;
