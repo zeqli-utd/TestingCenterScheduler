@@ -8,7 +8,10 @@ import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 @Repository
 public class ReservationDaoImp implements ReservationDao {
@@ -17,58 +20,464 @@ public class ReservationDaoImp implements ReservationDao {
 
     }
 
+    /**
+     * Get all reservation list
+     * @return a list with all reservation in it
+     */
     @Override
-    public List findAll() {
+    public List<Reservation> findAll() {
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;
-        tx = session.beginTransaction();
-        List reservations = session.createQuery("FROM Reservation").list();
-        session.close();
+        List<Reservation> reservations = new List<Reservation>() {
+            @Override
+            public int size() {
+                return 0;
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public boolean contains(Object o) {
+                return false;
+            }
+
+            @Override
+            public Iterator<Reservation> iterator() {
+                return null;
+            }
+
+            @Override
+            public Object[] toArray() {
+                return new Object[0];
+            }
+
+            @Override
+            public <T> T[] toArray(T[] a) {
+                return null;
+            }
+
+            @Override
+            public boolean add(Reservation reservation) {
+                return false;
+            }
+
+            @Override
+            public boolean remove(Object o) {
+                return false;
+            }
+
+            @Override
+            public boolean containsAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(Collection<? extends Reservation> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(int index, Collection<? extends Reservation> c) {
+                return false;
+            }
+
+            @Override
+            public boolean removeAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean retainAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public void clear() {
+
+            }
+
+            @Override
+            public Reservation get(int index) {
+                return null;
+            }
+
+            @Override
+            public Reservation set(int index, Reservation element) {
+                return null;
+            }
+
+            @Override
+            public void add(int index, Reservation element) {
+
+            }
+
+            @Override
+            public Reservation remove(int index) {
+                return null;
+            }
+
+            @Override
+            public int indexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public int lastIndexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public ListIterator<Reservation> listIterator() {
+                return null;
+            }
+
+            @Override
+            public ListIterator<Reservation> listIterator(int index) {
+                return null;
+            }
+
+            @Override
+            public List<Reservation> subList(int fromIndex, int toIndex) {
+                return null;
+            }
+        };
+
+        try{
+            tx = session.beginTransaction();
+            reservations = session.createQuery("FROM Reservation").list();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
         return reservations;
     }
 
+    /**
+     * Find the reservation with the specific reservation id
+     * @param id primary key of the reservation
+     * @return the specific reservation
+     */
     @Override
     public Reservation findByID(String id) {
         Session session = SessionManager.getInstance().getOpenSession();
-        Transaction tx = session.beginTransaction();
-        Query query = session.createQuery
-                ("FROM Reservation r WHERE r.reservationID = :reservationID");
-        query.setParameter("reservationID", id);
-        tx.commit();
-        Reservation result = (Reservation)query.uniqueResult();
-        session.close();
+        Transaction tx = null;
+        Reservation result = new Reservation();
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery
+                    ("FROM Reservation r WHERE r.reservationID = :reservationID");
+            query.setParameter("reservationID", id);
+            tx.commit();
+            result = (Reservation) query.uniqueResult();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return result;
+
+
+    }
+
+    /**
+     * Find a list with the specific date
+     * @param date specific date
+     * @return all the reservation happens on that date
+     */
+    @Override
+    public List<Reservation> findByDate(LocalDate date) {
+        Session session = SessionManager.getInstance().getOpenSession();
+        Transaction tx = null;
+        List<Reservation> result = new List<Reservation>() {
+            @Override
+            public int size() {
+                return 0;
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public boolean contains(Object o) {
+                return false;
+            }
+
+            @Override
+            public Iterator<Reservation> iterator() {
+                return null;
+            }
+
+            @Override
+            public Object[] toArray() {
+                return new Object[0];
+            }
+
+            @Override
+            public <T> T[] toArray(T[] a) {
+                return null;
+            }
+
+            @Override
+            public boolean add(Reservation reservation) {
+                return false;
+            }
+
+            @Override
+            public boolean remove(Object o) {
+                return false;
+            }
+
+            @Override
+            public boolean containsAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(Collection<? extends Reservation> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(int index, Collection<? extends Reservation> c) {
+                return false;
+            }
+
+            @Override
+            public boolean removeAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean retainAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public void clear() {
+
+            }
+
+            @Override
+            public Reservation get(int index) {
+                return null;
+            }
+
+            @Override
+            public Reservation set(int index, Reservation element) {
+                return null;
+            }
+
+            @Override
+            public void add(int index, Reservation element) {
+
+            }
+
+            @Override
+            public Reservation remove(int index) {
+                return null;
+            }
+
+            @Override
+            public int indexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public int lastIndexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public ListIterator<Reservation> listIterator() {
+                return null;
+            }
+
+            @Override
+            public ListIterator<Reservation> listIterator(int index) {
+                return null;
+            }
+
+            @Override
+            public List<Reservation> subList(int fromIndex, int toIndex) {
+                return null;
+            }
+        };
+
+        try{
+            tx = session.beginTransaction();
+            Query query = session.createQuery
+                    ("FROM Reservation r WHERE r.startDateTime <= :startDate and r.endDateTime >= :endDate");
+
+            query.setParameter("startDate", date);
+            query.setParameter("endDate", date);
+
+            tx.commit();
+            result = query.list();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
         return result;
     }
 
+    /**
+     * Find all the reservations that created by the specific instructor
+     * @param InstructorID
+     * @return
+     */
     @Override
-    public List findByDate(LocalDate date) {
-        List result;
+    public List<Reservation> findByInstructorId(String InstructorID) {
         Session session = SessionManager.getInstance().getOpenSession();
-        Transaction tx = session.beginTransaction();
-        Query query = session.createQuery
-                ("FROM Reservation r WHERE r.startDateTime <= :startDate and r.endDateTime >= :endDate");
+        Transaction tx = null;
+        List<Reservation> result = new List<Reservation>() {
+            @Override
+            public int size() {
+                return 0;
+            }
 
-        query.setParameter("startDate", date);
-        query.setParameter("endDate", date);
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
 
-        tx.commit();
-        result = query.list();
-        session.close();
-        return result;
-    }
+            @Override
+            public boolean contains(Object o) {
+                return false;
+            }
 
-    @Override
-    public List findByInstructorId(String InstructorID) {
-        List result;
-        Session session = SessionManager.getInstance().getOpenSession();
-        Transaction tx = session.beginTransaction();
-        Query query = session.createQuery
-                ("FROM Reservation r WHERE r.instructorId = :insId");
+            @Override
+            public Iterator<Reservation> iterator() {
+                return null;
+            }
 
-        query.setParameter("insId", InstructorID);
-        tx.commit();
-        result = query.list();
-        session.close();
+            @Override
+            public Object[] toArray() {
+                return new Object[0];
+            }
+
+            @Override
+            public <T> T[] toArray(T[] a) {
+                return null;
+            }
+
+            @Override
+            public boolean add(Reservation reservation) {
+                return false;
+            }
+
+            @Override
+            public boolean remove(Object o) {
+                return false;
+            }
+
+            @Override
+            public boolean containsAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(Collection<? extends Reservation> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(int index, Collection<? extends Reservation> c) {
+                return false;
+            }
+
+            @Override
+            public boolean removeAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean retainAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public void clear() {
+
+            }
+
+            @Override
+            public Reservation get(int index) {
+                return null;
+            }
+
+            @Override
+            public Reservation set(int index, Reservation element) {
+                return null;
+            }
+
+            @Override
+            public void add(int index, Reservation element) {
+
+            }
+
+            @Override
+            public Reservation remove(int index) {
+                return null;
+            }
+
+            @Override
+            public int indexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public int lastIndexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public ListIterator<Reservation> listIterator() {
+                return null;
+            }
+
+            @Override
+            public ListIterator<Reservation> listIterator(int index) {
+                return null;
+            }
+
+            @Override
+            public List<Reservation> subList(int fromIndex, int toIndex) {
+                return null;
+            }
+        };
+
+        try{
+            tx = session.beginTransaction();
+            Query query = session.createQuery
+                    ("FROM Reservation r WHERE r.instructorId = :insId");
+
+            query.setParameter("insId", InstructorID);
+            tx.commit();
+            result = query.list();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
         return result;
     }
 
@@ -118,14 +527,14 @@ public class ReservationDaoImp implements ReservationDao {
     }
 
     @Override
-    public boolean deleteReservation(Reservation reservation){//need to throw exception
+    public boolean deleteReservation(String reservationId){//need to throw exception
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
             Query query = session.createQuery
                     ("delete from Reservation R where R.reservationID = :reservationID");
-            query.setParameter("reservationID", reservation.getReservationID());
+            query.setParameter("reservationID", reservationId);
             int ret = query.executeUpdate();// this int return the number of entities updated or deleted
             tx.commit();
         }
@@ -242,26 +651,38 @@ public class ReservationDaoImp implements ReservationDao {
     @Override
     public void listAllReservationByInstructorId(String instructorId){
         Session session = SessionManager.getInstance().getOpenSession();
-        Transaction tx = session.beginTransaction();
-        Query query = session.createQuery
-                ("FROM Reservation r WHERE r.instructorId = :instructorId");
-        query.setParameter("instructorId", instructorId);
-        tx.commit();
-        List result = query.list();
-        session.close();
+        Transaction tx = null;
+        try{
+            tx = session.beginTransaction();
+            Query query = session.createQuery
+                    ("FROM Reservation r WHERE r.instructorId = :instructorId");
+            query.setParameter("instructorId", instructorId);
+            tx.commit();
+            List result = query.list();
+            for (Object aResult : result) {
+                Reservation re = (Reservation) aResult;
 
-        for (Object aResult : result) {
-            Reservation re = (Reservation) aResult;
-
-            System.out.println("|  -Reservation Id: " + re.getReservationID());
-            System.out.println("|  -StartDateTime: " + re.getStartDateTime());
-            System.out.println("|  -EndDateTime: " + re.getEndDateTime());
-            System.out.println("|  -Instructor Id: " + re.getInstructorId());
-            System.out.println("|  -Term: " + re.getTerms());
-            System.out.println("|  -Status " + re.getStatus());
-            System.out.println("|  -Type: " + re.getType());
-            System.out.println("----------------------------------------------------------------------");
+                System.out.println("|  -Reservation Id: " + re.getReservationID());
+                System.out.println("|  -StartDateTime: " + re.getStartDateTime());
+                System.out.println("|  -EndDateTime: " + re.getEndDateTime());
+                System.out.println("|  -Instructor Id: " + re.getInstructorId());
+                System.out.println("|  -Term: " + re.getTerms());
+                System.out.println("|  -Status " + re.getStatus());
+                System.out.println("|  -Type: " + re.getType());
+                System.out.println("----------------------------------------------------------------------");
+            }
         }
+
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+
+
+
     }
 
 }

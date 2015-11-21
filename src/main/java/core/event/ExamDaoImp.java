@@ -106,7 +106,7 @@ public class ExamDaoImp implements ExamDao {
     }
 
     @Override
-    public boolean deleteExam(Exam exam) {
+    public boolean deleteExam(String examId) {
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;
         try {
@@ -114,7 +114,7 @@ public class ExamDaoImp implements ExamDao {
 
             Query query = session.createQuery
                     ("delete from Exam E where E.examId = :examId");
-            query.setParameter("examId", exam.getExamId());
+            query.setParameter("examId", examId);
 
             tx.commit();
         }

@@ -3,13 +3,6 @@
     <output-path>$PROJECT_DIR$/target</output-path>
     <root id="archive" name="TestingCenterScheduler.war">
       <element id="artifact" artifact-name="TestingCenterScheduler:war exploded" />
-      <element id="directory" name="WEB-INF">
-        <element id="directory" name="lib">
-          <element id="library" level="project" name="Hibernate 4.2.2-4.2.2" />
-          <element id="library" level="project" name="com.google.code.gson:gson:2.4" />
-          <element id="library" level="project" name="mysql:mysql-connector-java:5.1.36" />
-        </element>
-      </element>
     </root>
   </artifact>
 </component>

@@ -82,15 +82,15 @@ public class CourseDaoImp implements CourseDao {
     }
 
     @Override
-    public boolean deleteCourse(Course course) {
+    public boolean deleteCourse(String courseId) {
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
             Query query = session.createQuery
-                    ("delete from Course R where R.courseId = :courseId");
+                    ("delete from Course C where C.courseId = :courseId");
             query.setParameter
-                    ("courseId", course.getCourseId());
+                    ("courseId", courseId);
             tx.commit();
         }
         catch (HibernateException he){

@@ -13,7 +13,7 @@ public interface ExamDao {
 
     public boolean updateExam(Exam exam, String id);
 
-    public boolean deleteExam(Exam exam);
+    public boolean deleteExam(String examId);
 
     public void listExamByApprovedRequest(String exId);
 

@@ -11,6 +11,6 @@ public interface CourseDao {
 
     boolean updateCourse(Course course, String id);
 
-    boolean deleteCourse(Course course);
+    boolean deleteCourse(String courseId);
 
 }

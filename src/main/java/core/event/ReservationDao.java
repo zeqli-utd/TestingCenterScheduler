@@ -18,7 +18,7 @@ public interface ReservationDao {
 
     boolean updateReservation(Reservation reservation, String id);
 
-    boolean deleteReservation(Reservation reservation);
+    boolean deleteReservation(String reservationId);
 
     boolean setType(String reservationId, String type);
 

@@ -77,7 +77,7 @@ public class AppointmentDaoImp implements AppointmentDao {
 
     @Override
     public boolean deleteAppointment(String appointmentId) {
-        Appointment appointment = findByAppointmentID(appointmentId);
+
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;
         try {
@@ -85,7 +85,7 @@ public class AppointmentDaoImp implements AppointmentDao {
 
             Query query = session.createQuery
                     ("delete from Appointment R where R.appointmentID = :appointmentID");
-            query.setParameter("appointmentID", appointment.getAppointmentID());
+            query.setParameter("appointmentID", appointmentId);
 
             tx.commit();
         }
