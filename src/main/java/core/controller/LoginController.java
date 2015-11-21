@@ -1,5 +1,6 @@
 package core.controller;
 
+import core.controller.helper.StringResources;
 import core.service.AuthenticationService;
 import core.user.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;

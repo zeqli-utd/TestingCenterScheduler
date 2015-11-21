@@ -1,4 +1,4 @@
-package core.controller;
+package core.controller.administrator;
 
 import core.service.TestingCenterInfoRetrieval;
 import org.springframework.beans.factory.annotation.Autowired;

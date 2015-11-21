@@ -1,5 +1,6 @@
-package core.controller;
+package core.controller.administrator;
 
+import core.controller.helper.StringResources;
 import core.event.AppointmentDao;
 import core.event.ReservationDao;
 import core.event.TestingCenterInfo;

@@ -1,4 +1,4 @@
-package core.controller;
+package core.controller.student;
 
 import core.event.AppointmentDao;
 import core.event.ReservationDao;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class InstructorController {
+public class StudentController {
     @Autowired
     private TestingCenterInfoRetrieval infoRetrieval;
     @Autowired
@@ -19,17 +19,17 @@ public class InstructorController {
 
     private ModelAndView model = new ModelAndView();
 
-    @RequestMapping("view-requests")
-    public ModelAndView viewRequests() {
+    @RequestMapping("/student-view-appointments")
+    public ModelAndView viewAppointments() {
         model.clear();
-        model.setViewName("view-requests");
+        model.setViewName("student/include/view-appointments");
         return model;
     }
 
-    @RequestMapping("schedule-event")
-    public ModelAndView scheduleEvent() {
+    @RequestMapping("/student-make-appointment")
+    public ModelAndView makeAppointment() {
         model.clear();
-        model.setViewName("instructor/include/schedule-event");
+        model.setViewName("student/include/make-appointment");
         return model;
     }
 }

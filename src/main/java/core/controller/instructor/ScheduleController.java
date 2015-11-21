@@ -1,4 +1,4 @@
-package core.controller;
+package core.controller.instructor;
 
 import core.event.Reservation;
 import core.event.ReservationDao;
