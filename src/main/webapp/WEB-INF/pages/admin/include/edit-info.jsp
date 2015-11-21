@@ -1,6 +1,5 @@
 <%--@elvariable id="centerInfo" type="core.event.TestingCenterInfo"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <div class="info-column">
     Closed Dates
     <table>

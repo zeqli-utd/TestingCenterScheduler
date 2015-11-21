@@ -25,13 +25,22 @@ public class AdministratorController {
 
     }
 
+    private String includes (String fragment) {
+        String prefix = "include/";
+        String suffix = ".jsp";
+
+        return prefix + fragment + suffix;
+    }
+
     @RequestMapping("home")
     public ModelAndView goToHome() {
         modelAndView.clear();
         modelAndView.setViewName("admin/home");
+
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("home"));
-        modelAndView.addObject("content", "home-content.jsp");
+        modelAndView.addObject("content", includes("home-content"));
+
         return modelAndView;
     }
 
@@ -43,11 +52,14 @@ public class AdministratorController {
     @RequestMapping(value = "edit-info")
     public ModelAndView viewCenterInfo() {
         modelAndView.clear();
-        modelAndView.setViewName("admin/include/edit-info");
+        modelAndView.setViewName("admin/home");
+
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("viewInfo"));
+        modelAndView.addObject("content", includes("edit-info"));
         TestingCenterInfo centerInfo = infoRetrieval.retrieveInfo();
         modelAndView.addObject("centerInfo", centerInfo);
+
         return modelAndView;
     }
 
@@ -59,46 +71,65 @@ public class AdministratorController {
     @RequestMapping("upload")
     public ModelAndView uploadFile() {
         modelAndView.clear();
+        modelAndView.setViewName("admin/home");
+
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("uploadFile"));
-        modelAndView.setViewName("admin/include/upload");
+        modelAndView.addObject("content", "include/upload.jsp");
+
         return modelAndView;
     }
 
-    @RequestMapping("admin-view-requests")
+    @RequestMapping("view-requests")
     public ModelAndView viewRequests() {
         modelAndView.clear();
+        modelAndView.setViewName("admin/home");
+
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("viewRequest"));
         /*by default, when the user enters the page all requests are displayed in chronological order
                by selecting different tabs on top of the list, the user is able to view the list
                in different orders: by alphabetical order of instructors' last names, number of attendants,
-               utilization, or, display only the ones made by one instructor by search the instructor's name*/
-        modelAndView.addObject("main_content", reservationDao.findAll());
-        modelAndView.setViewName("admin/include/view-requests");
+               utilization, or, display only the ones made by one instructor by searching the instructor's name*/
+        modelAndView.addObject("content", "include/view-requests.jsp");
+        modelAndView.addObject("requests", reservationDao.findAll());
+
         return modelAndView;
     }
 
-    @RequestMapping("admin-view-appointments")
+    @RequestMapping("view-appointments")
     public ModelAndView viewAppointments() {
         modelAndView.clear();
+        modelAndView.setViewName("admin/home");
+
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("viewAppointments"));
-        modelAndView.addObject("main_content", appointmentDao.findAllAppointment());
+        modelAndView.addObject("contents", "include/view-appointments.jsp");
+        modelAndView.addObject("appointments", appointmentDao.findAllAppointment());
+
         return modelAndView;
     }
 
     @RequestMapping("check-in")
     public ModelAndView checkIn() {
         modelAndView.clear();
+        modelAndView.setViewName("admin/home");
+
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("checkIn"));
+        modelAndView.addObject("content", "include/check-in.jsp");
+
         return modelAndView;
     }
 
     @RequestMapping("make-appointment")
     public ModelAndView makeAppointment() {
         modelAndView.clear();
+        modelAndView.setViewName("admin/home");
+
+        modelAndView.addObject("page_heading",
+                StringResources.ADMINISTRATOR_OPERATIONS.get("make-appointment"));
+        modelAndView.addObject("content", includes("make-appointment"));
 
         return modelAndView;
     }
@@ -106,8 +137,12 @@ public class AdministratorController {
     @RequestMapping("generate-report")
     public ModelAndView generateReport() {
         modelAndView.clear();
+        modelAndView.setViewName("admin/home");
+
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("generateReport"));
+        modelAndView.addObject("content", includes("generate-report"));
+
         return modelAndView;
     }
 }

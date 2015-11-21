@@ -2,7 +2,7 @@ package core.controller;
 
 import core.event.Reservation;
 import core.event.ReservationDao;
-import core.service.IdGenerator;
+import core.controller.helper.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
  * as well as testing center information
  */
 @Controller
-public class ModificationController {
+public class AdministratorTaskController {
     @Autowired
     private TestingCenterInfoRetrieval infoRetrieval;
     
