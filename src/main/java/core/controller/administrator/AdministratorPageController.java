@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/admin")
-public class AdministratorController {
+public class AdministratorPageController {
     @Autowired
     private TestingCenterInfoRetrieval infoRetrieval;
     @Autowired
@@ -22,7 +22,7 @@ public class AdministratorController {
     
     private ModelAndView modelAndView = new ModelAndView();
 
-    public AdministratorController() {
+    public AdministratorPageController() {
 
     }
 

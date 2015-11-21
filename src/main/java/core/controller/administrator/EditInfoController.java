@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
  * as well as testing center information
  */
 @Controller
-@RequestMapping("edit-info")
+@RequestMapping("admin/edit-info")
 public class EditInfoController {
     @Autowired
     private TestingCenterInfoRetrieval infoRetrieval;
@@ -37,9 +37,9 @@ public class EditInfoController {
      */
     @RequestMapping(value = "closed-dates/add", method = RequestMethod.POST)
     public String addCloseDate(@RequestParam("add-closed-date-start")
-                               @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate closedDateStart,
+                                    @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate closedDateStart,
                                @RequestParam("add-closed-date-start")
-                               @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate closedDateEnd) {
+                                    @DateTimeFormat(pattern = "MM/dd/yyyy") LocalDate closedDateEnd) {
         infoRetrieval.addCloseDates(new LocalDate[]{closedDateStart, closedDateEnd});
         return viewName;
     }
@@ -52,9 +52,9 @@ public class EditInfoController {
      */
     @RequestMapping(value = "reserve-dates/add", method = RequestMethod.POST)
     public String addReservedDate(@RequestParam("add-reserved-date-start")
-                                  @DateTimeFormat(pattern = "MM/dd/yyyy|HH:mm") LocalDateTime reservedDateStart,
+                                        @DateTimeFormat(pattern = "MM/dd/yyyy|HH:mm") LocalDateTime reservedDateStart,
                                   @RequestParam("add-reserved-date-end")
-                                  @DateTimeFormat(pattern = "MM/dd/yyyy|HH:mm") LocalDateTime reservedDateEnd) {
+                                        @DateTimeFormat(pattern = "MM/dd/yyyy|HH:mm") LocalDateTime reservedDateEnd) {
         infoRetrieval.addReserveDateTimes(new LocalDateTime[]{reservedDateStart, reservedDateEnd});
         return viewName;
     }
@@ -89,7 +89,7 @@ public class EditInfoController {
      * @param numSeats
      * @return
      */
-    @RequestMapping(value = "edit-info/num-of-seats/modify", method = RequestMethod.POST)
+    @RequestMapping(value = "num-of-seats/modify", method = RequestMethod.POST)
     public String modifyNumberOfSeats(@RequestParam("modify-seats") int numSeats) {
         infoRetrieval.updateField("numSeats", numSeats);
         return viewName;

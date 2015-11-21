@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class StudentController {
+public class StudentPageController {
     @Autowired
     private TestingCenterInfoRetrieval infoRetrieval;
     @Autowired
