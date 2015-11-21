@@ -76,7 +76,8 @@ public class AppointmentDaoImp implements AppointmentDao {
     }
 
     @Override
-    public boolean deleteAppointment(Appointment appointment) {
+    public boolean deleteAppointment(String appointmentId) {
+        Appointment appointment = findByAppointmentID(appointmentId);
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;
         try {

@@ -76,7 +76,7 @@ public class AdministratorPageController {
 
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("uploadFile"));
-        modelAndView.addObject("content", "include/upload.jsp");
+        modelAndView.addObject("content", includes("upload"));
 
         return modelAndView;
     }
@@ -92,7 +92,7 @@ public class AdministratorPageController {
                by selecting different tabs on top of the list, the user is able to view the list
                in different orders: by alphabetical order of instructors' last names, number of attendants,
                utilization, or, display only the ones made by one instructor by searching the instructor's name*/
-        modelAndView.addObject("content", "include/view-requests.jsp");
+        modelAndView.addObject("content", includes("view-requests"));
         modelAndView.addObject("requests", reservationDao.findAll());
 
         return modelAndView;
@@ -105,7 +105,7 @@ public class AdministratorPageController {
 
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("viewAppointments"));
-        modelAndView.addObject("contents", "include/view-appointments.jsp");
+        modelAndView.addObject("contents", includes("view-appointments"));
         modelAndView.addObject("appointments", appointmentDao.findAllAppointment());
 
         return modelAndView;
@@ -118,7 +118,7 @@ public class AdministratorPageController {
 
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("checkIn"));
-        modelAndView.addObject("content", "include/check-in.jsp");
+        modelAndView.addObject("content", includes("check-in"));
 
         return modelAndView;
     }

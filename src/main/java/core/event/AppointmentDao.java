@@ -17,7 +17,7 @@ public interface AppointmentDao {
 
     boolean updateAppointment(Appointment appointment, String id);
 
-    boolean deleteAppointment(Appointment appointment);
+    boolean deleteAppointment(String appointmentId);
 
 
 
