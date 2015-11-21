@@ -13,7 +13,6 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class TestingCenterInfo {
-
     @Id
     @Column(name = "term")
     private Term term;
