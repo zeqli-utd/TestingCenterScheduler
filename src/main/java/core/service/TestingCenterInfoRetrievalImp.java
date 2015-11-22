@@ -1,6 +1,11 @@
 package core.service;
 
+import core.event.Term;
 import core.event.TestingCenterInfo;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -8,83 +13,188 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Service
-public class TestingCenterInfoRetrievalImp implements TestingCenterInfoRetrieval {
+public class TestingCenterInfoRetrievalImp {
 
-    private static TestingCenterInfo testingCenterInfo = new TestingCenterInfo();
-
-    /**
-     * retrieves the testing center information, return the object
-     * of class TestingCenterInfo
-     * @return
-     */
-    @Override
-    public TestingCenterInfo retrieveInfo() {
-        return testingCenterInfo.deserialize();
+    public TestingCenterInfo findByTerm(Term term) {
+        Session session = SessionManager.getInstance().getOpenSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery
+                ("FROM TestingCenterInfo T WHERE T.d = :tId");
+        query.setParameter("tId", term);
+        tx.commit();
+        TestingCenterInfo result = (TestingCenterInfo)query.uniqueResult();
+        session.close();
+        return result;
     }
 
-    /**
-     * update the testing center information by
-     * taking HashMap as a parameter
-     * @param testingCenterInfoMap
-     * @return return true if the update is a success
-     *         return false if there is an error, an exception will be
-     *         thrown
-     */
-    @Override
-    public boolean updateTestingCenterInfo(TestingCenterInfo testingCenterInfoMap) {
-        return testingCenterInfo.update(testingCenterInfo);
-    }
-
-    @Override
-    public boolean updateField(String fieldName, Object value) {
-        switch(fieldName) {
-            case "numSeats":
-                testingCenterInfo.setNumSeats((int) value);
-                return true;
-            case "numSetAsideSeats":
-                testingCenterInfo.setNumSetAsideSeats((int) value);
-                return true;
-            case "open":
-                testingCenterInfo.setOpen((LocalTime) value);
-                return true;
-            case "close":
-                testingCenterInfo.setClose((LocalTime) value);
-                return true;
-            //need i to edit value for this field
+    public boolean updateField(Term term, String fieldName, Object value) {
+        Session session = SessionManager.getInstance().getOpenSession();
+        Transaction tx = null;
+        boolean result = false;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery
+                    ("FROM TestingCenterInfo T WHERE T.term = :termId");
+            query.setParameter("termId", term);
+            tx.commit();
+            TestingCenterInfo tc = (TestingCenterInfo) query.uniqueResult();
+            switch (fieldName) {
+                case "numSeats":
+                    tc.setNumSeats((int) value);
+                    result = true;
+                    return true;
+                case "numSetAsideSeats":
+                    tc.setNumSetAsideSeats((int) value);
+                    result = true;
+                    return true;
+                case "open":
+                    tc.setOpen((LocalTime) value);
+                    result = true;
+                    return true;
+                case "close":
+                    tc.setClose((LocalTime) value);
+                    result = true;
+                    return true;
+                //need i to edit value for this field
 //            case "closeDateRanges":     testingCenterInfo.setCloseDateRanges((List<LocalDate[]>)value);
 //                                        return true;
-            //also need i to edit value for this field
+                //also need i to edit value for this field
 //            case "reserveRanges":       testingCenterInfo.setReserveRanges((List<LocalDateTime[]>)value);
 //                                        return true;
-            case "gap":
-                testingCenterInfo.setGap((int) value);
-                return true;
-            case "reminderInterval":
-                testingCenterInfo.setReminderInterval((int) value);
-                return true;
+                case "gap":
+                    tc.setGap((int) value);
+                    result = true;
+                    return true;
+                case "reminderInterval":
+                    tc.setReminderInterval((int) value);
+                    result = true;
+                    return true;
+            }
         }
-        return false;
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return result;
     }
 
-    @Override
-    public boolean addCloseDates(LocalDate[] closeDates){
-        testingCenterInfo.getCloseDateRanges().add(closeDates);
-        return false;
+    /**
+     * add function for both closeDateRanges and reserveRanges
+     * @param term
+     * @param fieldName: closeDateRanges and reserveRanges
+     * @param dates
+     * @return
+     */
+    public boolean addDates(Term term, String fieldName, Object dates){
+        Session session = SessionManager.getInstance().getOpenSession();
+        Transaction tx = null;
+        boolean result = false;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery
+                    ("FROM TestingCenterInfo T WHERE T.term = :termId");
+            query.setParameter("termId", term);
+            tx.commit();
+            TestingCenterInfo tc = (TestingCenterInfo)query.uniqueResult();
+            switch (fieldName){
+                case "closeDateRanges":
+                    tc.getCloseDateRanges().add((LocalDate[])dates);
+                    result = true;
+                    break;
+                case "reserveRanges":
+                    tc.getReserveRanges().add((LocalDateTime[]) dates);
+                    result = true;
+                    break;
+            }
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return result;
     }
 
-    @Override
-    public boolean deleteCloseDates(){
-        return false;
+    /**
+     * edit function for both closeDateRanges and reserveRanges
+     * @param term
+     * @param fieldName: closeDateRanges and reserveRanges
+     * @param i: index of the close dates that should be edited
+     * @param dates
+     * @return
+     */
+    public boolean editDates(Term term, String fieldName, int i, Object dates){
+        Session session = SessionManager.getInstance().getOpenSession();
+        Transaction tx = null;
+        boolean result = false;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery
+                    ("FROM TestingCenterInfo T WHERE T.term = :termId");
+            query.setParameter("termId", term);
+            tx.commit();
+            TestingCenterInfo tc = (TestingCenterInfo)query.uniqueResult();
+            switch (fieldName){
+                case "closeDateRanges":
+                    tc.getCloseDateRanges().set(i, (LocalDate[])dates);
+                    result = true;
+                    break;
+                case "reserveRanges":
+                    tc.getReserveRanges().set(i, (LocalDateTime[]) dates);
+                    result = true;
+                    break;
+            }
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return result;
     }
 
-    @Override
-    public boolean addReserveDateTimes(LocalDateTime[] reserveDateTimes){
-        testingCenterInfo.getReserveRanges().add(reserveDateTimes);
-        return false;
-    }
-
-    @Override
-    public boolean deleteReserveDateTimes(){
-        return false;
+    /**
+     * delete functino for closeDateRanges and reserveRanges
+     * @param term
+     * @param i: index of the close dates that should be removed
+     * @return
+     */
+    public boolean deleteCloseDates(Term term, String fieldName, int i){
+        Session session = SessionManager.getInstance().getOpenSession();
+        Transaction tx = null;
+        boolean result = false;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery
+                    ("FROM TestingCenterInfo T WHERE T.term = :termId");
+            query.setParameter("termId", term);
+            tx.commit();
+            TestingCenterInfo tc = (TestingCenterInfo)query.uniqueResult();
+            switch (fieldName){
+                case "closeDateRanges":
+                    tc.getCloseDateRanges().remove(i);
+                    result = true;
+                    break;
+                case "reserveRanges":
+                    tc.getReserveRanges().remove(i);
+                    result = true;
+                    break;
+            }
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return result;
     }
 }

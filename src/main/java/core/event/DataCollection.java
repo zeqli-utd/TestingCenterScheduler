@@ -28,7 +28,7 @@ public class DataCollection {
 
     //import ata from CSV file
     //0: fail; 1: user; 2: class; 3: rooster
-    public int readFile(String path){
+    public int readFile(String path) {
         List<String[]> readList = new ArrayList<String[]>();
         BufferedReader br = null;
         String line = "";
@@ -42,21 +42,19 @@ public class DataCollection {
                 readList.add(listItem);
             }
             setList(readList);
-            if(path.contains("user.csv")){
+            if (path.contains("user.csv")) {
                 log.info("|  Import User Information: ");
                 //add users to table;
-               return 1;
-            }
-            else if(path.contains("class.csv")){
+                return 1;
+            } else if (path.contains("class.csv")) {
                 log.info("|  Import Class Information: ");
                 return 2;
-            }
-            else if(path.contains("roster.csv")){
+            } else if (path.contains("roster.csv")) {
                 log.info("|  Import Roster Information: ");
                 //change the list to hashmap
                 HashMap<String, String> hash = new HashMap();
-                for(int i = 0; i < list.size(); i++){
-                    hash.put(list.get(i)[0],list.get(i)[1]);
+                for (int i = 0; i < list.size(); i++) {
+                    hash.put(list.get(i)[0], list.get(i)[1]);
                 }
                 markSuperfluous(appointmentList, list);
                 Session session = SessionManager.getInstance().getOpenSession();
@@ -67,16 +65,15 @@ public class DataCollection {
                     Iterator iterator = e.iterator();
                     while (iterator.hasNext()) {
                         Appointment appt = (Appointment) iterator.next();
-                        if(hash.get(appt.getStudentId()) == appt.getExamId()){
+                        if (hash.get(appt.getStudentId()) == appt.getExamId()) {
                             appt.setStatus(null);
                             //reinstate appointment
-                        }
-                        else {
+                        } else {
                             //cancel appointment
                         }
                     }
-                }catch (HibernateException var9) {
-                    if(tx != null) {
+                } catch (HibernateException var9) {
+                    if (tx != null) {
                         tx.rollback();
                     }
 
@@ -85,9 +82,9 @@ public class DataCollection {
                     session.close();
                 }
             }
-            for(int i = 0; i < list.size(); i++){
+            for (int i = 0; i < list.size(); i++) {
                 String[] items = list.get(i);
-                for( int j = 0; j < items.length; j++){
+                for (int j = 0; j < items.length; j++) {
                     log.info("|  " + items[j]);
                 }
             }
@@ -107,16 +104,17 @@ public class DataCollection {
         }
         return 0;
     }
-    public void markSuperfluous(List<Appointment> appointmentList, List<String[]> list){
+
+    public void markSuperfluous(List<Appointment> appointmentList, List<String[]> list) {
         Iterator databaseIterator = appointmentList.iterator();
-        while(databaseIterator.hasNext()) {
-            Appointment appt = (Appointment)databaseIterator.next();
+        while (databaseIterator.hasNext()) {
+            Appointment appt = (Appointment) databaseIterator.next();
             appt.setStatus("s");
-               for(int i = 0; i < list.size(); i++){
-                    if ((appt.getStudentId() == list.get(i)[0]) && (appt.getExamId() == list.get(i)[1])) {
-                        appt.setStatus(null);
-                    }
-               }
+            for (int i = 0; i < list.size(); i++) {
+                if ((appt.getStudentId() == list.get(i)[0]) && (appt.getExamId() == list.get(i)[1])) {
+                    appt.setStatus(null);
+                }
+            }
         }
     }
 
@@ -127,52 +125,4 @@ public class DataCollection {
     public void setList(List<String[]> list) {
         this.list = list;
     }
-
-    //    public List<String[]> getUsers() {
-//        return users;
-//    }
-//
-//    public void setUsers(List<String[]> users) {
-//        this.users = users;
-//    }
-//
-//    public List<String[]> getCourses() {
-//        return courses;
-//    }
-//
-//    public void setCourses(List<String[]> courses) {
-//        this.courses = courses;
-//    }
-//
-//    public List<String[]> getRosters() {
-//        return rosters;
-//    }
-//
-//    public void setRosters(List<String[]> rosters) {
-//        this.rosters = rosters;
-//    }
-//
-//    public String getPath_usersCSV() {
-//        return path_usersCSV;
-//    }
-//
-//    public void setPath_usersCSV(String path_usersCSV) {
-//        this.path_usersCSV = path_usersCSV;
-//    }
-//
-//    public String getPath_coursesCSV() {
-//        return path_coursesCSV;
-//    }
-//
-//    public void setPath_coursesCSV(String path_coursesCSV) {
-//        this.path_coursesCSV = path_coursesCSV;
-//    }
-//
-//    public String getPath_rostersCSV() {
-//        return path_rostersCSV;
-//    }
-//
-//    public void setPath_rostersCSV(String path_rostersCSV) {
-//        this.path_rostersCSV = path_rostersCSV;
-//    }
 }
