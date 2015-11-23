@@ -11,14 +11,11 @@ public interface AppointmentDao {
 
     //List<Appointment> findAllByInstructor(String netId);   why???
 
-    Appointment findByAppointmentID(String AppointmentID);
+    Appointment findAppointmentById(String AppointmentID);
 
     boolean insertAppointment(Appointment appointment);
 
     boolean updateAppointment(Appointment appointment, String id);
 
     boolean deleteAppointment(String appointmentId);
-
-
-
 }

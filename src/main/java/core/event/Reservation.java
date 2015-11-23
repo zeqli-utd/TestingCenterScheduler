@@ -39,7 +39,7 @@ public class Reservation {
 
     @Basic(optional = false)
     @Column(name="types")
-    private String types;
+    private ExamType types;
 
     public Reservation(){}
 
@@ -62,14 +62,14 @@ public class Reservation {
         instructorId = insId;
         this.terms = terms;
         this.status = "Pending";
-        this.types = "Course";
+        this.types = ExamType.REGULAR;
     }
 
-    public String getType() {
+    public ExamType getType() {
         return types;
     }
 
-    public void setType(String type) {
+    public void setType(ExamType type) {
         this.types = type;
     }
 

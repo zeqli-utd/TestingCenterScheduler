@@ -1,4 +1,4 @@
-package core.controller.helper;
+package core.helper;
 
 import java.util.HashMap;
 import java.util.Map;

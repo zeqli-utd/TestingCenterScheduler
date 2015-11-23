@@ -1,6 +1,12 @@
 <%--@elvariable id="centerInfo" type="core.event.TestingCenterInfo"--%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="info-column">
+    Term
+    <select>
+
+    </select>
+</div>
+<div class="info-column">
     Closed Dates
     <table>
         <c:forEach items="${centerInfo.closeDateRanges}" var="closeDates">
@@ -9,7 +15,7 @@
             </tr>
         </c:forEach>
     </table>
-    <form class="edit-info" action="edit-info/closed-dates/add">
+    <form class="edit-info" action="admin/edit-info/closed-dates/add">
         <label>
             <input type="date" class="input-info" name="add-closed-date-start">
         </label>
@@ -28,7 +34,7 @@
             </tr>
         </c:forEach>
     </table>
-    <form class="edit-info" action="edit-info/reserve-dates/add">
+    <form class="edit-info" action="admin/edit-info/reserve-dates/add">
         <label>
             <input type="date" class="input-info" name="add-reserved-date-start">
         </label>
@@ -40,14 +46,14 @@
 </div>
 <div class="info-column">
     Open Time <c:out value="${centerInfo.open}"/>
-    <form class="edit-info" action="edit-info/open/modify">
+    <form class="edit-info" action="admin/edit-info/open/modify">
         <label>
             <input type="time" class="input-info" name="modify-open-hour">
         </label>
         <input type="submit" class="submit-button" value="Change">
     </form>
     Close Time <c:out value="${centerInfo.close}"/>
-    <form class="edit-info" action="edit-info/close/modify">
+    <form class="edit-info" action="admin/edit-info/close/modify">
         <label>
             <input type="time" class="input-info" name="modify-close-hour">
         </label>
@@ -56,7 +62,7 @@
 </div>
 <div class="info-column">
     Number of Seats <c:out value="${centerInfo.numSeats}"/>
-    <form class="edit-info" action="edit-info/num-of-seats/modify">
+    <form class="edit-info" action="admin/edit-info/num-of-seats/modify">
         <label>
             <input type="text" class="input-info" name="modify-seats">
         </label>
@@ -65,7 +71,7 @@
 </div>
 <div class="info-column">
     Number of Set-aside Seats <c:out value="${centerInfo.numSetAsideSeats}"/>
-    <form class="edit-info" action="edit-info/set-aside/modify">
+    <form class="edit-info" action="admin/edit-info/set-aside/modify">
         <label>
             <input type="text" class="input-info" name="modify-seats">
         </label>
@@ -74,7 +80,7 @@
 </div>
 <div class="info-column">
     Gap Time <c:out value="${centerInfo.gap}"/> minutes
-    <form class="edit-info" action="edit-info/gap/modify">
+    <form class="edit-info" action="admin/edit-info/gap/modify">
         <label>
             <input type="text" class="input-info" name="gap-time">
         </label>
@@ -83,7 +89,7 @@
 </div>
 <div class="info-column">
     Reminder Interval <c:out value="${centerInfo.reminderInterval}"/> minutes
-    <form class="edit-info" action="edit-info/interval/modify">
+    <form class="edit-info" action="admin/edit-info/interval/modify">
         <label>
             <input type="text" class="input-info" name="modify-interval">
         </label>

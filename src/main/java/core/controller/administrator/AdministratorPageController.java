@@ -1,9 +1,11 @@
 package core.controller.administrator;
 
-import core.controller.helper.StringResources;
 import core.event.AppointmentDao;
 import core.event.ReservationDao;
+import core.event.Term;
 import core.event.TestingCenterInfo;
+import core.helper.StringResources;
+import core.service.TermManager;
 import core.service.TestingCenterInfoRetrieval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,8 @@ public class AdministratorPageController {
     private ReservationDao reservationDao;
     @Autowired
     private AppointmentDao appointmentDao;
+    @Autowired
+    private TermManager termManager;
     
     private ModelAndView modelAndView = new ModelAndView();
 
@@ -58,8 +62,11 @@ public class AdministratorPageController {
         modelAndView.addObject("page_heading",
                 StringResources.ADMINISTRATOR_OPERATIONS.get("viewInfo"));
         modelAndView.addObject("content", includes("edit-info"));
-        TestingCenterInfo centerInfo = infoRetrieval.retrieveInfo();
+
+        Term term = termManager.getCurrentTerm();
+        TestingCenterInfo centerInfo = infoRetrieval.findByTerm(term);
         modelAndView.addObject("centerInfo", centerInfo);
+        modelAndView.addObject("term", term);
 
         return modelAndView;
     }

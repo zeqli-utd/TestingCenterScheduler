@@ -1,12 +1,14 @@
 package core.event;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDate;
 
 /**
  * This class holds Term information and responsible to translate between Term id to actual Term name
  */
+@Entity
 public class Term {
-
     /**
      * Year 2015 -> 115x
      * Semester winter -> 1151
@@ -16,6 +18,7 @@ public class Term {
      * Year 2016 -> 116x
      * ...
      */
+    @Id
     private int termId;
     private String termName;
     private LocalDate termStartDate;
@@ -92,7 +95,7 @@ public class Term {
             case "Spring": term += 4; break;
             case "Summer": term += 6; break;
             case "Fall": term += 8; break;
-            default: term +=0;
+            default: term += 0;
         }
         return term;
     }
