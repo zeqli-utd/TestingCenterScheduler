@@ -1,5 +1,11 @@
 package core.event;
 
+import core.event.dao.CourseDao;
+import core.user.Instructor;
+import core.user.dao.InstructorDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -7,6 +13,7 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
+@Component
 @Entity
 @Table(name = "Exam")
 public class Exam {
@@ -53,6 +60,14 @@ public class Exam {
     private String courseId;
 
     private double duration;
+
+    @Transient
+    @Autowired
+    private CourseDao courseDao;
+
+    @Transient
+    @Autowired
+    private InstructorDao instructorDao;
 
     public Exam(){
 
@@ -113,6 +128,24 @@ public class Exam {
                 String instructorId) {
         this(Id, type, start, end, duration, numApp, numNeed);
         this.instructorId = instructorId;
+    }
+
+    /**
+     * to unburden the front end, this method returns the name of the course
+     * courseId is pointing to
+     * @return subject
+     */
+    public String getCourseName () {
+        return courseDao
+                .findByCourseId(this.courseId)
+                    .getSubject();
+    }
+
+    public String getInstructorName () {
+        Instructor instructor =
+                instructorDao.findByNetID(this.instructorId);
+
+        return instructor.getLastName() + ", " + instructor.getFirstName();
     }
 
     public int getAttendance() {

@@ -3,7 +3,6 @@ package core.event;
 import core.event.dao.CourseDao;
 import core.user.dao.InstructorDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -46,14 +45,6 @@ public class Reservation {
     @Basic(optional = false)
     @Column(name="types")
     private ExamType types;
-
-    @Transient
-    @Autowired
-    private CourseDao courseDao;
-
-    @Transient
-    @Autowired
-    private InstructorDao instructorDao;
 
     public Reservation(){
 
