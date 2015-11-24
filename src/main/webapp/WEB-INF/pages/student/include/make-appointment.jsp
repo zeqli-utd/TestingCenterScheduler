@@ -1,8 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--@elvariable id="exams" type="java.util.List"--%>
 <%--@elvariable id="exam" type="core.event.Exam"--%>
-<%--@elvariable id="courseName" type="java.lang.String"--%>
-<%--@elvariable id="instructorName" type="java.lang.String"--%>
 <form class="input-info" action="find-exam/by-instructor">
      <div class="info-column">
          Search for an exam <input class="input-info" type="text" placeholder="Search here">
