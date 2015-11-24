@@ -69,6 +69,12 @@ public class Exam {
     @Autowired
     private InstructorDao instructorDao;
 
+    @Transient
+    private String instructorName;
+
+    @Transient
+    private String courseName;
+
     public Exam(){
 
     }

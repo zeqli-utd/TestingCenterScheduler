@@ -27,8 +27,8 @@
          </tr>
          <c:forEach items="exams" var="exam">
             <tr>
-                <td>${courseName}</td>
-                <td>${instructorName}</td>
+                <td>${exam.courseName}</td>
+                <td>${exam.instructorName}</td>
                 <td>${exam.startDateTime}</td>
                 <td>${exam.endDateTime}</td>
             </tr>
