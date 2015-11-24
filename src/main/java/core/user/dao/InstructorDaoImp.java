@@ -1,15 +1,16 @@
 package core.user.dao;
 
-
 import core.service.SessionManager;
 import core.user.Instructor;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class InstructorDaoImp implements InstructorDao {
 
     List<Instructor> instructors;

@@ -1,8 +1,10 @@
 package core.controller.student;
 
 import core.event.dao.AppointmentDao;
+import core.event.dao.CourseDao;
 import core.event.dao.ReservationDao;
 import core.service.TestingCenterInfoRetrieval;
+import core.user.dao.InstructorDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,10 @@ public class StudentPageController {
     private ReservationDao reservationAccess;
     @Autowired
     private AppointmentDao appointmentDao;
+    @Autowired
+    private CourseDao courseDao;
+    @Autowired
+    private InstructorDao instructorDao;
 
     private ModelAndView model = new ModelAndView();
 
@@ -29,7 +35,8 @@ public class StudentPageController {
     @RequestMapping("/student-make-appointment")
     public ModelAndView makeAppointment() {
         model.clear();
-        model.setViewName("student/include/make-appointment");
+        model.setViewName("student/home");
+        model.addObject("content", "include/make-appointment");
         return model;
     }
 }

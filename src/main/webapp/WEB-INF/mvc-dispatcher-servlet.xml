@@ -12,8 +12,9 @@
     <mvc:default-servlet-handler/>
 
     <context:component-scan base-package="core.controller"/>
+    <context:component-scan base-package="core.event.dao"/>
     <context:component-scan base-package="core.event"/>
-    <context:component-scan base-package="core.user"/>
+    <context:component-scan base-package="core.user.dao"/>
     <context:component-scan base-package="core.service"/>
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

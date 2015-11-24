@@ -1,5 +1,11 @@
 package core.event;
 
+import core.event.dao.CourseDao;
+import core.user.dao.InstructorDao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -7,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+@Component
 @Entity
 @Table(name="Reservation")
 public class Reservation {
@@ -28,7 +35,6 @@ public class Reservation {
     @Basic(optional = false)
     private String instructorId;
 
-    //haven't initiated
     @Basic(optional = false)
     @Column(name="status")
     private String status;
@@ -41,7 +47,17 @@ public class Reservation {
     @Column(name="types")
     private ExamType types;
 
-    public Reservation(){}
+    @Transient
+    @Autowired
+    private CourseDao courseDao;
+
+    @Transient
+    @Autowired
+    private InstructorDao instructorDao;
+
+    public Reservation(){
+
+    }
 
     /**
      * This constructor is for testing
