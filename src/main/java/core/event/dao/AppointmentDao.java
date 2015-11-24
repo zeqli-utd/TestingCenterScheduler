@@ -1,4 +1,7 @@
-package core.event;
+package core.event.dao;
+
+import core.event.Appointment;
+import core.event.Term;
 
 import java.util.List;
 

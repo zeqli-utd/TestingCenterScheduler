@@ -1,7 +1,10 @@
-package core.user;
+package core.user.dao;
 
 import core.event.Appointment;
 import core.service.SessionManager;
+import core.user.Administrator;
+import core.user.Authorization;
+import core.user.Student;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;

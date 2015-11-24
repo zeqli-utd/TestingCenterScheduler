@@ -1,5 +1,6 @@
 package core.event;
 
+import core.event.dao.AppointmentDaoImp;
 import core.service.SessionManager;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;

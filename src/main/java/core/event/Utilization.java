@@ -1,5 +1,10 @@
 package core.event;
 
+import core.event.dao.AppointmentDao;
+import core.event.dao.AppointmentDaoImp;
+import core.event.dao.ExamDao;
+import core.event.dao.ExamDaoImp;
+
 import java.time.temporal.ChronoUnit;
 
 public class Utilization {

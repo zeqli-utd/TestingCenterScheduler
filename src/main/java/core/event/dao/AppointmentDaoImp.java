@@ -1,5 +1,7 @@
-package core.event;
+package core.event.dao;
 
+import core.event.Appointment;
+import core.event.Term;
 import core.service.SessionManager;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;

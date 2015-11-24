@@ -1,7 +1,8 @@
-package core.user;
+package core.user.dao;
 
 
 import core.service.SessionManager;
+import core.user.Instructor;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;

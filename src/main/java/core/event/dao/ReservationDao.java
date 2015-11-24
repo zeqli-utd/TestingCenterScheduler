@@ -1,5 +1,6 @@
-package core.event;
+package core.event.dao;
 
+import core.event.Reservation;
 import org.hibernate.HibernateException;
 
 import java.time.LocalDate;

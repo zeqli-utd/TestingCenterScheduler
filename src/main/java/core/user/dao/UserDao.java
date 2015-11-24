@@ -1,4 +1,9 @@
-package core.user;
+package core.user.dao;
+
+import core.user.Administrator;
+import core.user.Instructor;
+import core.user.Student;
+import core.user.UserType;
 
 import java.util.List;
 

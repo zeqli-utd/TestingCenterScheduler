@@ -54,7 +54,9 @@ public class Exam {
 
     private double duration;
 
-    public Exam(){}
+    public Exam(){
+
+    }
 
     /**
      *
@@ -66,14 +68,22 @@ public class Exam {
      * @param numApp Num of Application
      * @param numNeed Num of Needed
      */
-    public Exam(String Id, String type, LocalDateTime start, LocalDateTime end, double duration, int numApp, int numNeed){
+    public Exam(String Id,
+                String type,
+                LocalDateTime start,
+                LocalDateTime end,
+                double duration,
+                int numApp,
+                int numNeed){
         examId = Id;
         this.type = type;
 
-        Instant instant1 = start.atZone(ZoneId.systemDefault()).toInstant();
+        Instant instant1 =
+                start.atZone(ZoneId.systemDefault()).toInstant();
         startDateTime = Date.from(instant1);
 
-        Instant instant2 = end.atZone(ZoneId.systemDefault()).toInstant();
+        Instant instant2 =
+                end.atZone(ZoneId.systemDefault()).toInstant();
         endDateTime = Date.from(instant2);
 
         this.duration = duration;
@@ -93,8 +103,15 @@ public class Exam {
      * @param numNeed Num of Needed
      * @param instructorId Instructor Id
      */
-    public Exam(String Id, String type, LocalDateTime start, LocalDateTime end, double duration, int numApp, int numNeed, String instructorId) {
-        this(Id, type,  start,  end,  duration,  numApp,  numNeed);
+    public Exam(String Id,
+                String type,
+                LocalDateTime start,
+                LocalDateTime end,
+                double duration,
+                int numApp,
+                int numNeed,
+                String instructorId) {
+        this(Id, type, start, end, duration, numApp, numNeed);
         this.instructorId = instructorId;
     }
 
@@ -168,25 +185,29 @@ public class Exam {
 
     public LocalDateTime getStartDateTime() {// date to
         Instant instant = Instant.ofEpochMilli(startDateTime.getTime());
-        LocalDateTime res = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        LocalDateTime res =
+                LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 
         return res;
     }
 
     public void setStartDateTime(LocalDateTime startDateTime) {
-        Instant instant = startDateTime.atZone(ZoneId.systemDefault()).toInstant();
+        Instant instant =
+                startDateTime.atZone(ZoneId.systemDefault()).toInstant();
         this.startDateTime = Date.from(instant);
     }
 
     public LocalDateTime getEndDateTime() {
         Instant instant = Instant.ofEpochMilli(endDateTime.getTime());
-        LocalDateTime res = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        LocalDateTime res =
+                LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 
         return res;
     }
 
     public void setEndDateTime(LocalDateTime endDateTime) {
-        Instant instant = endDateTime.atZone(ZoneId.systemDefault()).toInstant();
+        Instant instant =
+                endDateTime.atZone(ZoneId.systemDefault()).toInstant();
         this.endDateTime = Date.from(instant);
     }
 

@@ -1,5 +1,7 @@
-package core.user;
+package core.user.dao;
 
+import core.user.Authorization;
+import core.user.Student;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -15,7 +15,6 @@ import java.util.List;
 
 @Entity
 public class Appointment {
-
     @Id
     @Column(name = "appointment_id")
     private String appointmentID;

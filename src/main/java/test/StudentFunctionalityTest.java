@@ -1,7 +1,7 @@
 package test;
 
 import core.event.Appointment;
-import core.event.AppointmentDaoImp;
+import core.event.dao.AppointmentDaoImp;
 import core.event.Exam;
 import core.service.SessionManager;
 import core.user.Student;

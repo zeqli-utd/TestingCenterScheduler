@@ -1,6 +1,9 @@
 package test;//package test;
 
-import core.user.*;
+import core.event.dao.ExamDao;
+import core.event.dao.ExamDaoImp;
+import core.event.dao.ReservationDao;
+import core.event.dao.ReservationDaoImp;
 import core.event.*;
 import org.apache.log4j.Logger;
 

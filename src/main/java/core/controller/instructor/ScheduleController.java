@@ -1,7 +1,7 @@
 package core.controller.instructor;
 
 import core.event.Reservation;
-import core.event.ReservationDao;
+import core.event.dao.ReservationDao;
 import core.helper.IdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

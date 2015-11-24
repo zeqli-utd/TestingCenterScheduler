@@ -1,7 +1,7 @@
 package core.controller.administrator;
 
-import core.event.AppointmentDao;
-import core.event.ReservationDao;
+import core.event.dao.AppointmentDao;
+import core.event.dao.ReservationDao;
 import core.event.Term;
 import core.event.TestingCenterInfo;
 import core.helper.StringResources;

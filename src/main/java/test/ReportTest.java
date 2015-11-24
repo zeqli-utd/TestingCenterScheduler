@@ -2,6 +2,9 @@ package test;
 
 import core.Report;
 import core.event.*;
+import core.event.dao.AppointmentDaoImp;
+import core.event.dao.ExamDao;
+import core.event.dao.ExamDaoImp;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDate;

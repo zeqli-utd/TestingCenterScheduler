@@ -1,7 +1,7 @@
 package core.controller.student;
 
-import core.event.AppointmentDao;
-import core.event.ReservationDao;
+import core.event.dao.AppointmentDao;
+import core.event.dao.ReservationDao;
 import core.service.TestingCenterInfoRetrieval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

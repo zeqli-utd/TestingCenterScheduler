@@ -1,9 +1,12 @@
-package core.user;
+package core.user.dao;
 
 
 import core.event.Appointment;
 import core.event.Course;
 import core.event.Roster;
+import core.user.Administrator;
+import core.user.Authorization;
+import core.user.UserType;
 
 import java.util.List;
 

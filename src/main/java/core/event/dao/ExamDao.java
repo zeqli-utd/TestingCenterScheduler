@@ -1,4 +1,6 @@
-package core.event;
+package core.event.dao;
+
+import core.event.Exam;
 
 import java.util.List;
 
