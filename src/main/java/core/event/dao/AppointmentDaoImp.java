@@ -37,22 +37,9 @@ public class AppointmentDaoImp implements AppointmentDao {
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery
                 ("FROM Appointment A WHERE A.studentId = :stuId");
-
         query.setParameter("stuId", NetId);
         tx.commit();
         result = query.list();
-        session.close();
-        return result;
-    }
-
-    @Override
-    public Appointment findByAppointmentID(String AppointmentID) {
-        Session session = SessionManager.getInstance().getOpenSession();
-        Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("FROM Appointment A WHERE A.appointmentID = :appId");
-        query.setParameter("appId", AppointmentID);
-        tx.commit();
-        Appointment result = (Appointment)query.uniqueResult();
         session.close();
         return result;
     }
@@ -151,6 +138,15 @@ public class AppointmentDaoImp implements AppointmentDao {
         return appointments;
     }
 
-
-
+    @Override
+    public Appointment findAppointmentById(String AppointmentID) {
+        Session session = SessionManager.getInstance().getOpenSession();
+        Transaction tx = session.beginTransaction();
+        Query query = session.createQuery("FROM Appointment A WHERE A.appointmentID = :appId");
+        query.setParameter("appId", AppointmentID);
+        tx.commit();
+        Appointment result = (Appointment)query.uniqueResult();
+        session.close();
+        return result;
+    }
 }

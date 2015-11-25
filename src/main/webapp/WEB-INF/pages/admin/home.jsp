@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="assets/css/styles.css" type="text/css">
 </head>
 <body>
+<%-------------------------header--------------------------%>
 <div class="header-wrapper">
     <div class="header-logo">
         <a href="https://it.stonybrook.edu/services/testing-center" class="button">
@@ -24,6 +25,7 @@
         <a>User <i class="fa fa-chevron-down"></i></a>
     </div>
 </div>
+<%--------------------------main content--------------------------%>
 <div class="main-wrapper">
     <div class="container">
         <div class="sidebar">
@@ -34,7 +36,7 @@
         </div>
     </div>
 </div>
-
+<%-----------------------popup content-------------------------%>
 <div class="popup-overlay" id="popup1">
     <div class="popup">
         <a class="close" href="#"><i class="fa fa-times"></i></a>

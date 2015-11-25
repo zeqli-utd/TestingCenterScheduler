@@ -28,8 +28,8 @@
     <div class="container">
         <div class="sidebar">
             <ul class="side-nav">
-                <li><a class="button" href="instructor-home"><i class="fa fa-home"></i>&nbsp;Home</a></li>
-                <li><a class="button" href="schedule-event"><i class="fa fa-#"></i>&nbsp;Schedule an Event</a></li>
+                <li><a class="button" href="instructor/home"><i class="fa fa-home"></i>&nbsp;Home</a></li>
+                <li><a class="button" href="instructor/schedule-event"><i class="fa fa-#"></i>&nbsp;Schedule an Event</a></li>
                 <li><a class="button" href="#"><i class="fa fa-#"></i>&nbsp;Pending Request</a></li>
                 <li><a class="button" href="#"><i class="fa fa-#"></i>&nbsp;View appointments</a></li>
             </ul>

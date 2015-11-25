@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping("/instructor")
 public class InstructorPageController {
     @Autowired
     private TestingCenterInfoRetrieval infoRetrieval;
@@ -22,14 +23,22 @@ public class InstructorPageController {
     @RequestMapping("view-requests")
     public ModelAndView viewRequests() {
         model.clear();
-        model.setViewName("view-requests");
+        model.setViewName("instructor/home");
+        model.addObject("content", "");
         return model;
     }
 
     @RequestMapping("schedule-event")
     public ModelAndView scheduleEvent() {
         model.clear();
-        model.setViewName("instructor/include/schedule-event");
+        model.setViewName("instructor/home");
+        return model;
+    }
+
+    @RequestMapping("home")
+    public ModelAndView goToHome() {
+        model.clear();
+        model.setViewName("instructor/home");
         return model;
     }
 }

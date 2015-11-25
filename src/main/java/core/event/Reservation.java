@@ -1,10 +1,5 @@
 package core.event;
 
-import core.event.dao.CourseDao;
-import core.user.dao.InstructorDao;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -12,7 +7,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
-@Component
 @Entity
 @Table(name="Reservation")
 public class Reservation {

@@ -31,6 +31,12 @@ public class EditInfoController {
 
     private String viewName = "redirect:/admin/edit-info";
 
+    @RequestMapping(value = "new-term/submit", method = RequestMethod.POST)
+    public String addNewTerm() {
+
+        return null;
+    }
+
     /**
      * this method is called when a information cell is clicked and
      * the user is then allowed to change the contents of the fields of

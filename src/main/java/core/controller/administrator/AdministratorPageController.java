@@ -68,6 +68,8 @@ public class AdministratorPageController {
         modelAndView.addObject("centerInfo", centerInfo);
         modelAndView.addObject("term", term);
 
+        modelAndView.addObject("popup-content", "admin/include/popup/add-term");
+
         return modelAndView;
     }
 
