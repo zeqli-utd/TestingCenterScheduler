@@ -1,18 +1,20 @@
 package core.controller.administrator;
 
 import core.event.Term;
-import core.service.TermManager;
 import core.service.TestingCenterInfoRetrieval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 /**
  * This controller class is created to solely handle modifications of
@@ -26,15 +28,34 @@ import java.time.LocalDateTime;
 public class EditInfoController {
     @Autowired
     private TestingCenterInfoRetrieval infoRetrieval;
-    @Autowired
-    private TermManager termManager;
 
     private String viewName = "redirect:/admin/edit-info";
 
     @RequestMapping(value = "new-term/submit", method = RequestMethod.POST)
-    public String addNewTerm() {
+    public String addNewTerm(@ModelAttribute("newTerm") Term term,
+                             RedirectAttributes attributes) {
+        attributes.addAttribute("newTerm", term);
+        return "redirect:/admin/edit-info/new";
+    }
 
-        return null;
+    @RequestMapping("new")
+    public String createNewInfo(RedirectAttributes attributes) {
+        attributes.getFlashAttributes().get("newTerm");
+        return "redirect:/admin/edit-info";
+    }
+
+    @RequestMapping(value = "new/submit", method = RequestMethod.POST)
+    public String newInfoSubmit(@RequestParam Map allParam,
+                                ModelMap model) {
+        /* TODO add all request parameters to testing center information*/
+        model.addAttribute("content", "admin/include/add-term-two.jsp");
+        return "redirect:/admin/edit-info/new-two";
+    }
+
+    @RequestMapping("new-two")
+    public String createNewInfoTwo(ModelMap model) {
+        model.addAttribute("content", "admin/include/add-term");
+        return "redirect:/admin/edit-info";
     }
 
     /**
