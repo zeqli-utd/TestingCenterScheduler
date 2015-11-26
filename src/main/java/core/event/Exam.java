@@ -1,65 +1,67 @@
 package core.event;
 
 import core.event.dao.CourseDao;
-import core.user.Instructor;
 import core.user.dao.InstructorDao;
+import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
+import java.util.List;
 
 @Component
 @Entity
 @Table(name = "Exam")
 public class Exam {
     @Id
-    @Column(name = "examId")
-    @Basic(optional = false)
-    private String examId;
+    @Column (name = "exam_id")
+    private String examId;      //
 
+    @Basic(optional = false)
     @Column(name = "exam_name" )
-    private String examName;
+    private String examName;    // CSE308-01_1158_ex2 or "Math Placement"
 
     @Basic(optional = false)
     @Column(name = "type" )
-    private String type;
+    private String type;        // regular or ad hoc
 
     @Basic(optional = false)
-    @Column(name = "num_student_need_to_take_exam" )
-    private int numStudentNeed;
+    @Column(name = "capacity")
+    private int capacity;
 
     @Basic(optional = false)
-    @Column(name = "num_student_existing_appointment_to_take_exam" )
-    private int numStudentAppointment;
-
-    @Column(name = "num_student_show_up" )
-    private int numStudentShow;//
+    @Column(name = "term")
+    private int term;           // 1158 for Fall 2015 or 0 for ad hoc exam
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="start_date_time")// start time of an exam
     @Basic(optional = false)
-    private Date startDateTime;
+    @Type(type = "org.hibernate.type.LocalDateTimeType")
+    private LocalDateTime startDateTime; // start time of an exam
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="end_date_time")// end time of an exam
     @Basic(optional = false)
-    private Date endDateTime;
+    @Type(type = "org.hibernate.type.LocalDateTimeType")
+    private LocalDateTime endDateTime;   // end time of an exam
 
-    @Column(name="attendace")
-    private int attendance;//TODO: should be double type
+    @Basic(optional = false)
+    @Column(name = "instructor_id" )
+    private String instructorId;    // NetId of the person who made this appointment
 
-    @Column(name="instructor_id")
-    private String instructorId;
+    @Basic(optional = false)
+    @Column(name = "course_id" )
+    private String courseId;    // CSE308-01_1158 or "adhoc" for ad hoc exam
 
-    @Column(name = "course_id")
-    private String courseId;
+    @Basic(optional = false)
+    @Column(name = "duration")
+    private int duration;   // Duration in minute
 
-    private double duration;
+    @OneToMany (fetch = FetchType.LAZY, mappedBy = "id.exam")
+    private List<Appointment> appointments;
+
+    @Basic(optional = false)
+    @Column(name = "num_appointments")
+    private int numAppointments;
 
     @Transient
     @Autowired
@@ -70,10 +72,10 @@ public class Exam {
     private InstructorDao instructorDao;
 
     @Transient
-    private String instructorName;
+    private int numAttended;
 
     @Transient
-    private String courseName;
+    private double attendance;  // Calculate on the fly.
 
     public Exam(){
 
@@ -93,24 +95,17 @@ public class Exam {
                 String type,
                 LocalDateTime start,
                 LocalDateTime end,
-                double duration,
+                int duration,
                 int numApp,
                 int numNeed){
         examId = Id;
         this.type = type;
-
-        Instant instant1 =
-                start.atZone(ZoneId.systemDefault()).toInstant();
-        startDateTime = Date.from(instant1);
-
-        Instant instant2 =
-                end.atZone(ZoneId.systemDefault()).toInstant();
-        endDateTime = Date.from(instant2);
-
+        this.startDateTime = start;
+        this.endDateTime = end;
         this.duration = duration;
 
-        numStudentAppointment = numApp;
-        numStudentNeed = numNeed;
+        numAppointments = numApp;
+        capacity = numNeed;
     }
 
     /**
@@ -128,7 +123,7 @@ public class Exam {
                 String type,
                 LocalDateTime start,
                 LocalDateTime end,
-                double duration,
+                int duration,
                 int numApp,
                 int numNeed,
                 String instructorId) {
@@ -147,14 +142,26 @@ public class Exam {
                     .getSubject();
     }
 
-    public String getInstructorName () {
-        Instructor instructor =
-                instructorDao.findByNetID(this.instructorId);
+//    public String getMadeBy() {
+//        Instructor instructor =
+//                instructorDao.findByNetID(this.instructorId);
+//
+//        return instructor.getLastName() + ", " + instructor.getFirstName();
+//    }
 
-        return instructor.getLastName() + ", " + instructor.getFirstName();
+
+
+
+
+    public List<Appointment> getAppointments() {
+        return appointments;
     }
 
-    public int getAttendance() {
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    public double getAttendance() {
         return attendance;
     }
 
@@ -170,24 +177,23 @@ public class Exam {
         this.instructorId = instructorId;
     }
 
-    public void setStartDateTime(Date startDateTime) {
+    public LocalDateTime getStartDateTime(){
+        return startDateTime;
+    }
+
+    public LocalDateTime getEndDateTime(){
+        return endDateTime;
+    }
+    public void setStartDateTime(LocalDateTime startDateTime) {
         this.startDateTime = startDateTime;
     }
 
-    public void setEndDateTime(Date endDateTime) {
+    public void setEndDateTime(LocalDateTime endDateTime) {
         this.endDateTime = endDateTime;
     }
 
-    public void setDuration(double duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
-    }
-
-    public int getNumStudentShow() {
-        return numStudentShow;
-    }
-
-    public void setNumStudentShow(int numStudentShow) {
-        this.numStudentShow = numStudentShow;
     }
 
     public String getExamId() {
@@ -206,49 +212,23 @@ public class Exam {
         this.examName = examName;
     }
 
-    public int getNumStudentAppointment() {
-        return numStudentAppointment;
+    public int getNumAppointments() {
+        return numAppointments;
     }
 
-    public void setNumStudentAppointment(int numStudentAppointment) {
-        this.numStudentAppointment = numStudentAppointment;
+    public void setNumAppointments(int numAppointments) {
+        this.numAppointments = numAppointments;
     }
 
-    public int getNumStudentNeed() {
-        return numStudentNeed;
+    public int getCapacity() {
+        return capacity;
     }
 
-    public void setNumStudentNeed(int numStudentNeed) {
-        this.numStudentNeed= numStudentNeed;
+    public void setCapacity(int numStudentNeed) {
+        this.capacity = numStudentNeed;
     }
 
-    public LocalDateTime getStartDateTime() {// date to
-        Instant instant = Instant.ofEpochMilli(startDateTime.getTime());
-        LocalDateTime res =
-                LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 
-        return res;
-    }
-
-    public void setStartDateTime(LocalDateTime startDateTime) {
-        Instant instant =
-                startDateTime.atZone(ZoneId.systemDefault()).toInstant();
-        this.startDateTime = Date.from(instant);
-    }
-
-    public LocalDateTime getEndDateTime() {
-        Instant instant = Instant.ofEpochMilli(endDateTime.getTime());
-        LocalDateTime res =
-                LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-
-        return res;
-    }
-
-    public void setEndDateTime(LocalDateTime endDateTime) {
-        Instant instant =
-                endDateTime.atZone(ZoneId.systemDefault()).toInstant();
-        this.endDateTime = Date.from(instant);
-    }
 
     public String getType() {
         return type;
@@ -258,10 +238,12 @@ public class Exam {
         this.type = type;
     }
 
-    public double getDuration()
-    {
-        return (double)ChronoUnit.MINUTES.between(getStartDateTime(), getEndDateTime())/60;
-    }
+//    public double getDuration()
+//    {
+//        return (double)ChronoUnit.MINUTES.between(getStartDateTime(), getEndDateTime())/60;
+//    }
+
+    public int getDuration() { return duration;    }
 
     public String getCourseId() {
         return courseId;
@@ -270,4 +252,36 @@ public class Exam {
     public void setCourseId(String courseId) {
         this.courseId = courseId;
     }
+
+
+
+    // Legacy Code
+
+//    public LocalDateTime getStartDateTime() {// date to
+//        Instant instant = Instant.ofEpochMilli(startDateTime.getTime());
+//        LocalDateTime res =
+//                LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+//
+//        return res;
+//    }
+//
+//    public void setStartDateTime(LocalDateTime startDateTime) {
+//        Instant instant =
+//                startDateTime.atZone(ZoneId.systemDefault()).toInstant();
+//        this.startDateTime = Date.from(instant);
+//    }
+//
+//    public LocalDateTime getEndDateTime() {
+//        Instant instant = Instant.ofEpochMilli(endDateTime.getTime());
+//        LocalDateTime res =
+//                LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+//
+//        return res;
+//    }
+//
+//    public void setEndDateTime(LocalDateTime endDateTime) {
+//        Instant instant =
+//                endDateTime.atZone(ZoneId.systemDefault()).toInstant();
+//        this.endDateTime = Date.from(instant);
+//    }
 }
