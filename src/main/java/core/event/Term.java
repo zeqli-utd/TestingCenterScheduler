@@ -36,6 +36,7 @@ public class Term {
     @Type(type = "org.hibernate.type.LocalDateType")
     private LocalDate termEndDate;
 
+
     public Term(int termId, LocalDate termStartDate, LocalDate termEndDate) {
         this.setTermId(termId);
         this.setTermStartDate(termStartDate);

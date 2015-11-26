@@ -27,10 +27,34 @@ public class TestingCenterInfoRetrieval {
         return result;
     }
 
+    public Term getCurrentTerm(){
+        LocalDate now = LocalDate.now();
+        Term result = null;
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery
+                    ("FROM Term T WHERE T.termStartDate <= :date AND  :date <= T.termEndDate");
+            query.setParameter("date", now);
+            tx.commit();
+            result = (Term)query.uniqueResult();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+
+        } finally {
+            session.close();
+        }
+        return result;
+    }
+
     public Term getTermByDay(LocalDateTime day){
         LocalDate now = day.toLocalDate();
-        Term result = new Term();
-        Session session = SessionManager.getInstance().getOpenSession();
+        Term result = null;
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
