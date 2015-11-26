@@ -19,11 +19,35 @@ public class TestingCenterInfoRetrieval {
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery
-                ("FROM TestingCenterInfo T WHERE T.d = :tId");
+                ("FROM TestingCenterInfo T WHERE T.term = :tId");
         query.setParameter("tId", term);
         tx.commit();
         TestingCenterInfo result = (TestingCenterInfo)query.uniqueResult();
         session.close();
+        return result;
+    }
+
+    public Term getTermByDay(LocalDateTime day){
+        LocalDate now = day.toLocalDate();
+        Term result = new Term();
+        Session session = SessionManager.getInstance().getOpenSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery
+                    ("FROM Term T WHERE T.termStartDate <= :date AND  :date <= T.termEndDate");
+            query.setParameter("date", now);
+            tx.commit();
+            result = (Term)query.uniqueResult();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+
+        } finally {
+            session.close();
+        }
         return result;
     }
 

@@ -27,6 +27,9 @@ public class Term {
 
     private TestingCenterInfo testingCenterInfo;
 
+    public Term(){
+
+    }
     public Term(String termName, LocalDate termStartDate, LocalDate termEndDate) {
         this.setTermId(termNameToId());
         this.setTermStartDate(termStartDate);
@@ -110,4 +113,6 @@ public class Term {
         }
         return term;
     }
+
+
 }
