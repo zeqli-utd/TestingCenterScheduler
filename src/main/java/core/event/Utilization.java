@@ -20,7 +20,7 @@ public class Utilization {
     private int numSeat;
 
     private TestingCenterInfo center = new TestingCenterInfo();
-    //
+
     AppointmentDao appointmentDao = new AppointmentDaoImp();
     ExamDao examDao = new ExamDaoImp();
 

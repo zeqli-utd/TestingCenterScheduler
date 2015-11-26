@@ -40,7 +40,7 @@ public class EditInfoController {
 
     @RequestMapping("new")
     public String createNewInfo(RedirectAttributes attributes) {
-        attributes.getFlashAttributes().get("newTerm");
+        Term term = (Term) attributes.getFlashAttributes().get("newTerm");
         return "redirect:/admin/edit-info";
     }
 
