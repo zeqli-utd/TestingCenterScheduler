@@ -12,6 +12,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Component
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @Entity
 @Table(name = "Exam")
 public class Exam {
@@ -23,13 +24,17 @@ public class Exam {
     @Column(name = "exam_name" )
     private String examName;    // CSE308-01_1158_ex2 or "Math Placement"
 
+    @Enumerated(EnumType.STRING)
     @Basic(optional = false)
-    @Column(name = "type" )
-    private String type;        // regular or ad hoc
+    private ExamType examType;        // REGULAR, or AD_HOC
+
+    @Enumerated(EnumType.STRING)
+    @Basic(optional = false)
+    private ExamStatusType statusType;  // PENDING, DENIED, or APROVED
 
     @Basic(optional = false)
     @Column(name = "capacity")
-    private int capacity;
+    private int capacity;           // Number of Students
 
     @Basic(optional = false)
     @Column(name = "term")
@@ -93,14 +98,14 @@ public class Exam {
      * @param numNeed Num of Needed
      */
     public Exam(String Id,
-                String type,
+                ExamType type,
                 LocalDateTime start,
                 LocalDateTime end,
                 int duration,
                 int numApp,
                 int numNeed){
         examId = Id;
-        this.type = type;
+        this.examType = type;
         this.startDateTime = start;
         this.endDateTime = end;
         this.duration = duration;
@@ -121,7 +126,7 @@ public class Exam {
      * @param instructorId Instructor Id
      */
     public Exam(String Id,
-                String type,
+                ExamType type,
                 LocalDateTime start,
                 LocalDateTime end,
                 int duration,
@@ -142,17 +147,6 @@ public class Exam {
                 .findByCourseId(this.courseId)
                     .getSubject();
     }
-
-//    public String getMadeBy() {
-//        Instructor instructor =
-//                instructorDao.findByNetID(this.instructorId);
-//
-//        return instructor.getLastName() + ", " + instructor.getFirstName();
-//    }
-
-
-
-
 
     public List<Appointment> getAppointments() {
         return appointments;
@@ -231,18 +225,14 @@ public class Exam {
 
 
 
-    public String getType() {
-        return type;
+    public ExamType getExamType() {
+        return examType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setExamType(ExamType type) {
+        this.examType = type;
     }
 
-//    public double getDuration()
-//    {
-//        return (double)ChronoUnit.MINUTES.between(getStartDateTime(), getEndDateTime())/60;
-//    }
 
     public int getDuration() { return duration;    }
 
@@ -261,6 +251,18 @@ public class Exam {
 
 
     // Legacy Code
+
+//    public String getMadeBy() {
+//        Instructor instructor =
+//                instructorDao.findByNetID(this.instructorId);
+//
+//        return instructor.getLastName() + ", " + instructor.getFirstName();
+//    }
+
+//    public double getDuration()
+//    {
+//        return (double)ChronoUnit.MINUTES.between(getStartDateTime(), getEndDateTime())/60;
+//    }
 
 //    public LocalDateTime getStartDateTime() {// date to
 //        Instant instant = Instant.ofEpochMilli(startDateTime.getTime());
