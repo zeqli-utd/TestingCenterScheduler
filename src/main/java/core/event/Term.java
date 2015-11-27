@@ -1,7 +1,11 @@
 package core.event;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.time.LocalDate;
 
 /**
@@ -28,7 +32,7 @@ public class Term {
     @Type(type = "org.hibernate.type.LocalDateType")
     private LocalDate termStartDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     @Type(type = "org.hibernate.type.LocalDateType")
     private LocalDate termEndDate;
 
