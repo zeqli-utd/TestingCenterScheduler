@@ -67,7 +67,7 @@ public class Exam {
 
     @Basic(optional = false)
     @Column(name = "num_appointments")
-    private int numAppointments;
+    private int numAppointments;// num of students who have made appointments
 
     @Transient
     @Autowired

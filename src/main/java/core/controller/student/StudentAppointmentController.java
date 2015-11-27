@@ -19,25 +19,17 @@ public class StudentAppointmentController {
     @Autowired
     AppointmentDao appointmentDao;
 
-    @RequestMapping(value = "find-exam/by-instructor",
-            method = RequestMethod.POST, params = "by-instructor")
-    public ModelAndView findExamByInstructor() {
-        return new ModelAndView("student/make-appointment");
+//    @RequestMapping("make-appointment/new/{examId}")
+//    public String makeAppointment(@PathVariable("examId") String examId, HttpSession session) {
+//        //get logged in user from session
+//        String userId = (String) session.getAttribute("sessionUserId");
+//
+//        return "";
+//    }
+    @RequestMapping(value = "/makeAppointment", method = RequestMethod.POST)
+    public ModelAndView makeAppointment(){
+        ModelAndView model =  new ModelAndView("student/make-appointment");
 
     }
 
-    @RequestMapping(value = "find-exam/by-course",
-            method = RequestMethod.POST, params = "by-course")
-    public ModelAndView findExamByCourse() {
-        return new ModelAndView("student/make-appointment");
-    }
-
-    @RequestMapping("make-appointment/new/{examId}")
-    public String makeAppointment(@PathVariable("examId") String examId,
-                                  HttpSession session) {
-        //get logged in user from session
-        String userId = (String) session.getAttribute("sessionUserId");
-
-        return "";
-    }
 }

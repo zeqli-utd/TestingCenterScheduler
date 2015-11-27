@@ -26,7 +26,7 @@
 <div class="main-wrapper">
     <div class="container">
         <div class="sidebar">
-            <jsp:include page="include/sidebar.jsp"/>
+            <jsp:include page="sidebar.jsp"/>
         </div>
         <div class="content">
 

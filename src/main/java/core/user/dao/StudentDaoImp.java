@@ -83,11 +83,6 @@ public class StudentDaoImp implements StudentDao{
     }
 
     @Override
-    public Authorization getPermission() {
-        return null;
-    }
-
-    @Override
     public boolean updateInfo(Student student) {// return should have different cases
 //        students.get(student.getStudent_Id()).setName(student.getName());
 //        return true;

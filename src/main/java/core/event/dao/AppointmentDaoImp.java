@@ -69,7 +69,7 @@ public class AppointmentDaoImp implements AppointmentDao {
         } finally {
             session.close();
         }
-        return  true;
+        return true;
     }
 
     @Override
