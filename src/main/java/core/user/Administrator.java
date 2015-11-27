@@ -278,7 +278,7 @@ public class Administrator extends UserType {
         else{
             this.setFirstName(admin.getFirstName());
             this.setLastName(admin.getLastName());
-            this.setPassword(admin.getPassword());
+            //this.setPassword(admin.getPassword());
             this.setEmail(admin.getEmail());
             return true;
         }
