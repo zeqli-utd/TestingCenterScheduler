@@ -4,12 +4,7 @@ import core.event.dao.AppointmentDao;
 import core.event.dao.AppointmentDaoImp;
 import core.event.dao.ExamDao;
 import core.event.dao.ExamDaoImp;
-import core.service.SessionManager;
 import core.service.TestingCenterInfoRetrieval;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

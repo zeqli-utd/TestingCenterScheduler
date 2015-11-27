@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TestingCenterSchduler.iml" filepath="$PROJECT_DIR$/TestingCenterSchduler.iml" />
       <module fileurl="file://$PROJECT_DIR$/TestingCenterScheduler.iml" filepath="$PROJECT_DIR$/TestingCenterScheduler.iml" />
     </modules>
   </component>

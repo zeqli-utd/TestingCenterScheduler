@@ -89,7 +89,6 @@
             <version>5.1.36</version>
         </dependency>
 
-
         <!-- Hibernate ORM-->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -108,7 +107,6 @@
             <artifactId>jta</artifactId>
             <version>1.1</version>
         </dependency>
-
     </dependencies>
 
     <build>

@@ -662,15 +662,6 @@ public class ReservationDaoImp implements ReservationDao {
             List result = query.list();
             for (Object aResult : result) {
                 Reservation re = (Reservation) aResult;
-
-                System.out.println("|  -Reservation Id: " + re.getReservationID());
-                System.out.println("|  -StartDateTime: " + re.getStartDateTime());
-                System.out.println("|  -EndDateTime: " + re.getEndDateTime());
-                System.out.println("|  -Instructor Id: " + re.getInstructorId());
-                System.out.println("|  -Term: " + re.getTerms());
-                System.out.println("|  -Status " + re.getStatus());
-                System.out.println("|  -Type: " + re.getType());
-                System.out.println("----------------------------------------------------------------------");
             }
         }
 
