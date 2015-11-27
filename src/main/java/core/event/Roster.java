@@ -1,41 +1,39 @@
 package core.event;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Roster {
     @Id
     @Basic(optional = false)
-    @Column(name = "net_id")
-    private String netID;
+    @OneToOne(mappedBy = "roster")
+    private String classId;
 
-    @Id
-    @Basic(optional = false)
-    @Column(name = "course_id")
-    private String CourseID;
 
-    public Roster(String netID, String courseID) {
-        this.netID = netID;
-        this.CourseID = courseID;
+    @ElementCollection
+    @CollectionTable(name="netids", joinColumns=@JoinColumn(name="netid"))
+    private Set<String> netIds;
+
+    public Roster(String classId, Set<String> netIds) {
+        this.classId = classId;
+        this.netIds = netIds;
     }
 
-    public String getNetID() {
-        return netID;
+    public String getClassId() {
+        return classId;
     }
 
-    public String getCourseID() {
-        return CourseID;
+    public void setClassId(String classId) {
+        this.classId = classId;
     }
 
-    public void setNetID(String netID) {
-        this.netID = netID;
+    public Set<String> getNetIds() {
+        return netIds;
     }
 
-    public void setCourseID(String courseID) {
-        CourseID = courseID;
+    public void setNetIds(Set<String> netIds) {
+        this.netIds = netIds;
     }
-
 }

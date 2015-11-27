@@ -22,12 +22,15 @@ public class Course {
     private int session;
 
     @Basic(optional = false)
-    @Column(name = "instructored")
+    @Column(name = "instructor_id")
     private String instructorID;
 
-//TODO To be complete
-//    @OneToMany(mappedBy = "course_id")
-//    private List<Student> enrolledStudents;
+    @OneToOne
+    @JoinTable(name = "CourseRoster",
+            joinColumns = @JoinColumn(name="course_fk"),
+            inverseJoinColumns = @JoinColumn(name="roster_fk")
+    )
+    private Roster roster;
 
     // Empty Constructor For Hibernate
     public Course() {
@@ -87,5 +90,13 @@ public class Course {
 
     public void setSession(int session) {
         this.session = session;
+    }
+
+    public Roster getRoster() {
+        return roster;
+    }
+
+    public void setRoster(Roster roster) {
+        this.roster = roster;
     }
 }
