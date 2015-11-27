@@ -5,18 +5,25 @@ import core.event.Exam;
 import java.util.List;
 
 public interface ExamDao {
-    public List<Exam> getAllExams();
 
-    public Exam findByExamId(String examId);
+    List getAllPending();
 
-    public List<Exam> findByInstructorId(String instructorId);
+    List getAllApproved();
 
-    public boolean addExam(Exam exam);
+    List getAllDenied();
 
-    public boolean updateExam(Exam exam, String id);
+    List<Exam> getAllExams();
 
-    public boolean deleteExam(String examId);
+    Exam findByExamId(String examId);
 
-    public void listExamByApprovedRequest(String exId);
+    List<Exam> findByInstructorId(String instructorId);
+
+    boolean addExam(Exam exam);
+
+    boolean updateExam(Exam exam, String id);
+
+    boolean deleteExam(String examId);
+
+    void listExamByApprovedRequest(String exId);
 
 }

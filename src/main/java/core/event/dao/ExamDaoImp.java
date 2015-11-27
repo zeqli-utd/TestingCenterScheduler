@@ -16,6 +16,18 @@ public class ExamDaoImp implements ExamDao {
     public ExamDaoImp() {
     }
 
+    public List getAllPending() {
+        return null;
+    }
+
+    public List getAllApproved() {
+        return null;
+    }
+
+    public List getAllDenied() {
+        return null;
+    }
+
     @Override
     public List getAllExams() {
         Session session = SessionManager.getInstance().openSession();

@@ -15,12 +15,6 @@ import java.time.LocalTime;
 @Service
 public class TestingCenterInfoRetrieval {
 
-    public TestingCenterInfo newTermTestingCenterInfo(Term term) {
-        TestingCenterInfo testingCenterInfo = new TestingCenterInfo();
-        //TODO
-        return testingCenterInfo;
-    }
-
     public TestingCenterInfo findByTerm(Term term) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
