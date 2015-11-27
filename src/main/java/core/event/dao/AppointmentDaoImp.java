@@ -2,6 +2,7 @@ package core.event.dao;
 
 import core.event.Appointment;
 import core.event.Term;
+import core.event.TestingCenterTimeSlots;
 import core.service.SessionManager;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -9,6 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,12 +68,16 @@ public class AppointmentDaoImp implements AppointmentDao {
 
     @Override
     public boolean deleteAppointment(String appointmentId) {
-
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-
+            TestingCenterTimeSlotsDaoImp tscsImp = new TestingCenterTimeSlotsDaoImp();
+            Appointment appt = findAppointmentById(appointmentId);
+            LocalDateTime begin = appt.getStartDateTime();
+            TestingCenterTimeSlots tscs = tscsImp.findTimeSlotById(Integer.toString(begin.getDayOfYear()) +
+                    Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute()));
+            tscs.releaseSeat(appt);
             Query query = session.createQuery
                     ("delete from Appointment R where R.appointmentID = :appointmentID");
             query.setParameter("appointmentID", appointmentId);
