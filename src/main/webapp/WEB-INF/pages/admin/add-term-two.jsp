@@ -31,22 +31,36 @@
         <div class="sidebar">
             <jsp:include page="sidebar.jsp" flush="true"/>
         </div>
-        <div class="content">
-            <p>${errorMessage}</p>
-            <jsp:include page="${content}" flush="true"/>
+        <div class="content"><h2>${newTerm}</h2>
+
+            <h2>Step Two</h2>
+
+            <p>Closed Dates</p>
+
+            <div>
+                <form>
+                    <label>
+                        <input type="date" class="input-info" name="add-closed-date-start">
+                    </label>
+                    <label>
+                        <input type="date" class="input-info" name="add-closed-date-end">
+                    </label>
+                    <input type="submit" class="submit-button" value="Add Another">
+                </form>
+                <a class="button">Continue</a>
+            </div>
         </div>
     </div>
-</div>
-<%-----------------------popup content-------------------------%>
-<div class="popup-overlay" id="popup1">
-    <div class="popup">
-        <a class="close" href="#"><i class="fa fa-times"></i></a>
-        <jsp:include page="${popup_content}" flush="true"/>
+    <%-----------------------popup content-------------------------%>
+    <div class="popup-overlay" id="popup1">
+        <div class="popup">
+            <a class="close" href="#"><i class="fa fa-times"></i></a>
+            <jsp:include page="${popup_content}" flush="true"/>
+        </div>
     </div>
-</div>
 
-<footer>
+    <footer>
 
-</footer>
+    </footer>
 </body>
 </html>

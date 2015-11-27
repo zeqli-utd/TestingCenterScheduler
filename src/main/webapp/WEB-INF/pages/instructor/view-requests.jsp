@@ -28,8 +28,13 @@
             <jsp:include page="sidebar.jsp"/>
         </div>
         <div class="content">
-            <p class="error-message">${errorMessage}</p>
-            <jsp:include page="${content}"/>
+            <ul>
+                <c:forEach var="request" items="${requests}">
+                    <li>
+
+                    </li>
+                </c:forEach>
+            </ul>
         </div>
     </div>
 </div>

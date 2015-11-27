@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("admin/edit-info")
+@SessionAttributes("newTerm")
 public class EditInfoController {
     @Autowired
     private TestingCenterInfoRetrieval infoRetrieval;
@@ -35,20 +37,22 @@ public class EditInfoController {
     @RequestMapping(value = "new-term/submit", method = RequestMethod.POST)
     public String addNewTerm(@ModelAttribute("newTerm") Term term,
                              @RequestParam Map allParam,
-                             @RequestParam()
-                             ModelMap model) {
-        model.addAttribute("newTerm", term);
-        infoRetrieval.newTermTestingCenterInfo(term);
+                             ModelMap model,
+                             RedirectAttributes redirectAttributes) {
         model.put("content", "/admin/include/add-term");
-        return "admin/home";
+        redirectAttributes.addFlashAttribute("newTerm", term);
+        return "redirect:/admin/home";
     }
 
     @RequestMapping(value = "new/submit", method = RequestMethod.POST)
-    public String newInfoSubmit(@RequestParam Map allParam,
-                                @ModelAttribute("newTerm") Term term,
-                                ModelMap model) {
-        TestingCenterInfo testingCenterInfo = infoRetrieval.findByTerm(term);
-        return "";
+    public ModelAndView newInfoSubmit(@ModelAttribute("newInfo") TestingCenterInfo info,
+                                      @ModelAttribute("newTerm") Term term,
+                                      RedirectAttributes redirectAttributes) {
+        info.setTerm(term);
+        redirectAttributes.addFlashAttribute("newInfo", info);
+        ModelAndView model = new ModelAndView("redirect:/admin/home");
+        model.addObject("content", "admin/include/add-term-two");
+        return model;
     }
 
     @RequestMapping("new-two")

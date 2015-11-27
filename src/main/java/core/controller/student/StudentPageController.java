@@ -17,7 +17,7 @@ public class StudentPageController {
     @RequestMapping("view-appointments")
     public ModelAndView viewAppointments() {
         model.clear();
-        model.setViewName("student/include/view-appointments");
+        model.setViewName("student/view-appointments");
         return model;
     }
 
