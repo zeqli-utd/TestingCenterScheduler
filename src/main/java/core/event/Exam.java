@@ -223,7 +223,33 @@ public class Exam {
         this.capacity = numStudentNeed;
     }
 
+    public ExamStatusType getStatusType() {
+        return statusType;
+    }
 
+    public void setStatusType(ExamStatusType statusType) {
+        this.statusType = statusType;
+    }
+
+    public int getTerm() {
+        return term;
+    }
+
+    public void setTerm(int term) {
+        this.term = term;
+    }
+
+    public int getNumAttended() {
+        return numAttended;
+    }
+
+    public void setNumAttended(int numAttended) {
+        this.numAttended = numAttended;
+    }
+
+    public void setAttendance(double attendance) {
+        this.attendance = attendance;
+    }
 
     public ExamType getExamType() {
         return examType;
