@@ -29,8 +29,7 @@ public class StringResources {
         ADMINISTRATOR_OPERATIONS.put("home", "Home");
 
         INSTRUCTOR_OPERATIONS.put("scheduleEvent", "Schedule an Event");
-        INSTRUCTOR_OPERATIONS.put("viewReservations", "View Requests");
-        INSTRUCTOR_OPERATIONS.put("viewAppointments", "View Appointments");
+        INSTRUCTOR_OPERATIONS.put("viewRequests", "View Requests");
         INSTRUCTOR_OPERATIONS.put("home", "Home");
 
         STUDENT_OPERATIONS.put("makeAppointment", "Make Appointment");

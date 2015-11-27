@@ -31,7 +31,6 @@ public class ScheduleController {
                 (String)reservationParam.get("term")
         );
 
-
         if (reservationDao.insertReservation(reservation)) {
             model.addObject("message", "Schedule another event");
         } else {
@@ -39,9 +38,4 @@ public class ScheduleController {
         }
         return model;
     }
-
-    //TODO Submit Ad hoc exam form
-
-
-
 }

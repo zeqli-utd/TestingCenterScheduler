@@ -2,6 +2,7 @@ package core.controller.instructor;
 
 import core.event.dao.AppointmentDao;
 import core.event.dao.ReservationDao;
+import core.helper.StringResources;
 import core.service.TestingCenterInfoRetrieval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,27 +19,27 @@ public class InstructorPageController {
     @Autowired
     private AppointmentDao appointmentDao;
 
-    private ModelAndView model = new ModelAndView();
-
     @RequestMapping("view-requests")
-    public ModelAndView viewRequests() {
-        model.clear();
+    public ModelAndView viewRequests(ModelAndView model) {
         model.setViewName("instructor/home");
-        model.addObject("content", "");
+        model.addObject("content", "instructor/include/view-requests");
+        model.addObject("heading", StringResources.INSTRUCTOR_OPERATIONS.get("viewRequests"));
         return model;
     }
 
     @RequestMapping("schedule-event")
-    public ModelAndView scheduleEvent() {
-        model.clear();
+    public ModelAndView scheduleEvent(ModelAndView model) {
         model.setViewName("instructor/home");
+        model.addObject("content", "instructor/include/schedule-event");
+        model.addObject("heading", StringResources.INSTRUCTOR_OPERATIONS.get("scheduleEvent"));
         return model;
     }
 
     @RequestMapping("home")
-    public ModelAndView goToHome() {
-        model.clear();
+    public ModelAndView goToHome(ModelAndView model) {
         model.setViewName("instructor/home");
+        model.addObject("content", "instructor/include/home-content");
+        model.addObject("heading", StringResources.INSTRUCTOR_OPERATIONS.get("home"));
         return model;
     }
 }

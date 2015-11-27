@@ -23,7 +23,6 @@ public class TestingCenterInfo {
     @Column(name = "num_set_aside_seats")
     private int numSetAsideSeats;
 
-
     @Basic(optional = false)
     @Column(name = "open")
     private LocalTime open;

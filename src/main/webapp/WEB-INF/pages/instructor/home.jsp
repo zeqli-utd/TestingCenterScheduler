@@ -1,7 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--@elvariable id="content" type="java.lang.String"--%>
-<%--@elvariable id="popup_content" type="java.lang.String"--%>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -17,7 +15,7 @@
         </a>
     </div>
     <div class="main-heading">
-        <h1>Instructor Home</h1>
+        <h1>${heading}</h1>
     </div>
     <div class="header-menu">
         <a>Logout</a>
@@ -27,12 +25,7 @@
 <div class="main-wrapper">
     <div class="container">
         <div class="sidebar">
-            <ul class="side-nav">
-                <li><a class="button" href="instructor/home"><i class="fa fa-home"></i>&nbsp;Home</a></li>
-                <li><a class="button" href="instructor/schedule-event"><i class="fa fa-#"></i>&nbsp;Schedule an Event</a></li>
-                <li><a class="button" href="#"><i class="fa fa-#"></i>&nbsp;Pending Request</a></li>
-                <li><a class="button" href="#"><i class="fa fa-#"></i>&nbsp;View appointments</a></li>
-            </ul>
+            <jsp:include page="include/sidebar.jsp"/>
         </div>
         <div class="content">
             <jsp:include page="${content}"/>
