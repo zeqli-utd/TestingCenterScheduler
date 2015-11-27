@@ -1,16 +1,14 @@
 package core.controller.administrator;
 
 import core.event.Term;
+import core.event.TestingCenterInfo;
 import core.service.TestingCenterInfoRetrieval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,44 +16,45 @@ import java.util.Map;
 
 /**
  * This controller class is created to solely handle modifications of
- * testing center information. On the front end, after the user click on
- * the desired field, the user can edit the field on a popup window,
- * and the according methods would be called. After the modification,
- * the page redirects to the updated edit-info page.
+ * testing center information.
  */
 @Controller
+@SessionAttributes("newTerm")
 @RequestMapping("admin/edit-info")
 public class EditInfoController {
     @Autowired
     private TestingCenterInfoRetrieval infoRetrieval;
 
-    private String viewName = "redirect:/admin/edit-info";
+    private String viewName = "admin/home";
+
+    @RequestMapping("new-term")
+    public ModelAndView declareNewTerm(ModelAndView model) {
+        model.addObject("popup-content", "admin/include/popup/new-term");
+        return model;
+    }
 
     @RequestMapping(value = "new-term/submit", method = RequestMethod.POST)
     public String addNewTerm(@ModelAttribute("newTerm") Term term,
-                             RedirectAttributes attributes) {
-        attributes.addAttribute("newTerm", term);
-        return "redirect:/admin/edit-info/new";
-    }
-
-    @RequestMapping("new")
-    public String createNewInfo(RedirectAttributes attributes) {
-        Term term = (Term) attributes.getFlashAttributes().get("newTerm");
-        return "redirect:/admin/edit-info";
+                             @RequestParam Map allParam,
+                             @RequestParam()
+                             ModelMap model) {
+        model.addAttribute("newTerm", term);
+        infoRetrieval.newTermTestingCenterInfo(term);
+        model.put("content", "/admin/include/add-term");
+        return "admin/home";
     }
 
     @RequestMapping(value = "new/submit", method = RequestMethod.POST)
     public String newInfoSubmit(@RequestParam Map allParam,
+                                @ModelAttribute("newTerm") Term term,
                                 ModelMap model) {
-        /* TODO add all request parameters to testing center information*/
-        model.addAttribute("content", "admin/include/add-term-two.jsp");
-        return "redirect:/admin/edit-info/new-two";
+        TestingCenterInfo testingCenterInfo = infoRetrieval.findByTerm(term);
+
     }
 
     @RequestMapping("new-two")
     public String createNewInfoTwo(ModelMap model) {
-        model.addAttribute("content", "admin/include/add-term");
-        return "redirect:/admin/edit-info";
+
     }
 
     /**

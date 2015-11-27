@@ -27,6 +27,11 @@ public class TestingCenterInfoRetrieval {
         return result;
     }
 
+    public boolean newTermTestingCenterInfo(Term term) {
+        //TODO
+        return false;
+    }
+
     public boolean updateField(Term term, String fieldName, Object value) {
         Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;

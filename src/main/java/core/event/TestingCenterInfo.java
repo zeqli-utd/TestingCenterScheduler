@@ -1,10 +1,6 @@
 package core.event;
 
 import javax.persistence.*;
-import java.io.IOException;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -48,6 +44,10 @@ public class TestingCenterInfo {
     @Basic(optional = false)
     @Column(name = "reminderInterval")
     private int reminderInterval;
+
+    public TestingCenterInfo() {
+
+    }
 
     public TestingCenterInfo(Term term, int numSeats, int numSetAsideSeats, LocalTime open,
                              LocalTime close, List<LocalDate[]> closeDateRanges,

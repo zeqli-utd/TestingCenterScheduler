@@ -1,14 +1,11 @@
 package core.event;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.time.LocalDate;
 
 /**
  * This class holds Term information and responsible to
  * translate between Term id to actual Term name
  */
-@Entity
 public class Term {
     /**
      * Year 2015 -> 115x
@@ -19,27 +16,20 @@ public class Term {
      * Year 2016 -> 116x
      * ...
      */
-    @Id
     private int termId;
     private String termName;
     private LocalDate termStartDate;
     private LocalDate termEndDate;
 
-    private TestingCenterInfo testingCenterInfo;
+    public Term (){
+
+    }
 
     public Term(String termName, LocalDate termStartDate, LocalDate termEndDate) {
         this.setTermId(termNameToId());
         this.setTermStartDate(termStartDate);
         this.setTermEndDate(termEndDate);
         this.setTermName(termName);
-    }
-
-    public TestingCenterInfo getTestingCenterInfo() {
-        return testingCenterInfo;
-    }
-
-    public void setTestingCenterInfo(TestingCenterInfo testingCenterInfo) {
-        this.testingCenterInfo = testingCenterInfo;
     }
 
     public int getTermId() {
