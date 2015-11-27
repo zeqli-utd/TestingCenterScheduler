@@ -11,9 +11,9 @@ public abstract class UserType {
     @Column(name = "net_id")
     protected String netId;
 
-    @Basic(optional = false)
-    @Column(name = "password")
-    protected String password;
+    //@Basic(optional = false)
+    //@Column(name = "password")
+    //protected String password;
 
     @Basic(optional = false)
     @Column(name = "first_name")
@@ -28,9 +28,7 @@ public abstract class UserType {
     protected String email;
 
 
-    public UserType()
-    {
-    }
+    public UserType(){}
 
     public String getNetId() {
         return netId;

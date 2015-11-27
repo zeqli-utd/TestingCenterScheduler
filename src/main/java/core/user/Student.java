@@ -34,9 +34,9 @@ public class Student extends UserType {
     public Student() {
     }
 
-    public Student(String netId, String pwd, String firstName, String lastName, String email) {
+    public Student(String netId, String firstName, String lastName, String email) {
         this.netId = netId;
-        this.password = pwd;
+        //this.password = pwd;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

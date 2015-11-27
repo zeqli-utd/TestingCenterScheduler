@@ -18,9 +18,9 @@ public class Instructor extends UserType {
     // Empty Constructor for Hibernate
     public Instructor() { }
 
-    public Instructor(String netId, String pwd, String firstName, String lastName, String email) {
+    public Instructor(String netId, String firstName, String lastName, String email) {
         this.netId = netId;
-        this.password = pwd;
+        //this.password = pwd;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

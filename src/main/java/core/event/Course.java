@@ -33,6 +33,14 @@ public class Course {
     public Course() {
     }
 
+    public Course(String courseId, String subject, String catalog, String session, String instructorID) {
+        this.courseId = courseId;
+        this.subject = subject;
+        this.catalog = Integer.parseInt(catalog);
+        this.session = Integer.parseInt(session);
+        this.instructorID = instructorID;
+    }
+
     public String getCourseId() {
         return this.courseId;
     }

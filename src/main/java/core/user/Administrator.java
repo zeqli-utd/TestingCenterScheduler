@@ -30,7 +30,7 @@ public class Administrator extends UserType {
 
     public Administrator(String netId, String pwd, String firstName, String lastName, String email) {
         this.netId = netId;
-        this.password = pwd;
+        //this.password = pwd;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
