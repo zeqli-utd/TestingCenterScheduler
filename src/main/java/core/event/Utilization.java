@@ -1,13 +1,23 @@
-
 package core.event;
 
 import core.event.dao.AppointmentDao;
 import core.event.dao.AppointmentDaoImp;
 import core.event.dao.ExamDao;
 import core.event.dao.ExamDaoImp;
+import core.service.SessionManager;
+import core.service.TestingCenterInfoRetrieval;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+@Component
 public class Utilization {
 
     private double utilzExpection;
@@ -16,50 +26,60 @@ public class Utilization {
     private int numStudent;
     private int numDay;
     private double gap;
-    private int day;
     private String exam;
     private int numSeat;
+    AppointmentDao appointmentDao;
+    ExamDao examDao;
 
-    private TestingCenterInfo center;
-    AppointmentDao appointmentDao = new AppointmentDaoImp();
-    ExamDao examDao = new ExamDaoImp();
+    @Autowired
+    TestingCenterInfoRetrieval testingCenterInfoRetrieval;
+
+    TestingCenterInfo center;
 
     public Utilization(){
-        //TODO Remove this
+        //center = new TestingCenterInfo();
         appointmentDao = new AppointmentDaoImp();
         examDao = new ExamDaoImp();
     }
 
+    public double countUtilzActual(LocalDateTime dateTime){
+        center = testingCenterInfoRetrieval.findByTerm(testingCenterInfoRetrieval.getTermByDay(dateTime));
+        LocalDate date = dateTime.toLocalDate();
 
-
-    public double countUtilzActual(){
         double TotalDuration = 0;//
         double Hours = (double)ChronoUnit.MINUTES.between(center.getOpen(), center.getClose())/60;////
 
         for (Appointment appointment : appointmentDao.findAllAppointment()) {
             //System.out.println(appointment.getAppointmentID());
-            TotalDuration += (double)ChronoUnit.MINUTES.between(appointment.getStartDateTime(), appointment.getEndDateTime())/60;
+            LocalDate aday = appointment.getStartDateTime().toLocalDate();
+            //if(aday.getYear()==day.getYear() && aday.getMonth()==day.getMonth() && aday.getDayOfMonth()==day.getDayOfMonth()){
+            if(aday.isEqual(date)){
+                TotalDuration += (double)ChronoUnit.MINUTES.between(appointment.getStartDateTime(), appointment.getEndDateTime())/60;
+            }
         }
-        utilzActual = (TotalDuration / (double)(numSeat * Hours))*100;
+        utilzActual = TotalDuration / (numSeat * Hours);
         return utilzActual;
     }
 
-    public double countUtilzExpection(){
-        double TotalExamDuration = 0;
+    public double countUtilzExpection(LocalDateTime dateTime){
+        center = testingCenterInfoRetrieval.findByTerm(testingCenterInfoRetrieval.getTermByDay(dateTime));
+        LocalDate date = dateTime.toLocalDate();
+
+        double ExpectedApptmentsDuration = 0;
         double Hours = (double)ChronoUnit.MINUTES.between(center.getOpen(), center.getClose())/60;////
 
-//        System.out.println(examDao.find);
+//      System.out.println(examDao.find);
 
         for (Exam exam: examDao.getAllExams()) {
-//            System.out.println(Exam.getDuration()+gap);
-//            System.out.println((double)Exam.getCapacity());
-//            System.out.println((double)Exam.getNumAppointments()/(double)(day*24));
-//            System.out.println((double)Exam.getNumAppointments());
-//            System.out.println((double)day);
-            TotalExamDuration += (exam.getDuration()+ gap) * (((double)exam.getCapacity() - (double)exam.getNumAppointments())/(double)(day*24)) ;
-        }
+            LocalDate startDay = exam.getStartDateTime().toLocalDate();
+            LocalDate endDay = exam.getStartDateTime().toLocalDate();
 
-        return  utilzActual + (TotalExamDuration)*100;
+            if( (startDay.isBefore(date) || startDay.isEqual(date)) && (endDay.isAfter(date) || endDay.isEqual(date)) ){
+                ExpectedApptmentsDuration += (exam.getDuration()+ gap) * (((double)exam.getCapacity() - (double)exam.getNumAppointments())/ exam.getDayDuration()) ;
+            }
+        }
+        utilzExpection = utilzActual + ExpectedApptmentsDuration/(numSeat * Hours);
+        return  utilzExpection;
     }
 
 
@@ -117,14 +137,6 @@ public class Utilization {
 
     public void setNumSeat(int numSeat) {
         this.numSeat = numSeat;
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
     }
 
     public String getExam() {
