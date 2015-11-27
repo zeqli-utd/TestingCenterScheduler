@@ -1,15 +1,13 @@
 package core.controller.administrator;
 
-import core.event.dao.AppointmentDao;
-import core.event.dao.ReservationDao;
 import core.event.Term;
 import core.event.TestingCenterInfo;
+import core.event.dao.AppointmentDao;
+import core.event.dao.ReservationDao;
 import core.helper.StringResources;
-import core.service.TermManager;
 import core.service.TestingCenterInfoRetrieval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -62,7 +60,7 @@ public class AdministratorPageController {
                 StringResources.ADMINISTRATOR_OPERATIONS.get("viewInfo"));
         modelAndView.addObject("content", includes("edit-info"));
 
-        Term term = TestingCenterInfoRetrieval.getCurrentTerm();
+        Term term = infoRetrieval.getCurrentTerm();
         TestingCenterInfo centerInfo = infoRetrieval.findByTerm(term);
         modelAndView.addObject("centerInfo", centerInfo);
         modelAndView.addObject("term", term);

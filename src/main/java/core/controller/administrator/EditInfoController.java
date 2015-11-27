@@ -19,7 +19,6 @@ import java.util.Map;
  * testing center information.
  */
 @Controller
-@SessionAttributes("newTerm")
 @RequestMapping("admin/edit-info")
 public class EditInfoController {
     @Autowired
@@ -49,12 +48,12 @@ public class EditInfoController {
                                 @ModelAttribute("newTerm") Term term,
                                 ModelMap model) {
         TestingCenterInfo testingCenterInfo = infoRetrieval.findByTerm(term);
-
+        return "";
     }
 
     @RequestMapping("new-two")
     public String createNewInfoTwo(ModelMap model) {
-
+        return "";
     }
 
     /**
