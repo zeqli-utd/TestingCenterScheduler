@@ -28,6 +28,7 @@
             <jsp:include page="include/sidebar.jsp"/>
         </div>
         <div class="content">
+            <p>${errorMessage}</p>
             <jsp:include page="${content}"/>
         </div>
     </div>

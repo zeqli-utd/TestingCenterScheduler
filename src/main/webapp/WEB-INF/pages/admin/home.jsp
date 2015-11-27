@@ -32,6 +32,7 @@
             <jsp:include page="include/sidebar.jsp" flush="true"/>
         </div>
         <div class="content">
+            <p>${errorMessage}</p>
             <jsp:include page="${content}" flush="true"/>
         </div>
     </div>

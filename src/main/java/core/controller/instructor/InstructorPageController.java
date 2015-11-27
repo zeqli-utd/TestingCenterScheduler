@@ -1,10 +1,6 @@
 package core.controller.instructor;
 
-import core.event.dao.AppointmentDao;
-import core.event.dao.ReservationDao;
 import core.helper.StringResources;
-import core.service.TestingCenterInfoRetrieval;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,12 +8,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/instructor")
 public class InstructorPageController {
-    @Autowired
-    private TestingCenterInfoRetrieval infoRetrieval;
-    @Autowired
-    private ReservationDao reservationAccess;
-    @Autowired
-    private AppointmentDao appointmentDao;
 
     @RequestMapping("view-requests")
     public ModelAndView viewRequests(ModelAndView model) {
