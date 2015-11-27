@@ -47,7 +47,7 @@ public class StudentDaoImp implements StudentDao {
 
         try {
             tx = session.beginTransaction();
-            Administrator e = (Administrator) session.get(Administrator.class, student.getNetId());
+            Administrator e = (Administrator)session.get(Administrator.class, student.getNetId());
             session.delete(e);
             tx.commit();
         } catch (HibernateException he) {

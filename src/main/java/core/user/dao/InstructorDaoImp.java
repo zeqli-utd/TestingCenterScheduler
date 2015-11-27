@@ -18,18 +18,57 @@ public class InstructorDaoImp implements InstructorDao {
     public InstructorDaoImp() {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
-        tx = session.beginTransaction();
-        instructors = session.createQuery("FROM Instructor ").list();
-        session.close();
+        try {
+            tx = session.beginTransaction();
+            instructors = session.createQuery("FROM Instructor ").list();
+        } catch (HibernateException he) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
     }
+
     @Override
     public List<Instructor> findAll() {
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            instructors = session.createQuery("FROM Instructor").list();
+            tx.commit();
+        } catch (HibernateException he) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
         return instructors;
     }
 
     @Override
-    public Instructor findByNetID(String id) {
-        return instructors.get(Integer.parseInt(id));
+    public Instructor findByNetID(String netId) {
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        Instructor result = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("SELECT Instructor I WHERE I.netId = :id");
+            query.setParameter("id", netId);
+            query.executeUpdate();// this int return the number of entities updated or deleted
+            tx.commit();
+            result = (Instructor)query.uniqueResult();
+            session.close();
+        } catch (HibernateException he) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return result;
     }
 
     @Override
@@ -41,13 +80,12 @@ public class InstructorDaoImp implements InstructorDao {
             tx = session.beginTransaction();
             session.save(instructor);
             session.getTransaction().commit();
-        }
-        catch (HibernateException he){
-            if(tx != null){
+        } catch (HibernateException he) {
+            if (tx != null) {
                 tx.rollback();
             }
             return false;
-        }finally {
+        } finally {
             session.close();
         }
         return true;
@@ -65,9 +103,8 @@ public class InstructorDaoImp implements InstructorDao {
 
             int ret = query.executeUpdate();
             tx.commit();
-        }
-        catch (HibernateException he){
-            if(tx != null){
+        } catch (HibernateException he) {
+            if (tx != null) {
                 tx.rollback();
             }
             return false;
@@ -88,9 +125,8 @@ public class InstructorDaoImp implements InstructorDao {
             int ret = query.executeUpdate();// this int return the number of entities updated or deleted
             tx.commit();
             session.close();
-        }
-        catch (HibernateException he){
-            if(tx != null){
+        } catch (HibernateException he) {
+            if (tx != null) {
                 tx.rollback();
             }
             return false;
