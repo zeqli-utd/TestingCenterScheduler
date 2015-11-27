@@ -2,22 +2,30 @@ package core.event;
 
 import core.service.SessionManager;
 import core.user.Student;
-import org.hibernate.*;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 @Entity
+@Table(name = "appointments")
+@AssociationOverrides({
+        @AssociationOverride(name = "id.student", joinColumns = @JoinColumn(name = "net_id")),
+        @AssociationOverride(name = "id.exam", joinColumns = @JoinColumn(name = "exam_id"))
+})
 public class Appointment {
-    @Id
+//    @Id
     @Column(name = "appointment_id")
     private String appointmentID;
+
+    @EmbeddedId
+    private StudentExamPK id = new StudentExamPK();
 
     @Column(name = "exam_id")
     @Basic(optional = false)
@@ -25,16 +33,17 @@ public class Appointment {
 
     @Column(name = "made_by")
     @Basic(optional = false)
-    private String madeBy;
+    private String madeBy;  // Student Id
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="start_time", nullable = false)
-    private Date startDateTime;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="end_time")
     @Basic(optional = false)
-    private Date endDateTime;
+    @Type(type = "org.hibernate.type.LocalDateTimeType")
+    private LocalDateTime startDateTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Basic(optional = false)
+    @Type(type = "org.hibernate.type.LocalDateTimeType")
+    private LocalDateTime endDateTime;
 
     @Column(name="student_Id")
     @Basic(optional = false)
@@ -58,10 +67,8 @@ public class Appointment {
         this.appointmentID = appointmentID;
         this.examId = examId;
         this.madeBy = madeBy;
-        Instant instant1 = startDateTime.atZone(ZoneId.systemDefault()).toInstant();
-        this.startDateTime = Date.from(instant1);
-        Instant instant2 = endDateTime.atZone(ZoneId.systemDefault()).toInstant();
-        this.endDateTime = Date.from(instant2);
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
         this.studentId = netId;
         this.seat = seat;
         this.isAttend = isAttend;
@@ -72,7 +79,7 @@ public class Appointment {
         String examIdCheck = getExamId();
         int legalAppointment = 0;
         int size = -1;
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -113,6 +120,15 @@ public class Appointment {
             return false;
     }
 
+    /*-------------Getter and Setters-------------*/
+    public StudentExamPK getId() {
+        return id;
+    }
+
+    public void setId(StudentExamPK id) {
+        this.id = id;
+    }
+
     public String getAppointmentID() {
         return appointmentID;
     }
@@ -129,33 +145,21 @@ public class Appointment {
         this.examId = examId;
     }
 
-    public LocalDateTime getStartDateTime() {// date to
-        Instant instant = Instant.ofEpochMilli(startDateTime.getTime());
-        LocalDateTime res = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-
-        return res;
+    public LocalDateTime getStartDateTime() {
+        return startDateTime;
     }
 
     public void setStartDateTime(LocalDateTime startDateTime) {
-        Instant instant = startDateTime.atZone(ZoneId.systemDefault()).toInstant();
-        this.startDateTime = Date.from(instant);
+        this.startDateTime = startDateTime;
     }
 
-
-
     public LocalDateTime getEndDateTime() {
-        Instant instant = Instant.ofEpochMilli(endDateTime.getTime());
-        LocalDateTime res = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-
-        return res;
+        return endDateTime;
     }
 
     public void setEndDateTime(LocalDateTime endDateTime) {
-        Instant instant = endDateTime.atZone(ZoneId.systemDefault()).toInstant();
-        this.endDateTime = Date.from(instant);
+        this.endDateTime = endDateTime;
     }
-
-
 
     public String getStudentId() {
         return studentId;
@@ -214,4 +218,30 @@ public class Appointment {
         }
 
     }
+
+    // Legacy Code
+
+//    public LocalDateTime getStartDateTime() {// date to
+//        Instant instant = Instant.ofEpochMilli(startDateTime.getTime());
+//        LocalDateTime res = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+//
+//        return res;
+//    }
+//
+//    public void setStartDateTime(LocalDateTime startDateTime) {
+//        Instant instant = startDateTime.atZone(ZoneId.systemDefault()).toInstant();
+//        this.startDateTime = Date.from(instant);
+//    }
+//
+//    public LocalDateTime getEndDateTime() {
+//        Instant instant = Instant.ofEpochMilli(endDateTime.getTime());
+//        LocalDateTime res = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+//
+//        return res;
+//    }
+//
+//    public void setEndDateTime(LocalDateTime endDateTime) {
+//        Instant instant = endDateTime.atZone(ZoneId.systemDefault()).toInstant();
+//        this.endDateTime = Date.from(instant);
+//    }
 }

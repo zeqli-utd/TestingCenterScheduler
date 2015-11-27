@@ -72,7 +72,7 @@ public class StudentFunctionalityTest {
 
     // Insert a row into Appointment Table
     public void addAppointment(Appointment appt) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -98,7 +98,7 @@ public class StudentFunctionalityTest {
     }
 //
     public void addStudent(Student student){
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -115,7 +115,7 @@ public class StudentFunctionalityTest {
     }
 
     public void addExam(Exam exam){
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -132,11 +132,11 @@ public class StudentFunctionalityTest {
     }
 
     public boolean checkLegalAppointment(Appointment a){
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         String studentIdCheck = a.getStudentId();
         String examIdCheck = a.getExamId();
         boolean result = true;
-//        Session session = SessionManager.getInstance().getOpenSession();
+//        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -187,7 +187,7 @@ public class StudentFunctionalityTest {
     public void cancelAppointment(Appointment appt){
         AppointmentDaoImp imp = new AppointmentDaoImp();
 //        if(appt.getStartDateTime().minusHours(24).isAfter(LocalDateTime.now())){
-            imp.deleteAppointment(appt);
+            imp.deleteAppointment(appt.getAppointmentID());
 //            System.out.print("Successfully deleted.");
 //        }
         log.info("---------- cancelAppointment(Appointment appt) ----------");

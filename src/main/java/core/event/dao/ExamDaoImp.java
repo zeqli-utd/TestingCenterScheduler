@@ -18,7 +18,7 @@ public class ExamDaoImp implements ExamDao {
 
     @Override
     public List getAllExams() {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         List exams = null;
         try {
@@ -37,7 +37,7 @@ public class ExamDaoImp implements ExamDao {
 
     @Override
     public Exam findByExamId(String examId) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery
                 ("FROM Exam E WHERE E.examId = :eId");
@@ -51,7 +51,7 @@ public class ExamDaoImp implements ExamDao {
     @Override
     public List findByInstructorId(String instructorId) {
         List result;
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery
                 ("FROM Exam E WHERE E.instructorId = :insId");
@@ -65,7 +65,7 @@ public class ExamDaoImp implements ExamDao {
 
     @Override
     public boolean addExam(Exam exam) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -84,7 +84,7 @@ public class ExamDaoImp implements ExamDao {
 
     @Override
     public boolean updateExam(Exam exam, String id) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -108,7 +108,7 @@ public class ExamDaoImp implements ExamDao {
 
     @Override
     public boolean deleteExam(String examId) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -132,7 +132,7 @@ public class ExamDaoImp implements ExamDao {
 
     @Override
     public void listExamByApprovedRequest(String exId){//listReservationByApprovedRequest
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();

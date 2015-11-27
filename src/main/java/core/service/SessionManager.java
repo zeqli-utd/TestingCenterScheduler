@@ -2,36 +2,72 @@ package core.service;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 
 public class SessionManager {
     private static SessionManager instance;
     private static SessionFactory sessionFactory;
+    private static StandardServiceRegistryBuilder serviceRegistryBuilder;
     private static ServiceRegistry serviceRegistry;
 
-    public SessionManager() {}
+    public SessionManager() {
+    }
 
     public static SessionManager getInstance() {
-        if (instance==null){
+        if (instance == null) {
             instance = new SessionManager();
             sessionFactory = createSessionFactory();
         }
         return instance;
     }
 
-    public static SessionFactory createSessionFactory() {
-        Configuration configuration = new Configuration();
-        configuration.configure();
-        serviceRegistry = new ServiceRegistryBuilder().applySettings(
-                configuration.getProperties()). buildServiceRegistry();
+    private static SessionFactory createSessionFactory() {
+        Configuration configuration = new Configuration()
+                .addAnnotatedClass(core.user.Administrator.class)
+                .addAnnotatedClass(core.user.UserType.class)
+                .addAnnotatedClass(core.user.Student.class)
+                .addAnnotatedClass(core.user.Instructor.class)
+                .addAnnotatedClass(core.user.Instructor.class)
+                .addAnnotatedClass(core.user.Instructor.class)
+                .addAnnotatedClass(core.event.Exam.class)
+                .addAnnotatedClass(core.event.Course.class)
+                .addAnnotatedClass(core.event.Utilization.class)
+                .addAnnotatedClass(core.event.Appointment.class)
+                .addAnnotatedClass(core.event.Reservation.class)
+                .addAnnotatedClass(core.event.StudentExamPK.class)
+                .addAnnotatedClass(core.event.Course.class)
+                .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect")
+                .setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver")
+                .setProperty("hibernate.connection.url", "jdbc:mysql://Localhost:3306/test")
+                .setProperty("hibernate.connection.username", "thedueteam")
+                .setProperty("hibernate.connection.password", "thedueteam")
+                .setProperty("hibernate.hbm2ddl.auto", "create-drop")
+                .setProperty("hibernate.show_sql", "true");
+        serviceRegistryBuilder = new StandardServiceRegistryBuilder().applySettings(
+                configuration.getProperties());
+        serviceRegistry = serviceRegistryBuilder.build();
         sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         return sessionFactory;
     }
 
+//      Old one, this use configuration file
+//    private static SessionFactory createSessionFactory() {
+//        Configuration configuration = new Configuration();
+//        configuration.configure();
+//        serviceRegistryBuilder = new StandardServiceRegistryBuilder().applySettings(
+//                configuration.getProperties());
+//        serviceRegistry = serviceRegistryBuilder.build();
+//        sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+//        return sessionFactory;
+//    }
 
-    public Session getOpenSession(){
+
+    /**
+     * @return
+     */
+    public Session openSession() {
         return sessionFactory.openSession();
     }
 
@@ -39,7 +75,7 @@ public class SessionManager {
     // USE CASE - SEE Administrator Class
 //    public Appointment getAppointment(String apptID){
     // Open a session
-//        Session session = sessionManager.getInstance().getOpenSession();
+//        Session session = sessionManager.getInstance().openSession();
 //        Transaction tx = null;
     //
 //        Appointment appt = null;

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Component
@@ -244,6 +245,10 @@ public class Exam {
 //    }
 
     public int getDuration() { return duration;    }
+
+    public int getDayDuration() {
+        return (int)ChronoUnit.DAYS.between(startDateTime.toLocalDate(), endDateTime.toLocalDate());
+    }
 
     public String getCourseId() {
         return courseId;

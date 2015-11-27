@@ -18,7 +18,7 @@ public class CourseDaoImp implements CourseDao {
 
     @Override
     public List getAllCourse() {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         courses = session.createQuery("FROM Course ").list();
         session.close();
         return courses;
@@ -26,7 +26,7 @@ public class CourseDaoImp implements CourseDao {
 
     @Override
     public Course findByCourseId(String courseId) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery
                 ("FROM Course C WHERE C.courseId = :coId");
@@ -39,7 +39,7 @@ public class CourseDaoImp implements CourseDao {
 
     @Override
     public boolean addCourse(Course course) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -59,7 +59,7 @@ public class CourseDaoImp implements CourseDao {
 
     @Override
     public boolean updateCourse(Course course, String id) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -84,7 +84,7 @@ public class CourseDaoImp implements CourseDao {
 
     @Override
     public boolean deleteCourse(String courseId) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();

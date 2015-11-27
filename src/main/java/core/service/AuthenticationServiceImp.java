@@ -27,7 +27,7 @@ public class AuthenticationServiceImp implements AuthenticationService{
     @Override
     public boolean registeredUserId(String userId) {
 
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
 
         List allUserId = session.createQuery("SELECT netId FROM UserType").list();
@@ -37,7 +37,7 @@ public class AuthenticationServiceImp implements AuthenticationService{
         session.close();
         return result;
 
-        /*Session session = sessionManager.getInstance().getOpenSession();
+        /*Session session = sessionManager.getInstance().openSession();
 
         List allUser = session.createQuery("FROM UserType").list();
 
@@ -65,7 +65,7 @@ public class AuthenticationServiceImp implements AuthenticationService{
         session.beginTransaction();
         session.save(e);
         session.getTransaction().commit();*/
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
         List allUser = session.createQuery("FROM UserType").list();
 
@@ -87,7 +87,7 @@ public class AuthenticationServiceImp implements AuthenticationService{
     @Override
     public Authorization login(String userId, String password) {
         //Authorization result = Authorization.STUDENT;
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
 
         List allAdministrator = session.createQuery("FROM Administrator").list();

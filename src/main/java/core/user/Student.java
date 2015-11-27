@@ -1,15 +1,30 @@
 package core.user;
 
+import core.event.Appointment;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Student")
 public class Student extends UserType {
-//    @Basic(optional = false)
+
+
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    //    @Basic(optional = false)
 //    public static final Authorization permission = Authorization.STUDENT;
 //
-//    @OneToMany(mappedBy = "studentID")
-//    private List<Appointment> appointments;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id.student", cascade = CascadeType.ALL)
+    private List<Appointment> appointments = new ArrayList<>();
 
 //    private String name;
 //    private int student_Id;

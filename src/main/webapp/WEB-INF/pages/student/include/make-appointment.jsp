@@ -32,7 +32,7 @@
                 </td>
                 <td>
                     <a href="student/make-appointment/new/${exam.examId}">
-                    ${exam.instructorName}
+                    ${exam.madeBy}
                     </a>
                 </td>
                 <td>

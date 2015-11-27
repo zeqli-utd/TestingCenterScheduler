@@ -16,7 +16,7 @@ public class InstructorDaoImp implements InstructorDao {
     List<Instructor> instructors;
 
     public InstructorDaoImp() {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         tx = session.beginTransaction();
         instructors = session.createQuery("FROM Instructor ").list();
@@ -34,7 +34,7 @@ public class InstructorDaoImp implements InstructorDao {
 
     @Override
     public boolean addInstructor(Instructor instructor) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
 
@@ -55,7 +55,7 @@ public class InstructorDaoImp implements InstructorDao {
 
     @Override
     public boolean updateInstructor(Instructor instructor, String id) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -79,7 +79,7 @@ public class InstructorDaoImp implements InstructorDao {
 
     @Override
     public boolean deleteInstructor(Instructor instructor) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
