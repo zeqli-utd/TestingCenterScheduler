@@ -1,5 +1,7 @@
 package core.event;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -15,14 +17,14 @@ public class Reservation {
     private String reservationID;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="start_date_time")
     @Basic(optional = false)
-    private Date startDateTime;
+    @Type(type = "org.hibernate.type.LocalDateTimeType")
+    private LocalDateTime startDateTime;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name="end_date_time")
     @Basic(optional = false)
-    private Date endDateTime;
+    @Type(type = "org.hibernate.type.LocalDateTimeType")
+    private LocalDateTime endDateTime;
 
     @Column(name="instructor_id")
     @Basic(optional = false)
@@ -58,8 +60,8 @@ public class Reservation {
             String insId,
             String terms) {
         this.reservationID = id;
-        this.setStartDateTime(startTime);
-        this.setEndDateTime(endTime);
+        this.startDateTime = startTime ;
+        this.endDateTime = endTime;
         instructorId = insId;
         this.terms = terms;
         this.status = "Pending";
@@ -82,27 +84,6 @@ public class Reservation {
         this.terms = terms;
     }
 
-    public LocalDateTime getStartDateTime() {
-        Date ts = startDateTime;
-        Instant instant = Instant.ofEpochMilli(ts.getTime());
-        return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-    }
-
-    public void setStartDateTime(LocalDateTime startDateTime) {
-        Instant instant = startDateTime.atZone(ZoneId.systemDefault()).toInstant();
-        this.startDateTime = Date.from(instant);
-    }
-
-    public LocalDateTime getEndDateTime() {
-        Date ts = endDateTime;
-        Instant instant = Instant.ofEpochMilli(ts.getTime());
-        return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-    }
-
-    public void setEndDateTime(LocalDateTime endDateTime) {
-        Instant instant = endDateTime.atZone(ZoneId.systemDefault()).toInstant();
-        this.endDateTime = Date.from(instant);
-    }
 
     public void setReservationID(String reservationID) {
         this.reservationID = reservationID;
@@ -128,14 +109,44 @@ public class Reservation {
         return status;
     }
 
-    // Extend functionality
     public LocalDate getStartDate(){
-        Instant instant = Instant.ofEpochMilli(startDateTime.getTime());
-        return LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
+         return startDateTime.toLocalDate();
     }
 
     public LocalDate getEndDate(){
-        Instant instant = Instant.ofEpochMilli(endDateTime.getTime());
-        return LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
+        return endDateTime.toLocalDate();
     }
+
+
+    // Legacy Code
+//    public LocalDateTime getStartDateTime() {
+//        Date ts = startDateTime;
+//        Instant instant = Instant.ofEpochMilli(ts.getTime());
+//        return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+//    }
+//
+//    public void setStartDateTime(LocalDateTime startDateTime) {
+//        Instant instant = startDateTime.atZone(ZoneId.systemDefault()).toInstant();
+//        this.startDateTime = Date.from(instant);
+//    }
+//
+//    public LocalDateTime getEndDateTime() {
+//        Date ts = endDateTime;
+//        Instant instant = Instant.ofEpochMilli(ts.getTime());
+//        return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+//    }
+//
+//    public void setEndDateTime(LocalDateTime endDateTime) {
+//        Instant instant = endDateTime.atZone(ZoneId.systemDefault()).toInstant();
+//        this.endDateTime = Date.from(instant);
+//
+//    public LocalDate getStartDate(){
+//        Instant instant = Instant.ofEpochMilli(startDateTime.getTime());
+//        return LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
+//    }
+//
+//    public LocalDate getEndDate(){
+//        Instant instant = Instant.ofEpochMilli(endDateTime.getTime());
+//        return LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
+//    }
 }

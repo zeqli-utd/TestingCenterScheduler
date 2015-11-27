@@ -42,7 +42,7 @@ public class Administrator extends UserType {
 
     public List listAllAppointments(LocalDateTime ldt){
 
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         List appointments = null;
         try {
@@ -89,7 +89,7 @@ public class Administrator extends UserType {
     }
 
     public List listAllAppointments(){
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         List appointments = null;
         try {
@@ -132,7 +132,7 @@ public class Administrator extends UserType {
     // 1. Delete Appointment
     // 2. Release Seats
     public void cancelAppointment(String apptId){
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -165,7 +165,7 @@ public class Administrator extends UserType {
 
     // GET APPOINTMENT
     public Appointment getAppointment(String apptID){
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         Appointment appt = null;
         try {
@@ -194,7 +194,7 @@ public class Administrator extends UserType {
 
     // Update Edited Appointment
     public void updateAppointment(Appointment appt){
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -230,7 +230,7 @@ public class Administrator extends UserType {
      * @param netId
      */
     public String checkInStudent(String examId, String netId){
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         String assignedSeat = "N/A";
         Appointment appt = new Appointment();

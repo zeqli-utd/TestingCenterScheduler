@@ -58,7 +58,7 @@ public class DataCollection {
                     hash.put(list.get(i)[0], list.get(i)[1]);
                 }
                 markSuperfluous(appointmentList, list);
-                Session session = SessionManager.getInstance().getOpenSession();
+                Session session = SessionManager.getInstance().openSession();
                 Transaction tx = null;
                 try {
                     tx = session.beginTransaction();

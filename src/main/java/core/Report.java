@@ -38,10 +38,10 @@ public class Report {
         appointments = appointmentDao.findAllAppointmentsByTerm(term);
 
         // Output the result in a String
-        String sDayReport = "";
-        sDayReport += "### Reports by Day ###\n";
-        sDayReport += String.format("%10s | %20s", "Date ", "# of Appointments" ) + "\n";
-
+        String header = "<div id=\"day_report\"><table>" +
+                "<tr><td><pre>Appointments Daily Reports</pre></td></tr>" +
+                "<tr><td><pre>- - - - -    " + term.getTermName() + "    - - - - -</pre></td></tr>";
+        String body = "";
         // Print a list of day in entire semester, and number of appointments corresponding to each day.
         for (LocalDate localDate = term.getTermStartDate(); localDate.isBefore(term.getTermEndDate().plusDays(1));
              localDate = localDate.plusDays(1)) {
@@ -57,16 +57,11 @@ public class Report {
                 }
             }
 
-            sDayReport += String.format("%s%13d",localDate.toString(), numAppts) + "\n";
-            for(Appointment appt:apptsOnCertainDay){
-                sDayReport += "  | - ExamId: " + appt.getExamId() + "\n";
-                sDayReport += "  | - AppointmentId: " + appt.getAppointmentID() + "\n";
-                sDayReport += "  | - MadeBy: " + appt.getMadeBy() + "\n";
-            }
+            body += "<tr><td><pre>" + String.format("%s%13d",localDate.toString(), numAppts) + "</pre></td></tr>";
+
         }
-        sDayReport += "### End of report... ###\n";
-        log.debug("\n\n" + sDayReport);
-        return sDayReport;
+        String footer = "</table></div>";
+        return header+body+footer;
     }
 
     /**
@@ -77,9 +72,11 @@ public class Report {
     public String showWeekReport(Term term) {
         AppointmentDao appointmentDao = new AppointmentDaoImp();
         appointments = appointmentDao.findAllAppointmentsByTerm(term);
-        String sWeekReport = "";
-        sWeekReport += "### Reports by Week ###\n";
 
+        String header = "<div id=\"week_report\"><table>" +
+                "<tr><td><pre>Appointments Weekly Reports</pre></td></tr>" +
+                "<tr><td><pre>- - - - -    " + term.getTermName() + "    - - - - -</pre></td></tr>";
+        String body = "";
         // Assume each semester starts on Monday
         for (LocalDate date = term.getTermStartDate(); date.isBefore(term.getTermEndDate().plusDays(1)); date = date.plusWeeks(1)) {
             List<Appointment> list = new LinkedList<>();
@@ -101,20 +98,23 @@ public class Report {
                 }
             }
 
-            sWeekReport += "| - Week of " + String.format("%11s", date.format(DateTimeFormatter.ofPattern("LLLL dd, yyyy"))) +
-                    String.format("%12d", list.size()).replace(' ', '-') + " Appointments\n";
+            // Week Header
+            body += "<tr><td><div><pre>Week of " + String.format("%11s%5d",
+                    date.format(DateTimeFormatter.ofPattern("LLLL dd, yyyy")), list.size())
+                    + "</pre></div></td></tr>";
+
+            // Week Body
+
 
             // Iterate through hash table and get the appointments counts.
             Iterator it = courseCount.entrySet().iterator();
             while (it.hasNext()){
                 Map.Entry pair = (Map.Entry)it.next();
-                sWeekReport += "  | - " + pair.getKey() + String.format("%12d", pair.getValue()).replace(' ', '-')
-                 + " Appointments\n";
+                body += "<tr><td><div><pre>"+ String.format("%s%5d",pair.getKey(),pair.getValue()) + "</pre></div></td></tr>";
             }
         }
-        sWeekReport += "### End of report... ###\n";
-        log.debug("\n\n" + sWeekReport);
-        return sWeekReport;
+        String footer = "</table></div>";
+        return header+body+footer;
     }
 
     /**
@@ -123,9 +123,15 @@ public class Report {
      * @return
      */
     public String showTermReport(Term term){
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         Set<String> courses = new HashSet<>();
+
+        String header = "<div id=\"term_report\"><table>" +
+                "<tr><td><pre>Appointment Termly Report</pre></td></tr>" +
+                "<tr><td><pre>- - - - -    " + term.getTermName() + "    - - - - -</pre></td></tr>";
+        String body = "";
+
         try{
             tx = session.beginTransaction();
 
@@ -148,26 +154,15 @@ public class Report {
             if(tx!=null){
                 tx.rollback();
             }
-            log.error("Error with Table Join", he);
+            log.error("error", he);
         }
-//          finally {
-//            if(session.isOpen()) {
-//                session.close();
-//            }
-//        }
 
-        String sTermReport = "";
-        sTermReport += "### Reports by Term ###\n";
-        sTermReport += "| - " + term.getTermName() + " starts from " + term.getTermStartDate().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")) + "\n";
         Iterator<String> it = courses.iterator();
         while (it.hasNext()){
-            sTermReport += "| - ExamId: " + it.next() + "\n";
+            body += "<tr><td><pre>"+it.next()+"</pre></td></tr>" ;
         }
-        sTermReport += "| - " + term.getTermName() + " ends on " + term.getTermEndDate().format(DateTimeFormatter.ofPattern("MM-dd-yyyy")) + "\n";
-
-        sTermReport += "### End of report... ###\n";
-        log.debug("\n" + sTermReport);
-        return sTermReport;
+        String footer = "</table></div>";
+        return header+body+footer;
     }
 
     /**
@@ -176,12 +171,15 @@ public class Report {
      * @return
      */
     public String showTermRangeReport(List<Term> terms){
-        String sTermRangeReport = "";
-        sTermRangeReport += "### Reports by Term Range ###\n";
+        String header = "<div id=\"term_range_report\"><table>" +
+                "<tr><td><pre>Multiple Termly Report</pre></td></tr>" +
+                "<tr><td><pre>- - - - -    "+
+                terms.get(0).getTermName()+" - "+terms.get(terms.size() - 1).getTermName()+
+                "    - - - - -</pre></td></tr>";
+        String body = "";
 
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
-
         for (Term term: terms){
             try{
                 tx = session.beginTransaction();
@@ -190,8 +188,9 @@ public class Report {
                 query.setTimestamp("endDate", Date.from(term.getTermEndDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
 
                 Long apptInTerm = (Long) query.uniqueResult();
-                sTermRangeReport += String.format("| - Term %11s", term.getTermName()) +
-                        String.format("%12d", apptInTerm).replace(' ', '-') + " Appointments\n";
+                body += "<tr><td><pre>"+
+                        String.format("%11s%5d", term.getTermName(),apptInTerm)+
+                        "</pre></td></tr>";
 
                 tx.commit();
             } catch (HibernateException he) {
@@ -200,13 +199,12 @@ public class Report {
                 }
                 log.error("Error with Table Join", he);
             }
-//            finally {
-//                if(session.isOpen()) {
-//                    session.close();
-//                }
-//            }
         }
-        sTermRangeReport += "### End of report... ###\n";
-        return sTermRangeReport;
+        String footer = "</table></div>";
+        return header+body+footer;
     }
+
+
+
+
 }

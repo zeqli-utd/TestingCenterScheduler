@@ -27,7 +27,7 @@ public class ReservationDaoImp implements ReservationDao {
      */
     @Override
     public List<Reservation> findAll() {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         List<Reservation> reservations = new List<Reservation>() {
             @Override
@@ -167,7 +167,7 @@ public class ReservationDaoImp implements ReservationDao {
      */
     @Override
     public Reservation findByID(String id) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         Reservation result = new Reservation();
         try {
@@ -197,7 +197,7 @@ public class ReservationDaoImp implements ReservationDao {
      */
     @Override
     public List<Reservation> findByDate(LocalDate date) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         List<Reservation> result = new List<Reservation>() {
             @Override
@@ -344,7 +344,7 @@ public class ReservationDaoImp implements ReservationDao {
      */
     @Override
     public List<Reservation> findByInstructorId(String InstructorID) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         List<Reservation> result = new List<Reservation>() {
             @Override
@@ -484,7 +484,7 @@ public class ReservationDaoImp implements ReservationDao {
 
     @Override
     public boolean insertReservation(Reservation reservation){
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -505,7 +505,7 @@ public class ReservationDaoImp implements ReservationDao {
     @Override
     public boolean updateReservation(Reservation newReservation, String id){
     // same Id as the old reservation, but we have set the new data in this new one
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -529,7 +529,7 @@ public class ReservationDaoImp implements ReservationDao {
 
     @Override
     public boolean deleteReservation(String reservationId){//need to throw exception
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -552,7 +552,7 @@ public class ReservationDaoImp implements ReservationDao {
 
     @Override
     public boolean setType(String reservationId, String type) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -578,21 +578,21 @@ public class ReservationDaoImp implements ReservationDao {
 
     @Override
     public String getTypeById(String reservationId) {
-        Session session = SessionManager.getInstance().getOpenSession();
-        Transaction tx = null;
-        String result = "";
-        try {
-            tx = session.beginTransaction();
-            Query query = session.createQuery
-                    ("select types from Reservation R where R.reservationID = :reservationID");
+                Session session = SessionManager.getInstance().openSession();
+                Transaction tx = null;
+                String result = "";
+                try {
+                    tx = session.beginTransaction();
+                    Query query = session.createQuery
+                            ("select types from Reservation R where R.reservationID = :reservationID");
 
-            query.setParameter("reservationID", reservationId);
+                    query.setParameter("reservationID", reservationId);
 
-            tx.commit();
-            result = (String)query.uniqueResult();
-        }
-        catch (HibernateException he){
-            if(tx != null){
+                    tx.commit();
+                    result = (String)query.uniqueResult();
+                }
+                catch (HibernateException he){
+                    if(tx != null){
                 tx.rollback();
             }
         } finally {
@@ -603,7 +603,7 @@ public class ReservationDaoImp implements ReservationDao {
 
     @Override
     public boolean setStatus(String reservationId, String Status) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -627,7 +627,7 @@ public class ReservationDaoImp implements ReservationDao {
 
     @Override
     public String getStatusById(String reservationId) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         String result = "";
         try {
@@ -651,7 +651,7 @@ public class ReservationDaoImp implements ReservationDao {
 
     @Override
     public void listAllReservationByInstructorId(String instructorId){
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try{
             tx = session.beginTransaction();

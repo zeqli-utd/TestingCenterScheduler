@@ -23,7 +23,7 @@ public class AppointmentDaoImp implements AppointmentDao {
 
     @Override
     public List findAllAppointment() {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
         List appointments = session.createQuery("FROM Appointment").list();
         session.close();
@@ -33,7 +33,7 @@ public class AppointmentDaoImp implements AppointmentDao {
     @Override
     public List findAllByStudent(String NetId) {
         List result;
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery
                 ("FROM Appointment A WHERE A.studentId = :stuId");
@@ -46,7 +46,7 @@ public class AppointmentDaoImp implements AppointmentDao {
 
     @Override
     public boolean insertAppointment(Appointment appointment) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -67,7 +67,7 @@ public class AppointmentDaoImp implements AppointmentDao {
     @Override
     public boolean deleteAppointment(String appointmentId) {
 
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -91,7 +91,7 @@ public class AppointmentDaoImp implements AppointmentDao {
 
     @Override
     public boolean updateAppointment(Appointment appointment, String id){
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -116,7 +116,7 @@ public class AppointmentDaoImp implements AppointmentDao {
 
     @Override
     public List<Appointment> findAllAppointmentsByTerm(Term term) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         List<Appointment> appointments = new ArrayList<>();
         try {
@@ -140,7 +140,7 @@ public class AppointmentDaoImp implements AppointmentDao {
 
     @Override
     public Appointment findAppointmentById(String AppointmentID) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery("FROM Appointment A WHERE A.appointmentID = :appId");
         query.setParameter("appId", AppointmentID);

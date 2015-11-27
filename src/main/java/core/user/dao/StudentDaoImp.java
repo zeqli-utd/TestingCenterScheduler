@@ -27,7 +27,7 @@ public class StudentDaoImp implements StudentDao{
 
     @Override
     public boolean addStudent(Student student) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -47,7 +47,7 @@ public class StudentDaoImp implements StudentDao{
 
     @Override
     public boolean deleteStudent(Student student) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
 
         try {

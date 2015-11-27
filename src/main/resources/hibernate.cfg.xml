@@ -33,6 +33,8 @@
       <mapping class="core.event.Utilization"/>
       <mapping class="core.event.Appointment"/>
       <mapping class="core.event.Reservation"/>
+      <mapping class="core.event.StudentExamPK"/>
+
 
       <!--<mapping class="core.event.Reservation"></mapping>-->
       <mapping class="core.event.Course"/>

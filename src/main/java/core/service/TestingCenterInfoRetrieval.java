@@ -16,7 +16,7 @@ import java.time.LocalTime;
 public class TestingCenterInfoRetrieval {
 
     public TestingCenterInfo findByTerm(Term term) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery
                 ("FROM TestingCenterInfo T WHERE T.d = :tId");
@@ -28,7 +28,7 @@ public class TestingCenterInfoRetrieval {
     }
 
     public boolean updateField(Term term, String fieldName, Object value) {
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         boolean result = false;
         try {
@@ -89,7 +89,7 @@ public class TestingCenterInfoRetrieval {
      * @return
      */
     public boolean addDates(Term term, String fieldName, Object dates){
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         boolean result = false;
         try {
@@ -129,7 +129,7 @@ public class TestingCenterInfoRetrieval {
      * @return
      */
     public boolean editDates(Term term, String fieldName, int i, Object dates){
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         boolean result = false;
         try {
@@ -167,7 +167,7 @@ public class TestingCenterInfoRetrieval {
      * @return
      */
     public boolean deleteCloseDates(Term term, String fieldName, int i){
-        Session session = SessionManager.getInstance().getOpenSession();
+        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         boolean result = false;
         try {

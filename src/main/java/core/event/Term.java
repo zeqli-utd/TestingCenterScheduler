@@ -21,25 +21,22 @@ public class Term {
      */
     @Id
     private int termId;
-    private String termName;
+
+    private String termName;        // e.g. Fall 2015
+
+    @Temporal(TemporalType.DATE)
+    @Type(type = "org.hibernate.type.LocalDateType")
     private LocalDate termStartDate;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Type(type = "org.hibernate.type.LocalDateType")
     private LocalDate termEndDate;
 
-    private TestingCenterInfo testingCenterInfo;
-
-    public Term(String termName, LocalDate termStartDate, LocalDate termEndDate) {
-        this.setTermId(termNameToId());
+    public Term(int termId, LocalDate termStartDate, LocalDate termEndDate) {
+        this.setTermId(termId);
         this.setTermStartDate(termStartDate);
         this.setTermEndDate(termEndDate);
         this.setTermName(termName);
-    }
-
-    public TestingCenterInfo getTestingCenterInfo() {
-        return testingCenterInfo;
-    }
-
-    public void setTestingCenterInfo(TestingCenterInfo testingCenterInfo) {
-        this.testingCenterInfo = testingCenterInfo;
     }
 
     public int getTermId() {
@@ -56,7 +53,7 @@ public class Term {
 
     public void setTermName(String termName) {
         this.termName = termName;
-        this.termId = termNameToId();
+        this.termId = termNameToId(termName);
     }
 
     public LocalDate getTermStartDate() {
@@ -89,14 +86,14 @@ public class Term {
             default: semester = "Unknown Semester";
         }
 
-        semester = semester + " " + String.valueOf(year);
+        semester = semester + " 20" + String.valueOf(year);
         return semester;
 
     }
 
     // Convert 'Semester Year' Format to Term Id
-    private int termNameToId(){
-        String[] s = this.termName.split(" ");
+    private int termNameToId(String termName){
+        String[] s = termName.split(" ");
         String semester = s[0];
         int year = (Integer.valueOf(s[1])%100) * 10;
         int term = 1000 + year;

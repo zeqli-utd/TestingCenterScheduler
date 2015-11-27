@@ -75,10 +75,17 @@ public class ReportTest {
         report.showTermRangeReport(terms);
 
         // 5. Concatenate All Four Reports Into A Single List to Out Put in File
-        String doc = "" + report.showDayReport(term1) + "\n"
-                + report.showWeekReport(term1) + "\n"
-                + report.showTermReport(term1) + "\n"
-                + report.showTermRangeReport(terms);
+        String doc = "<!DOCTYPE html>" +
+                "<html>" +
+                "<head>" +
+                "    <title>Testing Center Scheduler Reports</title>" +
+                "</head>"
+                + report.showDayReport(term1)
+                + report.showWeekReport(term1)
+                + report.showTermReport(term1)
+                + report.showTermRangeReport(terms)
+                + "</body>"
+                + "</html>";
         log.debug("\n" + doc);
     }
 }

@@ -1,3 +1,4 @@
+
 package core.event;
 
 import core.event.dao.AppointmentDao;
@@ -19,10 +20,17 @@ public class Utilization {
     private String exam;
     private int numSeat;
 
-    private TestingCenterInfo center = new TestingCenterInfo();
-
+    private TestingCenterInfo center;
     AppointmentDao appointmentDao = new AppointmentDaoImp();
     ExamDao examDao = new ExamDaoImp();
+
+    public Utilization(){
+        //TODO Remove this
+        appointmentDao = new AppointmentDaoImp();
+        examDao = new ExamDaoImp();
+    }
+
+
 
     public double countUtilzActual(){
         double TotalDuration = 0;//
@@ -44,11 +52,11 @@ public class Utilization {
 
         for (Exam exam: examDao.getAllExams()) {
 //            System.out.println(Exam.getDuration()+gap);
-//            System.out.println((double)Exam.getNumStudentNeed());
-//            System.out.println((double)Exam.getNumStudentAppointment()/(double)(day*24));
-//            System.out.println((double)Exam.getNumStudentAppointment());
+//            System.out.println((double)Exam.getCapacity());
+//            System.out.println((double)Exam.getNumAppointments()/(double)(day*24));
+//            System.out.println((double)Exam.getNumAppointments());
 //            System.out.println((double)day);
-            TotalExamDuration += (exam.getDuration()+ gap) * (((double)exam.getNumStudentNeed() - (double)exam.getNumStudentAppointment())/(double)(day*24)) ;
+            TotalExamDuration += (exam.getDuration()+ gap) * (((double)exam.getCapacity() - (double)exam.getNumAppointments())/(double)(day*24)) ;
         }
 
         return  utilzActual + (TotalExamDuration)*100;

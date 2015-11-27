@@ -1,5 +1,7 @@
 package core.event;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.*;
@@ -18,17 +20,20 @@ public class TestingCenterInfo {
     private Term term;
 
     @Basic(optional = false)
-    @Column(name = "numSeats")
-    private int numSeats;
+    @Column(name = "num_seats")
+    private int numSeats;   // By default there are 64 seats in sum.
 
     @Basic(optional = false)
-    @Column(name = "numSetAsideSeats")
+    @Column(name = "num_set_aside_seats")
     private int numSetAsideSeats;
+
 
     @Basic(optional = false)
     @Column(name = "open")
     private LocalTime open;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Type(type = "org.hibernate.type.LocalTimeType")
     @Basic(optional = false)
     @Column(name = "close")
     private LocalTime close;
