@@ -52,6 +52,12 @@ public class AppointmentDaoImp implements AppointmentDao {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
+
+            TestingCenterTimeSlotsDaoImp tscsImp = new TestingCenterTimeSlotsDaoImp();
+            LocalDateTime begin = appointment.getStartDateTime();
+            TestingCenterTimeSlots tscs = tscsImp.findTimeSlotById(Integer.toString(begin.getDayOfYear()) +
+                    Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute()));
+            tscsImp.insertTimeSlot(tscs);
             session.save(appointment);
             tx.commit();
         }

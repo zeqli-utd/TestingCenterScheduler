@@ -31,6 +31,10 @@ public class Appointment {
     @Basic(optional = false)
     private String examId;
 
+    @Column(name = "term")
+    @Basic(optional = false)
+    private Term term;
+
     @Column(name = "made_by")
     @Basic(optional = false)
     private String madeBy;  // Student Id
@@ -62,15 +66,17 @@ public class Appointment {
 
     public Appointment(){}
 
-    public Appointment(String appointmentID, String examId, String madeBy, LocalDateTime startDateTime,
-                       LocalDateTime endDateTime, String netId, String seat, boolean isAttend){
+    //LocalDateTime startDateTime, LocalDateTime endDateTime, String seat
+    // are automatically assigned from Time Slots
+    public Appointment(String appointmentID, String examId, String madeBy,
+                       String netId, boolean isAttend){
         this.appointmentID = appointmentID;
         this.examId = examId;
         this.madeBy = madeBy;
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
+        //this.startDateTime = startDateTime;
+        //this.endDateTime = endDateTime;
         this.studentId = netId;
-        this.seat = seat;
+        //this.seat = seat;
         this.isAttend = isAttend;
     }
 
@@ -167,6 +173,14 @@ public class Appointment {
 
     public void setStudentId(String studentId) {
         this.studentId = studentId;
+    }
+
+    public Term getTerm() {
+        return term;
+    }
+
+    public void setTerm(Term term) {
+        this.term = term;
     }
 
     public String getMadeBy() {
