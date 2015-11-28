@@ -1,6 +1,8 @@
 package core.event.dao;
 
 import core.event.Exam;
+import core.event.ExamStatusType;
+import core.event.ExamType;
 import core.service.SessionManager;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -16,18 +18,80 @@ public class ExamDaoImp implements ExamDao {
     public ExamDaoImp() {
     }
 
+    /**
+     * Get All Exam Currently in Pending Status
+     * @return a list of pending exam
+     */
     public List getAllPending() {
-        return null;
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        List<Exam> list = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("from Exam as e where e.examType = :type");
+            query.setParameter("type", ExamStatusType.PENDING);
+            list = query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return list;
     }
 
+    /**
+     * Get All Exam Currently in Approved Status
+     * @return a list of approved exam
+     */
     public List getAllApproved() {
-        return null;
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        List<Exam> list = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("from Exam as e where e.examType = :type");
+            query.setParameter("type", ExamStatusType.APROVED);
+            list = query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return list;
     }
 
+    /**
+     * Get All Exam Currently in Denied Status
+     * @return a list of denied exam
+     */
     public List getAllDenied() {
-        return null;
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        List<Exam> list = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("from Exam as e where e.examType = :type");
+            query.setParameter("type", ExamStatusType.DENIED);
+            list = query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return list;
     }
 
+    /**
+     * This method retrieve all exams from database, including the AD HOC exam
+     *
+     * @return
+     */
     @Override
     public List getAllExams() {
         Session session = SessionManager.getInstance().openSession();
@@ -55,7 +119,7 @@ public class ExamDaoImp implements ExamDao {
                 ("FROM Exam E WHERE E.examId = :eId");
         query.setParameter("eId", examId);
         tx.commit();
-        Exam result = (Exam)query.uniqueResult();
+        Exam result = (Exam) query.uniqueResult();
         session.close();
         return result;
     }
@@ -66,8 +130,7 @@ public class ExamDaoImp implements ExamDao {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery
-                ("FROM Exam E WHERE E.instructorId = :insId");
-
+                ("FROM Exam E WHERE E.instructor = :insId");
         query.setParameter("insId", instructorId);
         tx.commit();
         result = query.list();
@@ -83,8 +146,8 @@ public class ExamDaoImp implements ExamDao {
             tx = session.beginTransaction();
             session.save(exam);
             tx.commit();
-        }catch (HibernateException he){
-            if(tx != null){
+        } catch (HibernateException he) {
+            if (tx != null) {
                 tx.rollback();
             }
             return false;
@@ -106,9 +169,8 @@ public class ExamDaoImp implements ExamDao {
             query.setParameter("examId", id);
             query.executeUpdate();
             tx.commit();
-        }
-        catch (HibernateException he){
-            if(tx != null){
+        } catch (HibernateException he) {
+            if (tx != null) {
                 tx.rollback();
             }
             return false;
@@ -130,9 +192,8 @@ public class ExamDaoImp implements ExamDao {
             query.setParameter("examId", examId);
 
             tx.commit();
-        }
-        catch (HibernateException he){
-            if(tx != null){
+        } catch (HibernateException he) {
+            if (tx != null) {
                 tx.rollback();
             }
             return false;
@@ -143,7 +204,7 @@ public class ExamDaoImp implements ExamDao {
     }
 
     @Override
-    public void listExamByApprovedRequest(String exId){//listReservationByApprovedRequest
+    public void listExamByApprovedRequest(String exId) {//listReservationByApprovedRequest
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
@@ -152,10 +213,9 @@ public class ExamDaoImp implements ExamDao {
                     ("FROM Exam E WHERE E.examId = :examId");
             query.setParameter("examId", exId);
             tx.commit();
-            Exam ex = (Exam)query.uniqueResult();
-        }
-        catch (HibernateException he){
-            if(tx != null){
+            Exam ex = (Exam) query.uniqueResult();
+        } catch (HibernateException he) {
+            if (tx != null) {
                 tx.rollback();
             }
         } finally {
