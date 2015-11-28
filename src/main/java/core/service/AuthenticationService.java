@@ -23,11 +23,10 @@ public interface AuthenticationService {
     /**
      * determine the user's permission level
      * @param userId
-     * @param password
      * @return the permission level of the user associated with the
      *         userId and password, returns null if password does not
      *         match the userId
      */
     @Secured("authorized")
-    Authorization login(String userId, String password);
+    Authorization login(String userId);
 }

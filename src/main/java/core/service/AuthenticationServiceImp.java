@@ -78,36 +78,59 @@ public class AuthenticationServiceImp implements AuthenticationService{
     }
 
     @Override
-    public Authorization login(String userId, String password) {
+    public Authorization login(String userId) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
-
+        Authorization authorization = null;
+        boolean admin = false;
+        boolean ins = false;
+        boolean stu = false;
         try {
             tx = session.beginTransaction();
 
-            List allAdministrator = session.createQuery("FROM Administrator").list();
-            List allInstructor = session.createQuery("FROM Instructor").list();
-            //List allStudent = session.createQuery("FROM Student").list();
+            List<Administrator> allAdministrator = session.createQuery("FROM Administrator").list();
+            List<Instructor> allInstructor = session.createQuery("FROM Instructor").list();
+            List<Student> allStudent = session.createQuery("FROM Student").list();
 
-            Iterator AdministratorIter = allAdministrator.iterator();
-            Iterator InstructorIter = allInstructor.iterator();
-            //Iterator StudentIter = allStudent.iterator();
 
-            while(AdministratorIter.hasNext()){
-                if(AdministratorIter.hasNext()){
-                    Administrator ad = (Administrator)AdministratorIter.next();
-                    if(ad.getNetId().equals(userId)){
-                        return Authorization.ADMINISTRATOR;
-                    }
+            for (Administrator administrator : allAdministrator) {
+                if(administrator.getNetId().equals(userId)){
+                    admin = true;
                 }
             }
-            while(InstructorIter.hasNext()){
-                if(InstructorIter.hasNext()){
-                    Instructor ins = (Instructor)InstructorIter.next();
-                    if(ins.getNetId().equals(userId)){
-                        return Authorization.INSTRUCTOR;
-                    }
+
+            for (Instructor instructor : allInstructor){
+                if(instructor.getNetId().equals(userId)){
+                    ins = true;
                 }
+            }
+
+            for (Student student : allStudent){
+                if(student.getNetId().equals(userId)){
+                    stu = true;
+                }
+            }
+
+            if( admin && ins && stu ){
+                authorization = Authorization.ADMINISTRATOR_INSTRUCTOR_STUDENT;
+            }
+            else if( admin && ins ){
+                authorization = Authorization.ADMINISTRATOR_INSTRUCTOR;
+            }
+            else if( admin && stu ){
+                authorization = Authorization.ADMINISTRATOR_STUDENT;
+            }
+            else if( ins && stu ){
+                authorization = Authorization.INSTRUCTOR_STUDENT;
+            }
+            else if( admin ){
+                authorization = Authorization.ADMINISTRATOR;
+            }
+            else if( ins ){
+                authorization = Authorization.INSTRUCTOR;
+            }
+            else if( stu ){
+                authorization = Authorization.STUDENT;
             }
         }
         catch (HibernateException he){
@@ -117,6 +140,48 @@ public class AuthenticationServiceImp implements AuthenticationService{
         } finally {
             session.close();
         }
-        return Authorization.STUDENT;
+        return authorization;
     }
+//    @Override
+//    public Authorization login(String userId, String password) {
+//        Session session = SessionManager.getInstance().openSession();
+//        Transaction tx = null;
+//
+//        try {
+//            tx = session.beginTransaction();
+//
+//            List allAdministrator = session.createQuery("FROM Administrator").list();
+//            List allInstructor = session.createQuery("FROM Instructor").list();
+//            //List allStudent = session.createQuery("FROM Student").list();
+//
+//            Iterator AdministratorIter = allAdministrator.iterator();
+//            Iterator InstructorIter = allInstructor.iterator();
+//            //Iterator StudentIter = allStudent.iterator();
+//
+//            while(AdministratorIter.hasNext()){
+//                if(AdministratorIter.hasNext()){
+//                    Administrator ad = (Administrator)AdministratorIter.next();
+//                    if(ad.getNetId().equals(userId)){
+//                        return Authorization.ADMINISTRATOR;
+//                    }
+//                }
+//            }
+//            while(InstructorIter.hasNext()){
+//                if(InstructorIter.hasNext()){
+//                    Instructor ins = (Instructor)InstructorIter.next();
+//                    if(ins.getNetId().equals(userId)){
+//                        return Authorization.INSTRUCTOR;
+//                    }
+//                }
+//            }
+//        }
+//        catch (HibernateException he){
+//            if(tx != null){
+//                tx.rollback();
+//            }
+//        } finally {
+//            session.close();
+//        }
+//        return Authorization.STUDENT;
+//    }
 }
