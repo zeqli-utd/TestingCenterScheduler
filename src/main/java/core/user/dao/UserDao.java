@@ -7,10 +7,10 @@ import java.util.List;
 
 
 public interface UserDao {
-    List<User> getAllUserAccounts();
-    List<User> getUserAccountsByName(String firstName, String lastName);
-    User getUserAccountById(int Id);
-    boolean updateInfo(User userAcco);
-    boolean deleteUserAccount(String netid);
-    boolean addUserAccount(User user);
+    List<User> getAllUsers();
+    List<User> getUserByName(String firstName, String lastName);
+    User getUserById(int netid);
+    boolean updateInfo(User user);
+    boolean deleteUser(String netid);
+    boolean addUser(User user);
 }

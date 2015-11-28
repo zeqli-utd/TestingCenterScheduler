@@ -7,6 +7,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -14,18 +15,47 @@ public class UserDaoImp implements UserDao {
 
 
     @Override
-    public List<User> getAllUserAccounts() {
+    public List<User> getAllUsers() {
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        List<User> userList = new ArrayList<>();
+        try {
+            tx = session.beginTransaction();
+            userList = session.createQuery("FROM core.user.User").list();
+
+            tx.commit();
+        } catch (HibernateException e) {
+            if(tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return userList;
+    }
+
+    @Override
+    public List<User> getUserByName(String firstName, String lastName) {
         return null;
     }
 
     @Override
-    public List<User> getUserAccountsByName(String firstName, String lastName) {
-        return null;
-    }
-
-    @Override
-    public User getUserAccountById(int Id) {
-        return null;
+    public User getUserById(int netid) {
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        User user = null;
+        try {
+            tx = session.beginTransaction();
+            user = (User)session.get(User.class, netid);
+            tx.commit();
+        } catch (HibernateException he) {
+            if(tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return user;
     }
 
     @Override
@@ -34,7 +64,7 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public boolean deleteUserAccount(String netid) {
+    public boolean deleteUser(String netid) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
@@ -53,7 +83,7 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public boolean addUserAccount(User user) {
+    public boolean addUser(User user) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
