@@ -2,6 +2,7 @@ package core.event.dao;
 
 import core.event.Exam;
 import core.event.ExamStatusType;
+import core.event.TestingCenterTimeSlots;
 import core.event.ExamType;
 import core.service.SessionManager;
 import org.hibernate.HibernateException;
@@ -169,8 +170,9 @@ public class ExamDaoImp implements ExamDao {
             query.setParameter("examId", id);
             query.executeUpdate();
             tx.commit();
-        } catch (HibernateException he) {
-            if (tx != null) {
+        }
+        catch (HibernateException he){
+            if(tx != null){
                 tx.rollback();
             }
             return false;
@@ -221,5 +223,27 @@ public class ExamDaoImp implements ExamDao {
         } finally {
             session.close();
         }
+    }
+
+    //important: need to add time slot after calling this method
+    public boolean approveExam(String examId) {
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Exam e = (Exam)session.get(Exam.class, examId);
+            e.setStatusType(ExamStatusType.APROVED);
+            session.merge(e);
+            tx.commit();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+            return false;
+        } finally {
+            session.close();
+        }
+        return true;
     }
 }
