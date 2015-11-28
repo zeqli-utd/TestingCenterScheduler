@@ -1,28 +1,16 @@
 package core.user.dao;
 
-import core.user.Administrator;
-import core.user.Instructor;
-import core.user.Student;
-import core.user.UserType;
+import core.user.Authorization;
+import core.user.User;
 
 import java.util.List;
 
+
 public interface UserDao {
-    UserType getUserById(String Id);
-
-    List<UserType> getUserByName(String lastName, String fistName);
-
-    List<UserType> getAllUser();
-
-    List<Administrator> getAllAdministrators();
-
-    List<Instructor> getAllInstructors();
-
-    List<Student> getAllStudents();
-
-    boolean addUser(UserType user);
-
-    boolean deleteUser(UserType user);
-
-    boolean updateUser(UserType user);
+    List<User> getAllUserAccounts();
+    List<User> getUserAccountsByName(String firstName, String lastName);
+    User getUserAccountById(int Id);
+    boolean updateInfo(User userAcco);
+    boolean deleteUserAccount(String netid);
+    boolean addUserAccount(User user);
 }
