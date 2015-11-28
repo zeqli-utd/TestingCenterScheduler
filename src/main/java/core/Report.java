@@ -1,21 +1,25 @@
 package core;
 
-import core.event.*;
+import core.event.Appointment;
+import core.event.Course;
+import core.event.Exam;
+import core.event.Term;
 import core.event.dao.AppointmentDao;
 import core.event.dao.AppointmentDaoImp;
 import core.service.SessionManager;
-import org.apache.log4j.Logger;
-import org.hibernate.*;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-
+@Service
 public class Report {
-    private static final Logger log = Logger.getLogger(Report.class);
-
     private List<Exam> exams;
     private List<Course> courses;
     private List<Appointment> appointments;
@@ -140,13 +144,9 @@ public class Report {
             query.setTimestamp("endDate", Date.from(term.getTermEndDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
             query.setTimestamp("startDate", Date.from(term.getTermStartDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
 
-            log.debug("Begin Term " + Date.from(term.getTermStartDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-            log.debug("End Term " + Date.from(term.getTermEndDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-
             List<String> listResult = query.list();
             for(String row : listResult){
                 String s = row;
-                log.debug("Read exam id from table Exam: " + s);
                 courses.add(s);
             }
             tx.commit();
@@ -154,7 +154,6 @@ public class Report {
             if(tx!=null){
                 tx.rollback();
             }
-            log.error("error", he);
         }
 
         Iterator<String> it = courses.iterator();
@@ -197,7 +196,6 @@ public class Report {
                 if (tx != null) {
                     tx.rollback();
                 }
-                log.error("Error with Table Join", he);
             }
         }
         String footer = "</table></div>";

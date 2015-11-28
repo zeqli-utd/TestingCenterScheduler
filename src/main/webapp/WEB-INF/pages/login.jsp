@@ -18,7 +18,7 @@
 <div>
     <form action="authorizing" class="login-box">
         <h3 class="login-heading">Sign in</h3>
-        <input type="text" class="login-text" placeholder="NetID" name="netId">
+        <input type="text" class="login-text" placeholder="NetID" name="uerId">
         <input type="password" class="login-text" placeholder="Password" name="password">
         <input type="submit" value="Login" class="submit-button"/>
     </form>

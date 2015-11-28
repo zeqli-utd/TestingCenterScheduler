@@ -1,10 +1,10 @@
 package core.controller.administrator;
 
 import core.event.Term;
-import core.event.TestingCenterInfo;
 import core.event.dao.AppointmentDao;
-import core.event.dao.ReservationDao;
+import core.event.dao.ExamDao;
 import core.helper.StringResources;
+import core.service.TermManagerService;
 import core.service.TestingCenterInfoRetrieval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,33 +17,21 @@ public class AdministratorPageController {
     @Autowired
     private TestingCenterInfoRetrieval infoRetrieval;
     @Autowired
-    private ReservationDao reservationDao;
-    @Autowired
     private AppointmentDao appointmentDao;
-    
-    private ModelAndView modelAndView = new ModelAndView();
+    @Autowired
+    private ExamDao examDao;
+    @Autowired
+    private TermManagerService termManager;
 
     public AdministratorPageController() {
 
     }
 
-    private String includes (String fragment) {
-        String prefix = "include/";
-        String suffix = ".jsp";
-
-        return prefix + fragment + suffix;
-    }
-
     @RequestMapping("home")
-    public ModelAndView goToHome() {
-        modelAndView.clear();
-        modelAndView.setViewName("admin/home");
-
-        modelAndView.addObject("page_heading",
-                StringResources.ADMINISTRATOR_OPERATIONS.get("home"));
-        modelAndView.addObject("content", includes("home-content"));
-
-        return modelAndView;
+    public ModelAndView goToHome(ModelAndView model) {
+        model.setViewName("admin/home");
+        model.addObject("pageHeader", "Home");
+        return model;
     }
 
     /**
@@ -52,22 +40,13 @@ public class AdministratorPageController {
      * @return modelAndView
      */
     @RequestMapping(value = "edit-info")
-    public ModelAndView viewCenterInfo() {
-        modelAndView.clear();
-        modelAndView.setViewName("admin/home");
-
-        modelAndView.addObject("page_heading",
-                StringResources.ADMINISTRATOR_OPERATIONS.get("viewInfo"));
-        modelAndView.addObject("content", includes("edit-info"));
-
+    public ModelAndView viewCenterInfo(ModelAndView model) {
+        model.setViewName("admin/edit-info");
+        model.addObject("pageHeader", StringResources.ADMINISTRATOR_VIEW_INFO);
         Term term = infoRetrieval.getCurrentTerm();
-        TestingCenterInfo centerInfo = infoRetrieval.findByTerm(term);
-        modelAndView.addObject("centerInfo", centerInfo);
-        modelAndView.addObject("term", term);
-
-        modelAndView.addObject("popup-content", "admin/include/popup/add-term");
-
-        return modelAndView;
+        model.addObject("term", term);
+        model.addObject("centerInfo", infoRetrieval.findByTerm(term));
+        return model;
     }
 
     /**
@@ -76,80 +55,49 @@ public class AdministratorPageController {
      * @return modelAndView
      */
     @RequestMapping("upload")
-    public ModelAndView uploadFile() {
-        modelAndView.clear();
-        modelAndView.setViewName("admin/home");
-
-        modelAndView.addObject("page_heading",
-                StringResources.ADMINISTRATOR_OPERATIONS.get("uploadFile"));
-        modelAndView.addObject("content", includes("upload"));
-
-        return modelAndView;
+    public ModelAndView uploadFile(ModelAndView model) {
+        model.setViewName("admin/upload");
+        model.addObject("pageHeader", StringResources.ADMINISTRATOR_UPLOAD);
+        return model;
     }
 
     @RequestMapping("view-requests")
-    public ModelAndView viewRequests() {
-        modelAndView.clear();
-        modelAndView.setViewName("admin/home");
-
-        modelAndView.addObject("page_heading",
-                StringResources.ADMINISTRATOR_OPERATIONS.get("viewRequest"));
-        /*by default, when the user enters the page all requests are displayed in chronological order
-               by selecting different tabs on top of the list, the user is able to view the list
-               in different orders: by alphabetical order of instructors' last names, number of attendants,
-               utilization, or, display only the ones made by one instructor by searching the instructor's name*/
-        modelAndView.addObject("content", includes("view-requests"));
-        modelAndView.addObject("requests", reservationDao.findAll());
-
-        return modelAndView;
+    public ModelAndView viewRequests(ModelAndView model) {
+        model.setViewName("admin/view-requests");
+        model.addObject("pageHeader", StringResources.ADMINISTRATOR_VIEW_REQUESTS);
+        model.addObject("requests", examDao.getAllPending());
+        return model;
     }
 
     @RequestMapping("view-appointments")
-    public ModelAndView viewAppointments() {
-        modelAndView.clear();
-        modelAndView.setViewName("admin/home");
-
-        modelAndView.addObject("page_heading",
-                StringResources.ADMINISTRATOR_OPERATIONS.get("viewAppointments"));
-        modelAndView.addObject("contents", includes("view-appointments"));
-        modelAndView.addObject("appointments", appointmentDao.findAllAppointment());
-
-        return modelAndView;
+    public ModelAndView viewAppointments(ModelAndView model) {
+        model.setViewName("admin/view-appointments");
+        model.addObject("pageHeader", StringResources.ADMINISTRATOR_VIEW_APPOINTMENTS);
+        Term term = infoRetrieval.getCurrentTerm();
+        model.addObject("appointments", appointmentDao.findAllAppointmentsByTerm(term));
+        return model;
     }
 
     @RequestMapping("check-in")
-    public ModelAndView checkIn() {
-        modelAndView.clear();
-        modelAndView.setViewName("admin/home");
+    public ModelAndView checkIn(ModelAndView model) {
+        model.setViewName("admin/check-in");
+        model.addObject("pageHeader", StringResources.ADMINISTRATOR_CHECK_IN);
 
-        modelAndView.addObject("page_heading",
-                StringResources.ADMINISTRATOR_OPERATIONS.get("checkIn"));
-        modelAndView.addObject("content", includes("check-in"));
-
-        return modelAndView;
+        return model;
     }
 
     @RequestMapping("make-appointment")
-    public ModelAndView makeAppointment() {
-        modelAndView.clear();
-        modelAndView.setViewName("admin/home");
-
-        modelAndView.addObject("page_heading",
-                StringResources.ADMINISTRATOR_OPERATIONS.get("make-appointment"));
-        modelAndView.addObject("content", includes("make-appointment"));
-
-        return modelAndView;
+    public ModelAndView makeAppointment(ModelAndView model) {
+        model.setViewName("admin/make-appointment");
+        model.addObject("pageHeader", StringResources.ADMINISTRATOR_MAKE_APPOINTMENT);
+        return model;
     }
 
     @RequestMapping("generate-report")
-    public ModelAndView generateReport() {
-        modelAndView.clear();
-        modelAndView.setViewName("admin/home");
-
-        modelAndView.addObject("page_heading",
-                StringResources.ADMINISTRATOR_OPERATIONS.get("generateReport"));
-        modelAndView.addObject("content", includes("generate-report"));
-
-        return modelAndView;
+    public ModelAndView generateReport(ModelAndView model) {
+        model.setViewName("admin/report-term");
+        model.addObject("pageHeader", StringResources.ADMINISTRATOR_REPORT);
+        model.addObject("terms", termManager.getAllPopulatedTerms());
+        return model;
     }
 }

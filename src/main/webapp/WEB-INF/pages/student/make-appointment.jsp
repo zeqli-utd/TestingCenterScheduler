@@ -56,22 +56,22 @@
                         <tr>
                             <td>
                                 <a href="student/make-appointment/new/${exam.examId}">
-                                        ${exam.courseName}
+                                    ${exam.courseName}
                                 </a>
                             </td>
                             <td>
                                 <a href="student/make-appointment/new/${exam.examId}">
-                                        ${exam.madeBy}
+                                    ${exam.madeBy}
                                 </a>
                             </td>
                             <td>
                                 <a href="student/make-appointment/new/${exam.examId}">
-                                        ${exam.startDateTime}
+                                    ${exam.startDateTime}
                                 </a>
                             </td>
                             <td>
                                 <a href="student/make-appointment/new/${exam.examId}">
-                                        ${exam.endDateTime}
+                                    ${exam.endDateTime}
                                 </a>
                             </td>
                         </tr>

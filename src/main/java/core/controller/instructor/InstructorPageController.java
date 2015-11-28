@@ -8,17 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/instructor")//page
+@RequestMapping("/instructor")
 public class InstructorPageController {
     @Autowired
     private ExamDao examDao;
 
     @RequestMapping("view-requests")
     public ModelAndView viewRequests(ModelAndView model) {
-        model.setViewName("instructor/home");//find home.jsp-----view name
-        model.addObject("content", "instructor/include/view-requests");//"content" is in .jsp file
-        model.addObject("heading", StringResources.INSTRUCTOR_OPERATIONS.get("viewRequests"));
-        
+        model.setViewName("instructor/home");
+        model.addObject("heading", StringResources.INSTRUCTOR_VIEW_REQUESTS);
         model.addObject("requests", examDao.getAllPending());
         return model;
     }
@@ -26,16 +24,14 @@ public class InstructorPageController {
     @RequestMapping("schedule-event")
     public ModelAndView scheduleEvent(ModelAndView model) {
         model.setViewName("instructor/home");
-        model.addObject("content", "instructor/include/schedule-event");
-        model.addObject("heading", StringResources.INSTRUCTOR_OPERATIONS.get("scheduleEvent"));
+        model.addObject("heading", StringResources.INSTRUCTOR_SCHEDULE);
         return model;
     }
 
     @RequestMapping("home")
     public ModelAndView goToHome(ModelAndView model) {
         model.setViewName("instructor/home");
-        model.addObject("content", "instructor/include/home-content");
-        model.addObject("heading", StringResources.INSTRUCTOR_OPERATIONS.get("home"));
+        model.addObject("heading", "Home");
         return model;
     }
 }

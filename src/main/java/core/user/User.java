@@ -1,10 +1,8 @@
 package core.user;
 
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
 
 /**
  * This class is for store account info.

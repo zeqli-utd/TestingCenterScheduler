@@ -33,7 +33,7 @@
         </div>
         <div class="content">
             <p>${errorMessage}</p>
-            <jsp:include page="fragments/content.jsp" flush="true"/>
+
         </div>
     </div>
 </div>

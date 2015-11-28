@@ -3,13 +3,13 @@ package core.controller;
 import core.helper.StringResources;
 import core.service.AuthenticationService;
 import core.user.Authorization;
+import core.user.SessionProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoginController{
@@ -17,30 +17,29 @@ public class LoginController{
     private AuthenticationService authenticationService;
 
     @RequestMapping(value = "authorizing")
-    public String authorizeUser (@RequestParam("netId") String userId,
-                                 @RequestParam("password") String password,
-                                 HttpServletRequest request) {
-        ModelMap model = new ModelMap();
+    public ModelAndView authorizeUser (@RequestParam("userId") String userId,
+                                       @RequestParam("password") String password,
+                                       @ModelAttribute("sessionUser")SessionProfile profile,
+                                       ModelAndView model) {
         Authorization authorization = Authorization.ADMINISTRATOR;
-        request.getSession().setAttribute("sessionUserId", userId);
         if (authorization != null) {
             switch (authorization) {
                 case STUDENT:
-                    return "student/home";
+                    model.setViewName("student/home");
                 case INSTRUCTOR:
-                    return "instructor/home";
+                    model.setViewName("instructor/home");
                 case ADMINISTRATOR:
-                    return "admin/home";
+                    model.setViewName("admin/home");
             }
         }else {
             if (authenticationService.registeredUserId(userId)) {
-                model.addAttribute("errorMessage", StringResources.LOGIN_PASSWORD_ERROR);
-                return "login";
+                model.addObject("errorMessage", StringResources.LOGIN_PASSWORD_ERROR);
+                model.setViewName("login");
             }else {
-                model.addAttribute("errorMessage", StringResources.LOGIN_USER_ERROR);
-                return "login";
+                model.addObject("errorMessage", StringResources.LOGIN_USER_ERROR);
+                model.setViewName("login");
             }
         }
-        return "login";
+        return model;
     }
 }
