@@ -127,7 +127,6 @@ public class EditInfoController {
      */
     @RequestMapping(value = "num-of-seats/modify", method = RequestMethod.POST)
     public String modifyNumberOfSeats(@RequestParam("modify-seats") int numSeats) {
-
         return viewName;
     }
 
