@@ -1,9 +1,6 @@
 package core.service;
 
-import core.user.Administrator;
-import core.user.Authorization;
-import core.user.Instructor;
-import core.user.UserType;
+import core.user.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -56,11 +53,11 @@ public class AuthenticationServiceImp implements AuthenticationService{
         try {
             tx = session.beginTransaction();
 
-            List allUser = session.createQuery("FROM UserType").list();
+            List allUser = session.createQuery("FROM User").list();
             Iterator userIter = allUser.iterator();
 
             while(userIter.hasNext()){
-                UserType user = (UserType)userIter.next();
+                User user = (User)userIter.next();
                 if(user.getNetId().equals(userId)){
                     if(user.getPassword().equals(password)){
                         return true;
