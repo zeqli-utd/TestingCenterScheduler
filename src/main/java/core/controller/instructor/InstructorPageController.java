@@ -13,7 +13,7 @@ public class InstructorPageController {
     @Autowired
     private ExamDao examDao;
 
-    @RequestMapping("view-requests")
+    @RequestMapping("/view-requests")
     public ModelAndView viewRequests(ModelAndView model) {
         model.setViewName("instructor/home");
         model.addObject("heading", StringResources.INSTRUCTOR_VIEW_REQUESTS);
@@ -21,14 +21,14 @@ public class InstructorPageController {
         return model;
     }
 
-    @RequestMapping("schedule-event")
+    @RequestMapping("/schedule-event")
     public ModelAndView scheduleEvent(ModelAndView model) {
         model.setViewName("instructor/home");
         model.addObject("heading", StringResources.INSTRUCTOR_SCHEDULE);
         return model;
     }
 
-    @RequestMapping("home")
+    @RequestMapping("/home")
     public ModelAndView goToHome(ModelAndView model) {
         model.setViewName("instructor/home");
         model.addObject("heading", "Home");
