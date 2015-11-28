@@ -5,6 +5,7 @@ import core.service.SessionManager;
 import core.user.Administrator;
 import core.user.Authorization;
 import core.user.Student;
+import core.user.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -14,15 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class StudentDaoImp implements StudentDao{
-    private List<Student> students;
+public class StudentDaoImp implements StudentDao {
 
-    public StudentDaoImp(){
-        students = new ArrayList<Student>();
-        Student student1 = new Student();
-        Student student2 = new Student();
-        students.add(student1);
-        students.add(student2);
+    public StudentDaoImp() {
     }
 
     @Override
@@ -34,14 +29,14 @@ public class StudentDaoImp implements StudentDao{
             session.save(student);
             tx.commit();
             session.close();
-        }catch (HibernateException he){
-            if(tx != null){
+        } catch (HibernateException he) {
+            if (tx != null) {
                 tx.rollback();
             }
-            return  false;
+            return false;
         } finally {
-        session.close();
-    }
+            session.close();
+        }
         return true;
     }
 
@@ -52,11 +47,11 @@ public class StudentDaoImp implements StudentDao{
 
         try {
             tx = session.beginTransaction();
-            Administrator e = (Administrator)session.get(Administrator.class, student.getNetId());
+            Administrator e = (Administrator) session.get(Administrator.class, student.getNetId());
             session.delete(e);
             tx.commit();
         } catch (HibernateException he) {
-            if(tx != null) {
+            if (tx != null) {
                 tx.rollback();
             }
             return false;
@@ -69,7 +64,24 @@ public class StudentDaoImp implements StudentDao{
     //retrieve list of students from the database
     @Override
     public List<Student> getAllStudents() {
-        return students;
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        List<Student> studentList = new ArrayList<>();
+        try {
+            tx = session.beginTransaction();
+            studentList = session.createQuery("FROM core.user.Student").list();
+
+            tx.commit();
+        } catch (HibernateException e) {
+            if(tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return studentList;
+
+
     }
 
     @Override
@@ -78,8 +90,22 @@ public class StudentDaoImp implements StudentDao{
     }
 
     @Override
-    public Student getStudentById(int Id) {
-        return students.get(Id);
+    public Student getStudentById(String netid) {
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        Student student = null;
+        try {
+            tx = session.beginTransaction();
+            student = (Student)session.get(Student.class, netid);
+            tx.commit();
+        } catch (HibernateException he) {
+            if(tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return student;
     }
 
     @Override
@@ -89,19 +115,16 @@ public class StudentDaoImp implements StudentDao{
         return false;
     }
 
-    public void makeAppointment(Appointment apt){
+    public void makeAppointment(Appointment apt) {
         // 1. Student Enrolled in Course in Current Term. or on the List of ad hoc exam.
 
         // 2. Student does not have an existing appointment for same exam.
-        
+
         // 3. Student does not have an appointment for a different in an overlapping.
 
         // 4. Appointment is entirely between the start date-time and end date-time of the exam.
 
     }
-
-
-
 
 
 }

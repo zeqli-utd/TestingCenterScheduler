@@ -10,7 +10,7 @@ import java.util.List;
 public interface StudentDao {
     List<Student> getAllStudents();
     List<Student> getStudentsByName(String firstName, String lastName);
-    Student getStudentById(int Id);
+    Student getStudentById(String netid);
 
     boolean updateInfo(Student student);
     boolean deleteStudent(Student student);
