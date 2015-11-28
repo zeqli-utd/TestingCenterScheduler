@@ -1,9 +1,8 @@
 package core.event.dao;
 
-import core.event.Appointment;
-import core.event.Term;
-import core.event.TestingCenterTimeSlots;
+import core.event.*;
 import core.service.SessionManager;
+import core.service.TestingCenterInfoRetrieval;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -43,6 +42,27 @@ public class AppointmentDaoImp implements AppointmentDao {
         tx.commit();
         result = query.list();
         session.close();
+        return result;
+    }
+
+    public List findAllAppointmentByTime(LocalDateTime time){
+        ArrayList<Appointment> result = new ArrayList<Appointment>();
+        List allAppointment = findAllAppointment();
+        Appointment appointmentIter = new Appointment();
+        TestingCenterInfoRetrieval info = new TestingCenterInfoRetrieval();
+        int gap = info.findByTerm(info.getCurrentTerm()).getGap();
+        for(int i = 0; i < allAppointment.size(); i++) {
+            appointmentIter = (Appointment)allAppointment.get(i);
+            if ( (time.minusMinutes(gap).isBefore(appointmentIter.getEndDateTime()))
+                    &&  (
+                        (time.isAfter(appointmentIter.getStartDateTime()))
+                            ||
+                                time.isEqual(appointmentIter.getStartDateTime())
+                        )
+                    ){
+                result.add(appointmentIter);
+            }
+        }
         return result;
     }
 

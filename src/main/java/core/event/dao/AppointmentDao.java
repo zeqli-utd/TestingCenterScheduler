@@ -3,12 +3,15 @@ package core.event.dao;
 import core.event.Appointment;
 import core.event.Term;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AppointmentDao {
     List<Appointment> findAllAppointment();
 
     List<Appointment> findAllByStudent(String netId);
+
+    List<Appointment> findAllAppointmentByTime(LocalDateTime time);
 
     List<Appointment> findAllAppointmentsByTerm(Term term);
 
