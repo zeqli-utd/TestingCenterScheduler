@@ -1,6 +1,9 @@
 package core.event;
 
+import core.event.dao.AppointmentDaoImp;
 import core.event.dao.CourseDao;
+import core.event.dao.TestingCenterTimeSlotsDaoImp;
+import core.service.TestingCenterInfoRetrieval;
 import core.user.dao.InstructorDao;
 import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +86,10 @@ public class Exam {
     @Transient
     private double attendance;  // Calculate on the fly.
 
+    //the number of times of exams needed for all student to take this exam
+    @Transient
+    private int numRemainingTime = 0;
+
     public Exam(){
 
     }
@@ -135,6 +142,33 @@ public class Exam {
                 String instructorId) {
         this(Id, type, start, end, duration, numApp, numNeed);
         this.instructorId = instructorId;
+        this.numAttended = 0;
+    }
+
+    public int getActualDuration(){
+        int actualDuration;
+        TestingCenterInfoRetrieval tcir = new TestingCenterInfoRetrieval();
+        TestingCenterInfo tci = tcir.findByTerm(tcir.getCurrentTerm());
+        int numSeats = tci.getNumSeats();
+        int gap = tci.getGap();
+        int pastDuration = 0;
+        if(LocalDateTime.now().isAfter(startDateTime)){
+            //current time slot
+            AppointmentDaoImp apptImp = new AppointmentDaoImp();
+            List<Appointment> appts = apptImp.findAllAppointmentByTime(LocalDateTime.now());
+            Appointment appt = new Appointment();
+            Appointment apptIter = new Appointment();
+            for(int i = 0; i < appts.size(); i++){
+                apptIter = appts.get(i);
+                if(apptIter.getExamId().equals(examId)){
+                    appt = apptIter;
+                }
+            }
+            pastDuration = (int)ChronoUnit.MINUTES.between(appt.getStartDateTime(), startDateTime);
+        }
+        numRemainingTime = (capacity - numAttended) / numSeats;
+        actualDuration = pastDuration + ( numRemainingTime + 1 ) * duration + numRemainingTime * gap;
+        return actualDuration;
     }
 
     /**
@@ -274,9 +308,15 @@ public class Exam {
         this.courseId = courseId;
     }
 
+    public int getNumRemainingTime() {
+        return numRemainingTime;
+    }
 
+    public void setNumRemainingTime(int numRemainingTime) {
+        this.numRemainingTime = numRemainingTime;
+    }
 
-    // Legacy Code
+// Legacy Code
 
 //    public String getMadeBy() {
 //        Instructor instructor =

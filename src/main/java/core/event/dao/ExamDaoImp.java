@@ -1,9 +1,6 @@
 package core.event.dao;
 
-import core.event.Exam;
-import core.event.ExamStatusType;
-import core.event.TestingCenterTimeSlots;
-import core.event.ExamType;
+import core.event.*;
 import core.service.SessionManager;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -245,5 +242,7 @@ public class ExamDaoImp implements ExamDao {
             session.close();
         }
         return true;
+
+
     }
 }

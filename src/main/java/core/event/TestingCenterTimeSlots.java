@@ -1,5 +1,6 @@
 package core.event;
 
+import core.event.dao.AppointmentDaoImp;
 import core.service.TestingCenterInfoRetrieval;
 
 import javax.persistence.*;
@@ -14,6 +15,10 @@ public class TestingCenterTimeSlots {
     // format： examId+"_"+startDateTime.
     // For example: startTime
     private String timeSlotId;
+
+    @Basic(optional = false)
+    @Column(name = "examId")
+    private String examId;
 
     @Basic(optional = false)
     @Column(name = "begin")
@@ -37,14 +42,19 @@ public class TestingCenterTimeSlots {
     @Transient
     private int occupiedNum;
 
+    @Transient
+    private AppointmentDaoImp apptImp = new AppointmentDaoImp();
+
+
     public TestingCenterTimeSlots(){
 
     }
 
-    public TestingCenterTimeSlots(LocalDateTime begin, LocalDateTime end,
+    public TestingCenterTimeSlots(String examId, LocalDateTime begin, LocalDateTime end,
                                   int numSeats, int setAsideSeat){
         this.timeSlotId = Integer.toString(begin.getDayOfYear()) +
                 Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute());
+        this.examId = examId;
         this.begin = begin;
         this.end = end;
         this.seatArrangement = initSeatArrangement(numSeats);
@@ -73,6 +83,7 @@ public class TestingCenterTimeSlots {
         appt.setStartDateTime(begin);
         appt.setEndDateTime(end);
         appt.setSeat(Integer.toString(occupiedNum));
+        apptImp.updateAppointment(appt, appt.getAppointmentID());
         return true;
     }
 
