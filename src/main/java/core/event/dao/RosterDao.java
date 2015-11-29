@@ -7,13 +7,12 @@ import java.util.List;
 
 public interface RosterDao {
 
-    List<Exam> findBynetId(String netId);
 
     boolean addRoster(Roster roster);
 
-    boolean updateRoster(Roster roster, String netId);
+    boolean updateRoster(Roster roster);
 
     boolean deleteRoster(String netId);
 
-
+    boolean deleteRostersByTerm(String termId);
 }
