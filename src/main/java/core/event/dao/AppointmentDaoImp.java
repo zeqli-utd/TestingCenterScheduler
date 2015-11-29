@@ -73,6 +73,7 @@ public class AppointmentDaoImp implements AppointmentDao {
     @Override
     public boolean insertAppointment(Appointment appointment) {
         //need to assign seat when make appointment
+        tctsDao = new TestingCenterTimeSlotsDaoImp(); //TODO delete this line
         LocalDateTime begin = appointment.getStartDateTime();
         String tsId = Integer.toString(begin.getDayOfYear()) +
                 Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute());
