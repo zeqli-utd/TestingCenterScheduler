@@ -67,18 +67,18 @@ public class AppointmentDaoImp implements AppointmentDao {
         return result;
     }
 
+    //need to assignSeat
     @Override
     public boolean insertAppointment(Appointment appointment) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-
-            TestingCenterTimeSlotsDaoImp tscsImp = new TestingCenterTimeSlotsDaoImp();
-            LocalDateTime begin = appointment.getStartDateTime();
-            TestingCenterTimeSlots tscs = tscsImp.findTimeSlotById(Integer.toString(begin.getDayOfYear()) +
-                    Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute()));
-            tscsImp.insertTimeSlot(tscs);
+//            TestingCenterTimeSlotsDaoImp tscsImp = new TestingCenterTimeSlotsDaoImp();
+//            LocalDateTime begin = appointment.getStartDateTime();
+//            TestingCenterTimeSlots tscs = tscsImp.findTimeSlotById(Integer.toString(begin.getDayOfYear()) +
+//                    Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute()));
+//            tscsImp.insertTimeSlot(tscs);
             session.save(appointment);
             tx.commit();
         }
@@ -157,7 +157,6 @@ public class AppointmentDaoImp implements AppointmentDao {
             Query query = session.createQuery("from Appointment a where a.startDateTime >= :startDate and :endDate >= a.endDateTime");
             query.setTimestamp("endDate", Date.from(term.getTermEndDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
             query.setTimestamp("startDate", Date.from(term.getTermStartDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-
             // If query won't get any record from table, the result will be an empty list.
             appointments = query.list();
             tx.commit();
@@ -228,14 +227,22 @@ public class AppointmentDaoImp implements AppointmentDao {
                 query.setParameter("stuId", "%" + stuId + "%");
                 List<Appointment> list = query.list();
                 Iterator it = list.iterator();
+
+                TestingCenterInfo testingCenterInfo = (TestingCenterInfo)session.
+                        get(TestingCenterInfo.class, exam.getTerm());
+
+
+                ArrayList<Appointment> possibleLists = new ArrayList<Appointment>();
                 while (it.hasNext()) {
                     Appointment appt = new Appointment();
                     appt = (Appointment) it.next();
                     //check b
                     if (!appt.getExamId().equals(examIdCheck)) {
-                        //check c
-                        if ((a.getStartDateTime().isAfter(appt.getEndDateTime())) ||
-                                (a.getEndDateTime().isBefore(appt.getStartDateTime()))) {
+                        //check c and gap
+                        if ( ((a.getStartDateTime().minusMinutes(testingCenterInfo.getGap())).isAfter(appt.getEndDateTime())) ||
+                                (a.getEndDateTime().isBefore((appt.getStartDateTime().minusMinutes(testingCenterInfo.getGap())))) ) {
+                            //continue
+                            possibleLists.add(appt);
                         } else {
                             return false;
                         }
@@ -243,6 +250,24 @@ public class AppointmentDaoImp implements AppointmentDao {
                         return false;
                     }
                 }
+
+                Appointment apptIter;
+                int i = 0;
+                while(i < possibleLists.size()) {
+                    apptIter = possibleLists.get(i);
+                    //check e (seat)
+                    String timeSlotId = Integer.toString(a.getStartDateTime().getDayOfYear()) +
+                            Integer.toString(a.getEndDateTime().getHour()) + Integer.toString(a.
+                            getStartDateTime().getMinute());
+                    TestingCenterTimeSlots testingCenterTimeSlots = (TestingCenterTimeSlots)
+                            session.get(TestingCenterTimeSlots.class, timeSlotId);
+                    if (testingCenterTimeSlots.checkSeatAvailable()){
+                        testingCenterTimeSlots.assignSeat(apptIter);
+                        return true;
+                    }
+                    i++;
+                }
+                return false;
             }
             else{
                 return false;

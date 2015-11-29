@@ -48,6 +48,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         return result;
     }
 
+
     public boolean insertTimeSlot(TestingCenterTimeSlots timeSlots){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;

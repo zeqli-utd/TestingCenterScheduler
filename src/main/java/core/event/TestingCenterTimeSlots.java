@@ -2,6 +2,7 @@ package core.event;
 
 import core.event.dao.AppointmentDaoImp;
 import core.service.TestingCenterInfoRetrieval;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -33,18 +34,21 @@ public class TestingCenterTimeSlots {
     //occupied: appointmentId; nonoccupied: ""
     private String[] seatArrangement;
 
-    @Transient
+    @Basic(optional = false)
+    @Column(name = "numSeat")
     private int numSeat;
 
-    @Transient
+    @Basic(optional = false)
+    @Column(name = "setAsideSeat")
     private int setAsideSeat;
 
-    @Transient
+    @Basic(optional = false)
+    @Column(name = "occupiedNum")
     private int occupiedNum;
 
     @Transient
-    private AppointmentDaoImp apptImp = new AppointmentDaoImp();
-
+    @Autowired
+    private AppointmentDaoImp apptImp;
 
     public TestingCenterTimeSlots(){
 
@@ -71,14 +75,17 @@ public class TestingCenterTimeSlots {
         return seatsArrangement;
     }
 
+    public  boolean checkSeatAvailable(){
+        if(occupiedNum + setAsideSeat > numSeat)
+            return false;
+        else {
+            return true;
+        }
+    }
+
     public boolean assignSeat(Appointment appt){
         String apptId = appt.getAppointmentID();
-        if(occupiedNum + setAsideSeat > numSeat)
-            occupiedNum += setAsideSeat;
-        else {
-            System.out.print("No seats available for this exam at this time.");
-            return false;
-        }
+        occupiedNum += setAsideSeat;
         seatArrangement[occupiedNum-1] = apptId;
         appt.setStartDateTime(begin);
         appt.setEndDateTime(end);
