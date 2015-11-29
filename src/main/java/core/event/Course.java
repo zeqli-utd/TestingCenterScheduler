@@ -6,7 +6,6 @@ import javax.persistence.*;
 public class Course {
     @Id
     @Column(name = "course_id" )
-    @Basic(optional = false)
     private String courseId;
 
     @Basic(optional = false)
@@ -25,23 +24,22 @@ public class Course {
     @Column(name = "instructor_id")
     private String instructorID;
 
-    @OneToOne
-    @JoinTable(name = "CourseRoster",
-            joinColumns = @JoinColumn(name="course_fk"),
-            inverseJoinColumns = @JoinColumn(name="roster_fk")
-    )
-    private Roster roster;
+    @Basic(optional = false)
+    @Column(name = "term")
+    private int term;
+
 
     // Empty Constructor For Hibernate
     public Course() {
     }
 
-    public Course(String courseId, String subject, String catalog, String session, String instructorID) {
+    public Course(String courseId, String subject, String catalog, String session, String instructorID, int term) {
         this.courseId = courseId;
         this.subject = subject;
         this.catalog = Integer.parseInt(catalog);
         this.session = Integer.parseInt(session);
         this.instructorID = instructorID;
+        this.term = term;
     }
 
     public String getCourseId() {
@@ -92,11 +90,11 @@ public class Course {
         this.session = session;
     }
 
-    public Roster getRoster() {
-        return roster;
+    public int getTerm() {
+        return term;
     }
 
-    public void setRoster(Roster roster) {
-        this.roster = roster;
+    public void setTerm(int term) {
+        this.term = term;
     }
 }

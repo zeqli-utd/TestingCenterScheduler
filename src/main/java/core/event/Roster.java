@@ -13,12 +13,15 @@ public class Roster implements Serializable{
     @Id
     private String netId;
 
+    private int termId;
+
     public Roster() {
     }
 
-    public Roster(String classId, String netIds) {
+    public Roster(String classId, String netIds, int termId) {
         this.classId = classId;
         this.netId = netIds;
+        this.termId = termId;
     }
 
     public String getClassId() {
@@ -35,5 +38,13 @@ public class Roster implements Serializable{
 
     public void setNetId(String netId) {
         this.netId = netId;
+    }
+
+    public int getTermId() {
+        return termId;
+    }
+
+    public void setTermId(int termId) {
+        this.termId = termId;
     }
 }

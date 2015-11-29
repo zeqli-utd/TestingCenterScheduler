@@ -10,9 +10,7 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
-/**
- * Created by Zeqli on 11/26/2015.
- */
+
 public class RosterDaoImp implements RosterDao{
 
     @Override
@@ -45,7 +43,7 @@ public class RosterDaoImp implements RosterDao{
     }
 
     @Override
-    public boolean deleteRostersByTerm(String termId){
+    public boolean deleteRostersByTerm(int termId){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
