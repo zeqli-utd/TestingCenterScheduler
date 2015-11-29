@@ -281,4 +281,28 @@ public class AppointmentDaoImp implements AppointmentDao {
         }
         return true;
     }
+
+    @Override
+    public List<Appointment> findAllAppointmentsByExamId(String examId) {
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        List<Appointment> appointments = new ArrayList<>();
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("from Appointment a where a.examId = :id");
+            query.setParameter("id", examId);
+            // If query won't get any record from table, the result will be an empty list.
+            appointments = query.list();
+            tx.commit();
+        } catch (HibernateException he) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return appointments;
+    }
+
+
 }

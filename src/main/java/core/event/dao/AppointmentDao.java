@@ -15,7 +15,13 @@ public interface AppointmentDao {
 
     List<Appointment> findAllAppointmentsByTerm(Term term);
 
-    //List<Appointment> findAllByInstructor(String netId);   why???
+    /**
+     * For Instructor's functionality seeing appointments and attendance details.
+     * Attandence Detail can be calculated in the
+     * @param examId
+     * @return
+     */
+    List<Appointment> findAllAppointmentsByExamId(String examId);
 
     Appointment findAppointmentById(String AppointmentID);
 
@@ -26,4 +32,6 @@ public interface AppointmentDao {
     boolean deleteAppointment(String appointmentId);
 
     boolean checkLegalAppointment(Appointment appointment);
+
+
 }
