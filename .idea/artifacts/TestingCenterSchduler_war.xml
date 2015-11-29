@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" build-on-make="true" name="TestingCenterSchduler:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="TestingCenterScheduler.war">
-      <element id="artifact" artifact-name="TestingCenterSchduler:war exploded" />
-    </root>
-  </artifact>
-</component>

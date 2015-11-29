@@ -2,6 +2,8 @@ package test;
 
 import core.event.*;
 import core.event.dao.*;
+import core.helper.StringResources;
+import core.service.EmailService;
 import core.service.TestingCenterInfoRetrieval;
 import core.user.Student;
 import core.user.dao.InstructorDaoImp;
@@ -19,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import javax.mail.MessagingException;
 import java.util.List;
 
 import java.time.LocalDateTime;
@@ -74,7 +78,7 @@ public class UnitTest  {
                 .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect")
                 .setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver")
                 .setProperty("hibernate.connection.url", "jdbc:mysql://Localhost:3306/test")
-                .setProperty("hibernate.connection.username", "root")
+                .setProperty("hibernate.connection.username", "thedueteam")
                 .setProperty("hibernate.connection.password", "thedueteam")
                 .setProperty("hibernate.hbm2ddl.auto", "create-drop")
                 .setProperty("hibernate.show_sql", "true");
@@ -219,8 +223,17 @@ public class UnitTest  {
      * Appointment reminders sent by email. 4
      *
      */
-//    @Test
-    public void TestEmailReminder(){}
+   @Test
+    public void TestEmailReminder(){
+        try {
+            EmailService.sendEmail(StringResources.EMAIL_HOST, StringResources.EMAIL_PORT,
+                    StringResources.EMAIL_LOGIN, StringResources.EMAIL_PASSWORD,
+                    StringResources.EMAIL_LOGIN,"test","test");
+        } catch (MessagingException e) {
+
+        }
+
+    }
 
     /*---------------------Other Requirement-------------------*/
     /**
@@ -286,6 +299,11 @@ public class UnitTest  {
 
     }
 
+    public void TestEmail() throws MessagingException {
+        EmailService.sendEmail(StringResources.EMAIL_HOST, StringResources.EMAIL_PORT,
+                StringResources.EMAIL_LOGIN, StringResources.EMAIL_PASSWORD,
+                StringResources.EMAIL_LOGIN,"test","test");
+    }
 
 
 
