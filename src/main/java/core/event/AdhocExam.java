@@ -22,22 +22,17 @@ import java.util.Set;
 @Table(name = "adhoc_exam")
 public class AdhocExam extends Exam{
 
-    @ElementCollection
-            @CollectionTable(name = "student_list",
-                    joinColumns = {@JoinColumn(name = "net_id"), @JoinColumn(name = "first_name"),
-                    @JoinColumn(name = "last_name")})
-    Set<ArrayList> studentList;
+    @ElementCollection(fetch = FetchType.EAGER)
+    List<StudentEntry> studentList = new ArrayList<>();
 
-
-    public AdhocExam(){
-        studentList = new HashSet<>();
+    public AdhocExam() {
     }
 
-    public Set<ArrayList> getStudentList() {
+    public List<StudentEntry> getStudentList() {
         return studentList;
     }
 
-    public void setStudentList(Set<ArrayList> studentList) {
+    public void setStudentList(List<StudentEntry> studentList) {
         this.studentList = studentList;
     }
 }
