@@ -1,6 +1,6 @@
 package core.service;
 
-
+import org.springframework.stereotype.Service;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -10,17 +10,17 @@ import java.util.Properties;
 
 /**
  * A utility class for sending e-mail messages
- * @author www.codejava.net
- *
+ * @author Yishuo Wang
  */
+@Service
 public class EmailService {
-    public static void sendEmail(String host,
-                                 String port,
-                                 final String userName,
-                                 final String password,
-                                 String toAddress,
-                                 String subject,
-                                 String message) throws MessagingException {
+    public static void sendEmail (String host,
+                                  String port,
+                                  String userName,
+                                  String password,
+                                  String toAddress,
+                                  String subject,
+                                  String message) throws MessagingException {
         // sets SMTP server properties
         Properties properties = new Properties();
         properties.put("mail.smtp.host", host);
@@ -49,6 +49,5 @@ public class EmailService {
 
         // sends the e-mail
         Transport.send(msg);
-
     }
 }

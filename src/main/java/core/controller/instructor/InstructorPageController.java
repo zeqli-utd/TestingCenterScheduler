@@ -38,4 +38,11 @@ public class InstructorPageController {
         model.addObject("heading", "Home");
         return model;
     }
+
+    @RequestMapping("/view-appointments")
+    public ModelAndView viewAppointments(ModelAndView model) {
+        model.setViewName("/instructor/view-appointments");
+        model.addObject("heading", StringResources.INSTRUCTOR_VIEW_APPOINTMENTS_DETAIL);
+        return model;
+    }
 }
