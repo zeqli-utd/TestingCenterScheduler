@@ -54,7 +54,7 @@ public class AppointmentDaoImp implements AppointmentDao {
         List allAppointment = findAllAppointment();
         Appointment appointmentIter = new Appointment();
         TestingCenterInfoRetrieval info = new TestingCenterInfoRetrieval();
-        int gap = info.findByTerm(info.getCurrentTerm()).getGap();
+        int gap = info.findByTerm(info.getCurrentTerm().getTermId()).getGap();
         for(int i = 0; i < allAppointment.size(); i++) {
             appointmentIter = (Appointment)allAppointment.get(i);
             if ( (time.minusMinutes(gap).isBefore(appointmentIter.getEndDateTime()))
@@ -233,7 +233,7 @@ public class AppointmentDaoImp implements AppointmentDao {
                 }
             }else {
                 // 2. Check Student Enroll in Course
-                Roster roster = (Roster)session.get(Roster.class, new Roster(exam.getCourseId(),studentIdCheck));
+                Roster roster = (Roster)session.get(Roster.class, new Roster(exam.getCourseId(),studentIdCheck, a.getTerm()));
                 if (roster == null) {
                     return false;
                 }
