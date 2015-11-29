@@ -194,6 +194,11 @@ public class ExamDaoImp implements ExamDao {
 
     }
 
+    /**
+     * Add Exam with schedubility check
+     * @param exam
+     * @return
+     */
     @Override
     public boolean addExam(Exam exam) {
         Session session = SessionManager.getInstance().openSession();
@@ -204,6 +209,30 @@ public class ExamDaoImp implements ExamDao {
                 session.save(exam);
             else
                 return false;
+            tx.commit();
+        } catch (HibernateException he) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            return false;
+        } finally {
+            session.close();
+        }
+        return true;
+    }
+
+    /**
+     * Add Exam without Schedubility Check
+     * @param exam
+     * @return
+     */
+    @Override
+    public boolean insertExam(Exam exam) {
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(exam);
             tx.commit();
         } catch (HibernateException he) {
             if (tx != null) {

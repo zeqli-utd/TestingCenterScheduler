@@ -143,8 +143,8 @@
 //
 //        E1.setAttendance(1);
 //        E2.setAttendance(0);
-//        b1 = examDao.addExam(E1);
-//        b2 = examDao.addExam(E2);
+//        b1 = examDao.addAdhocExam(E1);
+//        b2 = examDao.addAdhocExam(E2);
 //
 //        System.out.println("THIS IS True of false: -------------------------------------------------------: "+b1+" "+b2);
 //        examDao.listExamByApprovedRequest("ex1");

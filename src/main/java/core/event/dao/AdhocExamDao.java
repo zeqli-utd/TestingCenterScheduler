@@ -12,7 +12,7 @@ public interface AdhocExamDao {
 
      List<AdhocExam> findByInstructorId(String instructorId);
 
-     boolean addExam(AdhocExam exam);
+     boolean addAdhocExam(AdhocExam exam);
 
      boolean updateExam(AdhocExam exam, String id);
 

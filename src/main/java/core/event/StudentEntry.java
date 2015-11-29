@@ -20,6 +20,12 @@ public class StudentEntry {
 
     }
 
+    public StudentEntry(String netId, String firstName, String lastName) {
+        this.netId = netId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public String getNetId() {
         return netId;
     }

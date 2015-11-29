@@ -23,17 +23,25 @@
 
 
       <!-- Mapping Info -->
+
+
       <mapping class="core.user.Administrator"/>
       <mapping class="core.user.UserType"/>
       <mapping class="core.user.Student"/>
       <mapping class="core.user.Instructor"/>
-
-      <mapping class="core.event.Exam"/>
-      <mapping class="core.event.Course"/>
-      <mapping class="core.event.Utilization"/>
+      <mapping class="core.user.User"/>
+      <mapping class="core.event.AdhocExam"/>
       <mapping class="core.event.Appointment"/>
+      <mapping class="core.event.CloseDateRangeTuple"/>
+      <mapping class="core.event.Course"/>
+      <mapping class="core.event.ETSTestTimeRangeTuple"/>
+      <mapping class="core.event.Exam"/>
       <mapping class="core.event.Reservation"/>
-      <mapping class="core.event.StudentExamPK"/>
+      <mapping class="core.event.Roster"/>
+      <mapping class="core.event.StudentEntry"/>
+      <mapping class="core.event.Term"/>
+      <mapping class="core.event.TestingCenterInfo"/>
+      <mapping class="core.event.TestingCenterTimeSlots"/>
 
 
       <!--<mapping class="core.event.Reservation"></mapping>-->

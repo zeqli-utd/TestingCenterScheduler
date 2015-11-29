@@ -58,14 +58,6 @@ public class Course {
         this.instructorID = instructorID;
     }
 
-//    public List<Student> getEnrolledStudents() {
-//        return this.enrolledStudents;
-//    }
-//
-//    public void setEnrolledStudents(List<Student> enrolledStudents) {
-//        this.enrolledStudents = enrolledStudents;
-//    }
-
     public String getSubject() {
         return subject;
     }
@@ -97,4 +89,6 @@ public class Course {
     public void setTerm(int term) {
         this.term = term;
     }
+
+
 }

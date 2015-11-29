@@ -31,12 +31,12 @@ public class TestingCenterInfo {
     @Basic(optional = false)
     private LocalTime close;
 
-    @Basic(optional = false)
-    @Cascade(CascadeType.ALL)       // Testing Center is the owner of CloseDateRangeTuple
+    @Cascade(CascadeType.ALL)
+    @ElementCollection // Testing Center is the owner of CloseDateRangeTuple
     private List<CloseDateRangeTuple> closeDateRanges;
 
-    @Basic(optional = false)
     @Cascade(CascadeType.ALL)       // Testing Center is the owner of ETSTestTimeRangeTuple
+    @ElementCollection
     private List<ETSTestTimeRangeTuple> reserveRanges;
 
     @Basic(optional = false)

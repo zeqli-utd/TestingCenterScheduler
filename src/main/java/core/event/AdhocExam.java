@@ -28,6 +28,12 @@ public class AdhocExam extends Exam{
     public AdhocExam() {
     }
 
+    public AdhocExam(String examId, String examName,int capacity, int term, LocalDateTime startDateTime, LocalDateTime endDateTime, String instructorId, String courseId, int duration) {
+        super(examId, examName, capacity, term, startDateTime, endDateTime, instructorId, courseId, duration);
+        this.examType = ExamType.AD_HOC;
+        this.statusType = ExamStatusType.PENDING;
+    }
+
     public List<StudentEntry> getStudentList() {
         return studentList;
     }
