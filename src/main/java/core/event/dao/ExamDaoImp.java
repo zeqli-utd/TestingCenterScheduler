@@ -308,4 +308,9 @@ public class ExamDaoImp implements ExamDao {
 
 
     }
+
+    @Override
+    public List<Exam> getAllAvailableExamsToStudent(String studentId) {
+        return null;
+    }
 }

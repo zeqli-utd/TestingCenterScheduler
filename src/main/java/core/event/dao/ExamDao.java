@@ -5,7 +5,6 @@ import core.event.Exam;
 import java.util.List;
 
 public interface ExamDao {
-
     List getAllPending();
 
     List getAllApproved();
@@ -28,7 +27,5 @@ public interface ExamDao {
 
     boolean approveExam(String examId);
 
-
-
-
+    List<Exam> getAllAvailableExamsToStudent(String studentId);
 }
