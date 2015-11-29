@@ -18,6 +18,7 @@ import java.util.List;
 public class Appointment {
     @Id
     @Column(name = "appointment_id")
+    @GeneratedValue
     private String appointmentID;
 
     @Column(name = "exam_id")
@@ -30,7 +31,7 @@ public class Appointment {
 
     @Column(name = "made_by")
     @Basic(optional = false)
-    private String madeBy;  // Student Id
+    private String madeBy;  // Student Id or AdminID
 
     @Temporal(TemporalType.TIMESTAMP)
     @Basic(optional = false)
@@ -58,7 +59,17 @@ public class Appointment {
     @Column(name="status")
     private String status;      // 's' marked superfulous
 
-    public Appointment(){}
+    public Appointment(){
+        this.examId = "";
+        this.term = 0;
+        this.madeBy = "";
+        this.startDateTime = LocalDateTime.MIN;
+        this.endDateTime = LocalDateTime.MIN;
+        this.studentId = "";
+        this.seat = "";
+        this.isAttend = false;
+        this.status = "";
+    }
 
     //LocalDateTime startDateTime, LocalDateTime endDateTime, String seat
     // are automatically assigned from Time Slots
