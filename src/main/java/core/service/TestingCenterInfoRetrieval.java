@@ -15,12 +15,12 @@ import java.time.LocalTime;
 @Service
 public class TestingCenterInfoRetrieval {
 
-    public TestingCenterInfo findByTerm(Term term) {
+    public TestingCenterInfo findByTerm(int termId) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery
                 ("FROM TestingCenterInfo T WHERE T.term = :tId");
-        query.setParameter("tId", term);
+        query.setParameter("tId", termId);
         tx.commit();
         TestingCenterInfo result = (TestingCenterInfo)query.uniqueResult();
         session.close();
