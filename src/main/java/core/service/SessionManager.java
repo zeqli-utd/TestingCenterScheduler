@@ -36,7 +36,6 @@ public class SessionManager {
                 .addAnnotatedClass(core.event.Utilization.class)
                 .addAnnotatedClass(core.event.Appointment.class)
                 .addAnnotatedClass(core.event.Reservation.class)
-                .addAnnotatedClass(core.event.StudentExamPK.class)
                 .addAnnotatedClass(core.event.Course.class)
                 .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect")
                 .setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver")
