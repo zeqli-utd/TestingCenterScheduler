@@ -61,8 +61,8 @@ public class TestingCenterTimeSlots {
         this.examId = examId;
         this.begin = begin;
         this.end = end;
+        this.numSeat = (numSeats-1)/setAsideSeat+1;
         this.seatArrangement = initSeatArrangement(numSeats);
-        this.numSeat = numSeats;
         this.setAsideSeat = setAsideSeat;
         this.occupiedNum = 0;
     }
@@ -76,7 +76,7 @@ public class TestingCenterTimeSlots {
     }
 
     public  boolean checkSeatAvailable(){
-        if(occupiedNum + setAsideSeat > numSeat)
+        if(occupiedNum + 1 > numSeat)
             return false;
         else {
             return true;
@@ -85,11 +85,19 @@ public class TestingCenterTimeSlots {
 
     public boolean assignSeat(Appointment appt){
         String apptId = appt.getAppointmentID();
-        occupiedNum += setAsideSeat;
-        seatArrangement[occupiedNum-1] = apptId;
+        occupiedNum += 1;
+        int seat = -1;
+        for(int i = 0; i < numSeat; i++){
+            if(seatArrangement[i].equals("")){
+                seatArrangement[i] = apptId;
+                seat = i + 1;
+            }
+        }
+        if(seat == -1)
+            return false;
         appt.setStartDateTime(begin);
         appt.setEndDateTime(end);
-        appt.setSeat(Integer.toString(occupiedNum));
+        appt.setSeat(Integer.toString(seat));
         apptImp.updateAppointment(appt, appt.getAppointmentID());
         return true;
     }
@@ -98,10 +106,12 @@ public class TestingCenterTimeSlots {
     public void releaseSeat(Appointment appt){
         String apptId = appt.getAppointmentID();
         int seatNum = Integer.parseInt(appt.getSeat()) - 1;
-        if(apptId.equals(seatArrangement[seatNum]))
+        if(apptId.equals(seatArrangement[seatNum])) {
             seatArrangement[seatNum] = "";
+            occupiedNum -= 1;
+        }
         else
-            System.out.print("Error when release a seat.");
+            System.out.print("Error when releasing a seat.");
     }
 
 

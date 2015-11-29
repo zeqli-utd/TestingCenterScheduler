@@ -93,22 +93,16 @@ public class AppointmentDaoImp implements AppointmentDao {
         return true;
     }
 
+    //need to release seat when calling this method
     @Override
     public boolean deleteAppointment(String appointmentId) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            TestingCenterTimeSlotsDaoImp tscsImp = new TestingCenterTimeSlotsDaoImp();
-            Appointment appt = findAppointmentById(appointmentId);
-            LocalDateTime begin = appt.getStartDateTime();
-            TestingCenterTimeSlots tscs = tscsImp.findTimeSlotById(Integer.toString(begin.getDayOfYear()) +
-                    Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute()));
-            tscs.releaseSeat(appt);
             Query query = session.createQuery
                     ("delete from Appointment R where R.appointmentID = :appointmentID");
             query.setParameter("appointmentID", appointmentId);
-
             tx.commit();
         }
         catch (HibernateException he){

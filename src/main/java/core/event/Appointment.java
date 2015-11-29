@@ -46,6 +46,7 @@ public class Appointment {
     @Basic(optional = false)
     private String studentId;
 
+    //seat: number
     @Column(name="seat")
     @Basic(optional = false)
     private String seat;
@@ -69,7 +70,7 @@ public class Appointment {
         //this.startDateTime = startDateTime;
         //this.endDateTime = endDateTime;
         this.studentId = netId;
-        //this.seat = seat;
+        this.seat = Integer.toString(-1);
         this.isAttend = false;
     }
 
