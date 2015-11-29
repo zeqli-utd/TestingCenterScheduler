@@ -61,7 +61,10 @@ public class Appointment {
     private boolean isAttend;
 
     @Column(name="status")
-    private String status;      // 's' marked superfulous
+    private String status;      // 's' marked superfluous
+
+    @Transient
+    private String examName;
 
     public Appointment(){
         this.examId = "";
@@ -74,6 +77,14 @@ public class Appointment {
         this.isAttend = false;
         this.status = "";
         this.slotId = "";
+    }
+
+    public String getExamName() {
+        return examName;
+    }
+
+    public void setExamName(String examName) {
+        this.examName = examName;
     }
 
     //LocalDateTime startDateTime, LocalDateTime endDateTime, String seat
