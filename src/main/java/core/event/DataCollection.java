@@ -48,14 +48,12 @@ public class DataCollection {
     public DataCollection(){}
 
     //import ata from CSV file
-    public void readFile(String path, int termId) {
+    public boolean readFile(String path, int termId) {
         BufferedReader br = null;
         String line = "";
         String cvsSplitBy = ",";
         List<Appointment> appointmentList = appointmentDaoImpl.findAllAppointment();
         try {
-
-
 
             //Student Data
             if (path.contains("user.csv")) {
@@ -137,18 +135,19 @@ public class DataCollection {
                 }
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            return false;
         } catch (IOException e) {
-            e.printStackTrace();
+            return false;
         } finally {
             if (br != null) {
                 try {
                     br.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    return false;
                 }
             }
         }
+        return true;
     }
 
     /**
