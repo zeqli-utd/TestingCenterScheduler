@@ -21,6 +21,7 @@ public class StringResources {
 
     public final static String INSTRUCTOR_SCHEDULE = "Schedule an Event";
     public final static String INSTRUCTOR_VIEW_REQUESTS = "View Requests";
+    public final static String INSTRUCTOR_VIEW_APPOINTMENTS_DETAIL = "View Appointment Detail";
 
     public final static String STUDENT_VIEW_APPOINTMENTS = "View Appointments";
     public final static String STUDENT_MAKE_APPOINTMENT = "Make Appointment";
