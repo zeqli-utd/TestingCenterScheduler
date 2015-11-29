@@ -5,7 +5,7 @@ import core.user.Instructor;
 import java.util.List;
 
 public interface InstructorDao {
-    List<Instructor> findAll();
+    List<Instructor> findAllInstructors();
     Instructor findByNetID(String id);
 
     boolean addInstructor(Instructor instructor);

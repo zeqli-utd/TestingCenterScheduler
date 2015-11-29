@@ -7,6 +7,7 @@ import core.user.Authorization;
 import core.user.Student;
 import core.user.User;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
@@ -47,7 +48,7 @@ public class StudentDaoImp implements StudentDao {
 
         try {
             tx = session.beginTransaction();
-            Administrator e = (Administrator)session.get(Administrator.class, student.getNetId());
+            Student e = (Student)session.get(Student.class, student.getNetId());
             session.delete(e);
             tx.commit();
         } catch (HibernateException he) {
@@ -70,7 +71,6 @@ public class StudentDaoImp implements StudentDao {
         try {
             tx = session.beginTransaction();
             studentList = session.createQuery("FROM core.user.Student").list();
-
             tx.commit();
         } catch (HibernateException e) {
             if(tx != null) {
@@ -110,21 +110,24 @@ public class StudentDaoImp implements StudentDao {
 
     @Override
     public boolean updateInfo(Student student) {// return should have different cases
-//        students.get(student.getStudent_Id()).setName(student.getName());
-//        return true;
-        return false;
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(student);
+            tx.commit();
+        } catch (HibernateException he) {
+            if(tx != null) {
+                tx.rollback();
+            }
+            return false;
+        } finally {
+            session.close();
+        }
+        return true;
     }
 
-    public void makeAppointment(Appointment apt) {
-        // 1. Student Enrolled in Course in Current Term. or on the List of ad hoc exam.
 
-        // 2. Student does not have an existing appointment for same exam.
-
-        // 3. Student does not have an appointment for a different in an overlapping.
-
-        // 4. Appointment is entirely between the start date-time and end date-time of the exam.
-
-    }
 
 
 }

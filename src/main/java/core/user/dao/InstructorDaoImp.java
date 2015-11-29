@@ -8,35 +8,22 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class InstructorDaoImp implements InstructorDao {
 
-    List<Instructor> instructors;
-
-    public InstructorDaoImp() {
-        Session session = SessionManager.getInstance().openSession();
-        Transaction tx = null;
-        try {
-            tx = session.beginTransaction();
-            instructors = session.createQuery("FROM Instructor ").list();
-        } catch (HibernateException he) {
-            if (tx != null) {
-                tx.rollback();
-            }
-        } finally {
-            session.close();
-        }
-    }
+    public InstructorDaoImp(){}
 
     @Override
-    public List<Instructor> findAll() {
+    public List findAllInstructors() {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
+        List<Instructor> instructorList= new ArrayList<>();
         try {
             tx = session.beginTransaction();
-            instructors = session.createQuery("FROM Instructor").list();
+            instructorList = session.createQuery("FROM Instructor").list();
             tx.commit();
         } catch (HibernateException he) {
             if (tx != null) {
@@ -45,7 +32,7 @@ public class InstructorDaoImp implements InstructorDao {
         } finally {
             session.close();
         }
-        return instructors;
+        return instructorList;
     }
 
     @Override
@@ -76,7 +63,6 @@ public class InstructorDaoImp implements InstructorDao {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
-
             tx = session.beginTransaction();
             session.save(instructor);
             session.getTransaction().commit();
@@ -135,4 +121,5 @@ public class InstructorDaoImp implements InstructorDao {
         }
         return true;
     }
+
 }

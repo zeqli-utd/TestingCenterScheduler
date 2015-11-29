@@ -7,11 +7,15 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
+@Repository
 public class RosterDaoImp implements RosterDao{
+
+    public RosterDaoImp() {
+    }
 
     @Override
     public boolean addRoster(Roster roster) {

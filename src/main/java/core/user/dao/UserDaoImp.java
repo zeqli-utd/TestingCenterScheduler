@@ -4,6 +4,7 @@ import core.service.SessionManager;
 import core.user.Authorization;
 import core.user.User;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -101,4 +102,9 @@ public class UserDaoImp implements UserDao {
         }
         return true;
     }
+
+
+
+
+
 }
