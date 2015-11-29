@@ -1,24 +1,24 @@
 package core.event;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Set;
+import java.io.Serializable;
 
 @Entity
-public class Roster {
+@Table(name = "roster")
+public class Roster implements Serializable{
+
     @Id
-    @Basic(optional = false)
-    @OneToOne(mappedBy = "roster")
     private String classId;
 
+    @Id
+    private String netId;
 
-    @ElementCollection
-    @CollectionTable(name="netids", joinColumns=@JoinColumn(name="netid"))
-    private Set<String> netIds;
+    public Roster() {
+    }
 
-    public Roster(String classId, Set<String> netIds) {
+    public Roster(String classId, String netIds) {
         this.classId = classId;
-        this.netIds = netIds;
+        this.netId = netIds;
     }
 
     public String getClassId() {
@@ -29,11 +29,11 @@ public class Roster {
         this.classId = classId;
     }
 
-    public Set<String> getNetIds() {
-        return netIds;
+    public String getNetId() {
+        return netId;
     }
 
-    public void setNetIds(Set<String> netIds) {
-        this.netIds = netIds;
+    public void setNetId(String netId) {
+        this.netId = netId;
     }
 }

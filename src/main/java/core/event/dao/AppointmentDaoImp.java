@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 @Repository
@@ -180,5 +181,79 @@ public class AppointmentDaoImp implements AppointmentDao {
         Appointment result = (Appointment)query.uniqueResult();
         session.close();
         return result;
+    }
+
+
+    /**
+     * Check if the attempting appointment is valid. If not, the system will denied it automatically.
+     * @param a
+     * @return
+     */
+    public boolean checkLegalAppointment(Appointment a){
+
+        String studentIdCheck = a.getStudentId();
+        String examIdCheck = a.getExamId();
+        boolean res = true;
+
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Exam exam = (Exam)session.get(Exam.class, examIdCheck);
+
+            // 1. Check Student in Ad Hoc List
+            if(exam.getExamType().equals(ExamType.AD_HOC)){
+                List<StudentEntry> studentEntries = ((AdhocExam)exam).getStudentList();
+                for(StudentEntry se: studentEntries){
+                    if (se.getNetId().equals(studentIdCheck)){
+                        break;
+                    }
+                }
+            }else {
+                // 2. Check Student Enroll in Course
+                Roster roster = (Roster)session.get(Roster.class, new Roster(exam.getCourseId(),studentIdCheck));
+                if (roster == null) {
+                    return false;
+                }
+            }
+
+            //the appt time is during exam time period
+            //check d
+            if((exam.getStartDateTime().isBefore(a.getStartDateTime()))
+                    &&(exam.getEndDateTime().isAfter(a.getEndDateTime()))) {
+                //map to object
+                String hql = "FROM Appointment b WHERE b.studentId = :stuId";
+                String stuId = studentIdCheck;
+                Query query = session.createQuery(hql);
+                query.setParameter("stuId", "%" + stuId + "%");
+                List<Appointment> list = query.list();
+                Iterator it = list.iterator();
+                while (it.hasNext()) {
+                    Appointment appt = new Appointment();
+                    appt = (Appointment) it.next();
+                    //check b
+                    if (!appt.getExamId().equals(examIdCheck)) {
+                        //check c
+                        if ((a.getStartDateTime().isAfter(appt.getEndDateTime())) ||
+                                (a.getEndDateTime().isBefore(appt.getStartDateTime()))) {
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            else{
+                return false;
+            }
+        }catch (HibernateException he) {
+            if(tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return true;
     }
 }
