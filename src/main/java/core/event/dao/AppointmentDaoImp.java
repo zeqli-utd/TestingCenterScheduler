@@ -7,6 +7,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -18,6 +19,8 @@ import java.util.List;
 
 @Repository
 public class AppointmentDaoImp implements AppointmentDao {
+    @Autowired
+    private TestingCenterTimeSlotsDaoImp tctsImp;
 
     public AppointmentDaoImp() {
 
@@ -67,14 +70,22 @@ public class AppointmentDaoImp implements AppointmentDao {
         return result;
     }
 
-    //need to assignSeat
     @Override
     public boolean insertAppointment(Appointment appointment) {
+
+        //need to assign seat when make appointment
+        LocalDateTime begin = appointment.getStartDateTime();
+        String tsId = Integer.toString(begin.getDayOfYear()) +
+                Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute());
+        TestingCenterTimeSlots tcts = tctsImp.findTimeSlotById(tsId);
+        tcts.assignSeat(appointment);
+        tctsImp.updateTimeSlot(tcts);
+
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-//            TestingCenterTimeSlotsDaoImp tscsImp = new TestingCenterTimeSlotsDaoImp();
+
 //            LocalDateTime begin = appointment.getStartDateTime();
 //            TestingCenterTimeSlots tscs = tscsImp.findTimeSlotById(Integer.toString(begin.getDayOfYear()) +
 //                    Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute()));
@@ -93,9 +104,18 @@ public class AppointmentDaoImp implements AppointmentDao {
         return true;
     }
 
-    //need to release seat when calling this method
+
     @Override
     public boolean deleteAppointment(String appointmentId) {
+        //need to release seat when delete appointment
+        Appointment appt = findAppointmentById(appointmentId);
+        LocalDateTime begin = appt.getStartDateTime();
+        String tsId = Integer.toString(begin.getDayOfYear()) +
+                Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute());
+        TestingCenterTimeSlots tcts = tctsImp.findTimeSlotById(tsId);
+        tcts.releaseSeat(appt);
+        tctsImp.updateTimeSlot(tcts);
+
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
@@ -176,6 +196,15 @@ public class AppointmentDaoImp implements AppointmentDao {
         return result;
     }
 
+    public void makeAppointment(Appointment appt){
+
+        if(checkLegalAppointment(appt)){
+            insertAppointment(appt);
+            System.out.print("\nSuccess.");
+        }
+        else
+            System.out.print("\nFail.");
+    }
 
     /**
      * Check if the attempting appointment is valid. If not, the system will denied it automatically.

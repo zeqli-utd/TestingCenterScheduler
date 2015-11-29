@@ -3,6 +3,7 @@ package core.event;
 import core.event.dao.ExamDaoImp;
 import core.event.dao.TestingCenterTimeSlotsDaoImp;
 import core.service.TestingCenterInfoRetrieval;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -22,7 +23,8 @@ public class Slots {
 
     ArrayList<TestingCenterTimeSlots> tctsList = new ArrayList<TestingCenterTimeSlots>();
 
-    TestingCenterInfoRetrieval tcir = new TestingCenterInfoRetrieval();
+    @Autowired
+    TestingCenterInfoRetrieval tcir;
     TestingCenterInfo tci = tcir.findByTerm(tcir.getCurrentTerm());
     int numSeats = tci.getNumSeats();
     int gap = tci.getGap();

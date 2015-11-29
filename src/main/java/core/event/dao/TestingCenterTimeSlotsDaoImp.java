@@ -12,6 +12,7 @@ import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -94,6 +95,25 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
             Query query = session.createQuery
                     ("delete from timeSlots ts where ts.timeSlotId = :timeSlotId");
             query.setParameter("timeSlotId", timeSlotId);
+            tx.commit();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+            return false;
+        } finally {
+            session.close();
+        }
+        return  true;
+    }
+    //need to fix
+    public boolean updateTimeSlot(TestingCenterTimeSlots tcts){
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(tcts);
             tx.commit();
         }
         catch (HibernateException he){

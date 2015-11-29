@@ -1,6 +1,8 @@
 package test;
 
 import core.event.Appointment;
+import core.event.Term;
+import core.event.TestingCenterInfo;
 import core.event.dao.AppointmentDaoImp;
 import core.event.Exam;
 import core.service.SessionManager;
@@ -60,14 +62,45 @@ public class StudentFunctionalityTest {
     }
 
     public void makeAppointment(Appointment appt){
-        if(checkLegalAppointment(appt)==true){
+        int[] data = getGapByAppt(appt);
+        /**
+         * @data[0]: int gap
+         * @data[1]: int setAsideSeat
+         */
+        if(checkLegalAppointment(appt, data[0], data[1])==true){
             addAppointment(appt);
             System.out.print("\nSuccess.");
         }
         else
             System.out.print("\nFail.");
         System.out.print("\n"+appt.getAppointmentID());
+    }
 
+    public int[] getGapByAppt(Appointment a) {
+        Term term = a.getTerm();
+        int[] data = new int[2];
+        Session session = SessionManager.getInstance().getOpenSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            //map to object
+                String hql = "FROM TestingCenterInfo t WHERE t.term = :termId";
+                Term termId = term;
+                Query query = session.createQuery(hql);
+                query.setParameter("termId", "%" + term + "%");
+                List<TestingCenterInfo> list = query.list();
+                TestingCenterInfo tInfo = list.get(0);
+                data[0] = tInfo.getGap();
+                data[1] = tInfo.getNumSetAsideSeats();
+        }catch (HibernateException he) {
+            if(tx != null) {
+                tx.rollback();
+            }
+            log.error("", he);
+        } finally {
+            session.close();
+        }
+        return data;
     }
 
     // Insert a row into Appointment Table
@@ -131,12 +164,12 @@ public class StudentFunctionalityTest {
         }
     }
 
-    public boolean checkLegalAppointment(Appointment a){
-        Session session = SessionManager.getInstance().openSession();
+    public boolean checkLegalAppointment(Appointment a, int gap, int setAsideSeat){
+        Session session = SessionManager.getInstance().getOpenSession();
         String studentIdCheck = a.getStudentId();
         String examIdCheck = a.getExamId();
         boolean result = true;
-//        Session session = SessionManager.getInstance().openSession();
+//        Session session = SessionManager.getInstance().getOpenSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -157,9 +190,11 @@ public class StudentFunctionalityTest {
                     appt = (Appointment) it.next();
                     //check b
                     if (!appt.getExamId().equals(examIdCheck)) {
-                        //check c
-                        if ((a.getStartDateTime().isAfter(appt.getEndDateTime())) ||
-                                (a.getEndDateTime().isBefore(appt.getStartDateTime()))) {
+                        //check c and gap time
+                        if ( ((a.getStartDateTime().minusMinutes(gap)).isAfter(appt.getEndDateTime())) ||
+                                (a.getEndDateTime().isBefore((appt.getStartDateTime().minusMinutes(gap)))) ) {
+                            //check set aside seats
+
                         } else {
                             result = false;
                             break;

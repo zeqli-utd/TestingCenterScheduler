@@ -6,12 +6,16 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public class ExamDaoImp implements ExamDao {
+
+    @Autowired
+    private TestingCenterTimeSlotsDaoImp tctsImp;
 
     public ExamDaoImp() {
     }
@@ -222,8 +226,10 @@ public class ExamDaoImp implements ExamDao {
         }
     }
 
-    //important: need to add time slot after calling this method
     public boolean approveExam(String examId) {
+        //need to add time slot after approving exam request
+        tctsImp.insertTimeSlotsByExamId(examId);
+
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {

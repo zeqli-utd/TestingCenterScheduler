@@ -2,6 +2,7 @@ package core.event.dao;
 
 import core.event.TestingCenterTimeSlots;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface TestingCenterTimeSlotsDao {
@@ -16,4 +17,6 @@ public interface TestingCenterTimeSlotsDao {
     boolean insertTimeSlotsByExamId(String examId);
 
     boolean deleteTimeSlot(String timeSlotId);
+
+    boolean updateTimeSlot(TestingCenterTimeSlots tcts);
 }
