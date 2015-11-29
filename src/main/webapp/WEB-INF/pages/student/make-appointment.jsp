@@ -29,21 +29,6 @@
             <jsp:include page="sidebar.jsp"/>
         </div>
         <div class="content">
-
-            <form class="input-info" action="student/find-exam/by-instructor">
-                <div class="info-column">
-                    Search for an exam <input class="input-info" type="text" placeholder="Search here">
-                </div>
-                <div class="info-column">
-                    <label>
-                        <input type="radio" name="search-type" value="by-instructor">
-                    </label>By Instructor
-                    <label>
-                        <input type="radio" name="search-type" value="by-course">
-                    </label>By Course
-                    <input class="submit-button" type="submit" name="search" value="Search">
-                </div>
-            </form>
             <div>
                 <table>
                     <thead>

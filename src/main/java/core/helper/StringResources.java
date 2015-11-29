@@ -25,4 +25,9 @@ public class StringResources {
 
     public final static String STUDENT_VIEW_APPOINTMENTS = "View Appointments";
     public final static String STUDENT_MAKE_APPOINTMENT = "Make Appointment";
+
+    public final static String EMAIL_LOGIN = "thedueteamtest@gmail.com";
+    public final static String EMAIL_PASSWORD = "TDTT1234";
+    public final static String EMAIL_HOST = "smtp.gmail.com";
+    public final static String EMAIL_PORT = "587";
 }

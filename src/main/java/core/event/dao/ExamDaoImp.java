@@ -305,8 +305,6 @@ public class ExamDaoImp implements ExamDao {
             session.close();
         }
         return true;
-
-
     }
 
     @Override

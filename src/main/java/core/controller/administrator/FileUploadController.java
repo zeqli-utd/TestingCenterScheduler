@@ -1,7 +1,8 @@
 package core.controller.administrator;
 
+import core.event.DataCollection;
 import core.helper.StringResources;
-import core.service.FileUploadService;
+import core.service.TermManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,14 +14,18 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("admin/upload")
 public class FileUploadController {
     @Autowired
-    private FileUploadService fileUploader;
+    private DataCollection dataCollection;
+    @Autowired
+    private TermManagerService termManager;
 
     @RequestMapping(value = "confirm", method = RequestMethod.POST)
     public ModelAndView uploadFile (@RequestParam("file-name") String fileName,
-                              ModelAndView model) {
+                                    @RequestParam("termId") int termId,
+                                    ModelAndView model) {
         model.setViewName("admin/upload");
         model.addObject("pageHeading", StringResources.ADMINISTRATOR_UPLOAD);
-        if (fileUploader.upload(fileName)) {
+        model.addObject("terms", termManager.getAllPopulatedTerms());
+        if (dataCollection.readFile(fileName, termId)) {
             model.addObject("errorMessage", "Could not upload");
         }else {
             model.addObject("errorMessage", "Upload success");

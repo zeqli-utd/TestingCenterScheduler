@@ -72,7 +72,6 @@ public class AppointmentDaoImp implements AppointmentDao {
 
     @Override
     public boolean insertAppointment(Appointment appointment) {
-
         //need to assign seat when make appointment
         LocalDateTime begin = appointment.getStartDateTime();
         String tsId = Integer.toString(begin.getDayOfYear()) +
@@ -233,7 +232,8 @@ public class AppointmentDaoImp implements AppointmentDao {
                 }
             }else {
                 // 2. Check Student Enroll in Course
-                Roster roster = (Roster)session.get(Roster.class, new Roster(exam.getCourseId(),studentIdCheck, a.getTerm()));
+                Roster roster = (Roster)session.get(Roster.class,
+                        new Roster(exam.getCourseId(),studentIdCheck, a.getTerm()));
                 if (roster == null) {
                     return false;
                 }

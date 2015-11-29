@@ -102,8 +102,6 @@ public class TestingCenterInfoRetrieval {
             session.close();
         }
         return result;
-
-
     }
 
     @Deprecated

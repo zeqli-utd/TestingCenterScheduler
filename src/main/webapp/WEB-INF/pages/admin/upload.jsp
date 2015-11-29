@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--@elvariable id="page_heading" type="java.lang.String"--%>
 <%--@elvariable id="content" type="java.lang.String"--%>
 <%--@elvariable id="popup_content" type="java.lang.String"--%>
@@ -33,10 +34,13 @@
         </div>
         <div class="content">
             <p>${"errorMessage"}</p>
-            <form class="edit-info" action="admin/upload/confirm">
-                <input class="input-info" type="file">
-                <input class="submit-button" type="submit">
-            </form>
+            <form:form action="admin/upload/confirm">
+                <form:select path="termId">
+                    <form:options items="${terms}" itemLabel="termName" itemValue="termId"/>
+                </form:select>
+                <input class="input-info" type="file" name="fileName" value="Select file">
+                <input class="submit-button" type="button" value="Submit">
+            </form:form>
         </div>
     </div>
 </div>

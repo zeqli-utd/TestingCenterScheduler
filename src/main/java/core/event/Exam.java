@@ -156,6 +156,7 @@ public class Exam {
         int pastDuration = 0;
         if(LocalDateTime.now().isAfter(startDateTime)){
             List<Appointment> appts = appointmentDao.findAllAppointmentByTime(LocalDateTime.now());
+            //TODO TODO
             Appointment appt = new Appointment();
             Appointment apptIter = new Appointment();
             for(int i = 0; i < appts.size(); i++){

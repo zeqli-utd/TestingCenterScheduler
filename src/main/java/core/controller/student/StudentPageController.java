@@ -20,16 +20,17 @@ public class StudentPageController {
     @Autowired
     private AppointmentDao appointmentDao;
 
-    @RequestMapping("view-appointments")
+    @RequestMapping("/view-appointments")
     public ModelAndView viewAppointments(@ModelAttribute("sessionUser") SessionProfile profile,
                                          ModelAndView model) {
         model.setViewName("student/view-appointments");
         model.addObject("appointments",
                 appointmentDao.findAllByStudent(profile.getUserId()));
+        model.addObject("exams");
         return model;
     }
 
-    @RequestMapping("make-appointment")
+    @RequestMapping("/make-appointment")
     public ModelAndView makeAppointment(ModelAndView model) {
         model.setViewName("student/make-appointment");
         model.addObject("exams", examDao.getAllApproved());

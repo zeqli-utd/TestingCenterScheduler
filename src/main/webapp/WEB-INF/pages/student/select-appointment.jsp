@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--@elvariable id="appointment" type="core.event.Appointment"--%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -29,28 +29,9 @@
             <jsp:include page="sidebar.jsp"/>
         </div>
         <div class="content">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Term</th>
-                        <th>Exam</th>
-                        <th>Starts at</th>
-                        <th>Ends at</th>
-                        <th>Seat</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${appointments}" var="appointment">
-                        <tr>
-                            <td><c:out value="${appointment.term}"/></td>
-                            <td><c:out value="${appointment.examName}"/></td>
-                            <td><c:out value="${appointment.startDateTime}"/></td>
-                            <td><c:out value="${appointment.endDateTime}"/></td>
-                            <td><c:out value="${appointment.seat}"/></td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
+            <form:form modelAttribute="appointment">
+                <form:radiobuttons path="slotId" items="${timeSlots}"/>
+            </form:form>
         </div>
     </div>
 </div>

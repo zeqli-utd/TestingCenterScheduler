@@ -17,7 +17,7 @@ public interface AppointmentDao {
 
     /**
      * For Instructor's functionality seeing appointments and attendance details.
-     * Attandence Detail can be calculated in the
+     * Attendance Detail can be calculated in the
      * @param examId
      * @return
      */
