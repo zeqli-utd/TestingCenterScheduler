@@ -1,8 +1,11 @@
 package core.event;
 
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -12,50 +15,42 @@ import java.util.List;
 @Table(name = "TestingCenterInfo")
 public class TestingCenterInfo {
     @Id
-    @Column(name = "term")
-    private Term term;
+    private int term;      // 1158
 
     @Basic(optional = false)
-    @Column(name = "num_seats")
     private int numSeats;   // By default there are 64 seats in sum.
 
     @Basic(optional = false)
-    @Column(name = "num_set_aside_seats")
     private int numSetAsideSeats;
 
     @Basic(optional = false)
-    @Column(name = "open")
     private LocalTime open;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Type(type = "org.hibernate.type.LocalTimeType")
     @Basic(optional = false)
-    @Column(name = "close")
     private LocalTime close;
 
     @Basic(optional = false)
-    @Column(name = "closeDateRanges")
-    private List<LocalDate[]> closeDateRanges;
+    @Cascade(CascadeType.ALL)       // Testing Center is the owner of CloseDateRangeTuple
+    private List<CloseDateRangeTuple> closeDateRanges;
 
     @Basic(optional = false)
-    @Column(name = "reserveRanges")
-    private List<LocalDateTime[]> reserveRanges;
+    @Cascade(CascadeType.ALL)       // Testing Center is the owner of ETSTestTimeRangeTuple
+    private List<ETSTestTimeRangeTuple> reserveRanges;
 
     @Basic(optional = false)
-    @Column(name = "gap")
     private int gap;
 
     @Basic(optional = false)
-    @Column(name = "reminderInterval")
     private int reminderInterval;
 
     public TestingCenterInfo() {
-
     }
 
-    public TestingCenterInfo(Term term, int numSeats, int numSetAsideSeats, LocalTime open,
-                             LocalTime close, List<LocalDate[]> closeDateRanges,
-                             List<LocalDateTime[]> reserveRanges, int gap, int reminderInterval) {
+    public TestingCenterInfo(int term, int numSeats, int numSetAsideSeats, LocalTime open,
+                             LocalTime close, List<CloseDateRangeTuple> closeDateRanges,
+                             List<ETSTestTimeRangeTuple> reserveRanges, int gap, int reminderInterval) {
         this.term = term;
         this.numSeats = numSeats;
         this.numSetAsideSeats = numSetAsideSeats;
@@ -67,11 +62,11 @@ public class TestingCenterInfo {
         this.reminderInterval = reminderInterval;
     }
 
-    public Term getTerm() {
+    public int getTerm() {
         return term;
     }
 
-    public void setTerm(Term term) {
+    public void setTerm(int term) {
         this.term = term;
     }
 
@@ -107,19 +102,19 @@ public class TestingCenterInfo {
         this.close = close;
     }
 
-    public List<LocalDate[]> getCloseDateRanges() {
+    public List<CloseDateRangeTuple> getCloseDateRanges() {
         return closeDateRanges;
     }
 
-    public void setCloseDateRanges(List<LocalDate[]> closeDateRanges) {
+    public void setCloseDateRanges(List<CloseDateRangeTuple> closeDateRanges) {
         this.closeDateRanges = closeDateRanges;
     }
 
-    public List<LocalDateTime[]> getReserveRanges() {
+    public List<ETSTestTimeRangeTuple> getReserveRanges() {
         return reserveRanges;
     }
 
-    public void setReserveRanges(List<LocalDateTime[]> reserveRanges) {
+    public void setReserveRanges(List<ETSTestTimeRangeTuple> reserveRanges) {
         this.reserveRanges = reserveRanges;
     }
 
