@@ -8,7 +8,7 @@ import java.util.List;
 public interface AdhocExamDao {
      List<AdhocExam> getAllAdhocExams();
 
-     AdhocExam findByExamId(String examId);
+     AdhocExam findByAdhocExamId(String examId);
 
      List<AdhocExam> findByInstructorId(String instructorId);
 
