@@ -15,17 +15,10 @@ import java.util.List;
 
 @Entity
 @Table(name = "appointments")
-@AssociationOverrides({
-        @AssociationOverride(name = "id.student", joinColumns = @JoinColumn(name = "net_id")),
-        @AssociationOverride(name = "id.exam", joinColumns = @JoinColumn(name = "exam_id"))
-})
 public class Appointment {
-//    @Id
+    @Id
     @Column(name = "appointment_id")
     private String appointmentID;
-
-    @EmbeddedId
-    private StudentExamPK id = new StudentExamPK();
 
     @Column(name = "exam_id")
     @Basic(optional = false)
@@ -33,7 +26,7 @@ public class Appointment {
 
     @Column(name = "term")
     @Basic(optional = false)
-    private Term term;
+    private int term;
 
     @Column(name = "made_by")
     @Basic(optional = false)
@@ -62,14 +55,14 @@ public class Appointment {
     private boolean isAttend;
 
     @Column(name="status")
-    private String status;
+    private String status;      // 's' marked superfulous
 
     public Appointment(){}
 
     //LocalDateTime startDateTime, LocalDateTime endDateTime, String seat
     // are automatically assigned from Time Slots
     public Appointment(String appointmentID, String examId, String madeBy,
-                       String netId, boolean isAttend){
+                       String netId){
         this.appointmentID = appointmentID;
         this.examId = examId;
         this.madeBy = madeBy;
@@ -77,9 +70,13 @@ public class Appointment {
         //this.endDateTime = endDateTime;
         this.studentId = netId;
         //this.seat = seat;
-        this.isAttend = isAttend;
+        this.isAttend = false;
     }
 
+    /**
+     * Check if the attempted appointment is legal
+     * @return
+     */
     public boolean checkLegalAppointment(){
         String studentIdCheck = getStudentId();
         String examIdCheck = getExamId();
@@ -112,11 +109,11 @@ public class Appointment {
                     }
                 }
             }
-        }catch (HibernateException var9) {
+        }catch (HibernateException he) {
             if(tx != null) {
                 tx.rollback();
             }
-            var9.printStackTrace();
+            return false;
         } finally {
             session.close();
         }
@@ -127,13 +124,6 @@ public class Appointment {
     }
 
     /*-------------Getter and Setters-------------*/
-    public StudentExamPK getId() {
-        return id;
-    }
-
-    public void setId(StudentExamPK id) {
-        this.id = id;
-    }
 
     public String getAppointmentID() {
         return appointmentID;
@@ -175,11 +165,11 @@ public class Appointment {
         this.studentId = studentId;
     }
 
-    public Term getTerm() {
+    public int getTerm() {
         return term;
     }
 
-    public void setTerm(Term term) {
+    public void setTerm(int term) {
         this.term = term;
     }
 
@@ -213,24 +203,6 @@ public class Appointment {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    // TODO SOME FIELD SHOULD NOT BE CHANGED
-    public boolean update(Appointment appointment){
-        if(!this.getAppointmentID().equals(appointment.getAppointmentID())){
-            return false;
-        }
-        else{
-            this.setMadeBy(appointment.getMadeBy());
-            this.setExamId(appointment.getExamId());
-            this.setStartDateTime(appointment.getStartDateTime());
-            this.setEndDateTime(appointment.getEndDateTime());
-            this.setStudentId(appointment.getStudentId());
-            this.setSeat(appointment.getSeat());
-            this.setIsAttend(appointment.isAttend());
-            return true;
-        }
-
     }
 
     // Legacy Code
