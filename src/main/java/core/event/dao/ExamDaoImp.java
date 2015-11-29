@@ -147,6 +147,11 @@ public class ExamDaoImp implements ExamDao {
         return result;
     }
 
+    /**
+     * Check if the exam if legal to schedule
+     * @param exam
+     * @return
+     */
     public boolean checkLegalExam(Exam exam){
         TestingCenterInfo tci = tciRe.findByTerm(exam.getTerm());
         LocalTime open = tci.getOpen();

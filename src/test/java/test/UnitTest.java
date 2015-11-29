@@ -249,7 +249,10 @@ public class UnitTest  {
      * two students concurrently trying to get the last available seat in a timeslot)
      */
 //    @Test
-    public void TestConcurrency(){}
+    public void TestConcurrency(){
+        //TODO 1. check if it is a valid exam
+        // 2. check when add to exam table, is their exist an exam overlap with it.
+    }
 
     /**
      * Test Read Adhoc Exam from Exam Table
@@ -267,6 +270,7 @@ public class UnitTest  {
         examDaoImp = new ExamDaoImp();
         examDaoImp.insertExam(ex);
 
+        // Check whether we can retrieve adhoc exam from exam table.
         List<Exam> examList = examDaoImp.getAllPending();
         for (Exam e: examList){
             if (e.getExamType().equals(ExamType.AD_HOC)){
@@ -274,6 +278,12 @@ public class UnitTest  {
                 Assert.assertEquals(se, studentEntries.get(0));
             }
         }
+    }
+
+    @Test
+    public void TestCloseTime(){
+
+
     }
 
 
