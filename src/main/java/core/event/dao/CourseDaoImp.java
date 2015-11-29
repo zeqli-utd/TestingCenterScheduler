@@ -12,15 +12,27 @@ import java.util.List;
 
 @Repository
 public class CourseDaoImp implements CourseDao {
-    List courses;
+    
 
     public CourseDaoImp(){}
 
     @Override
     public List getAllCourse() {
         Session session = SessionManager.getInstance().openSession();
-        courses = session.createQuery("FROM Course ").list();
-        session.close();
+        Transaction tx = null;
+        List<Course> courses = null;
+        try {
+            tx = session.beginTransaction();
+            courses = session.createQuery("FROM Course ").list();
+            tx.commit();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
         return courses;
     }
 
@@ -92,6 +104,28 @@ public class CourseDaoImp implements CourseDao {
                     ("delete from Course C where C.courseId = :courseId");
             query.setParameter
                     ("courseId", courseId);
+            tx.commit();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+            return false;
+        } finally {
+            session.close();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean deleteCoursesByTerm(int termId){
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery
+                    ("delete from Course as c where c.term = :termId");
+            query.setParameter("termId", termId);
             tx.commit();
         }
         catch (HibernateException he){

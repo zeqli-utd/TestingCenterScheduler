@@ -15,4 +15,5 @@ public interface CourseDao {
 
     boolean deleteCourse(String courseId);
 
+    boolean deleteCoursesByTerm(int termId);
 }
