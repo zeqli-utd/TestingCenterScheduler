@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--@elvariable id="request" type="core.event.Exam"--%>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -28,13 +29,34 @@
             <jsp:include page="sidebar.jsp"/>
         </div>
         <div class="content">
-            <ul>
-                <c:forEach var="request" items="${requests}">
-                    <li>
-
-                    </li>
-                </c:forEach>
-            </ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Exam Name</th>
+                        <th>Course</th>
+                        <th>Capacity</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="request" items="${requests}">
+                        <tr>
+                            <td>
+                                <a href="instructor/view-requests/cancel/${request.examId}">
+                                    <c:out value="${request.examName}"/>
+                                </a>
+                            </td>
+                            <td><c:out value="${request.courseName}"/></td>
+                            <td><c:out value="${request.capacity}"/></td>
+                            <td><c:out value="${request.startDateTime}"/></td>
+                            <td><c:out value="${request.endDateTime}"/></td>
+                            <td><c:out value="${request.duration}"/></td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -42,7 +64,6 @@
 <div class="popup-overlay" id="popup1">
     <div class="popup">
         <a class="close" href="#"><i class="fa fa-times"></i></a>
-        <jsp:include page="${popup_content}"/>
     </div>
 </div>
 

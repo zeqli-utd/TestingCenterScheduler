@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="path" value="${pageContext.request.contextPath}"/>
+<%--@elvariable id="exam" type="core.event.Exam"--%>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -46,36 +46,32 @@
             </form>
             <div>
                 <table>
-                    <tr>
-                        <th>Course</th>
-                        <th>Instructor</th>
-                        <th>Start</th>
-                        <th>End</th>
-                    </tr>
-                    <c:forEach items="exams" var="exam">
+                    <thead>
+                        <tr>
+                            <th>Exam</th>
+                            <th>Term</th>
+                            <th>Course</th>
+                            <th>Duration</th>
+                            <th>Start</th>
+                            <th>End</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${exams}" var="exam">
                         <tr>
                             <td>
                                 <a href="student/make-appointment/new/${exam.examId}">
-                                    ${exam.courseName}
+                                    ${exam.examName}
                                 </a>
                             </td>
-                            <td>
-                                <a href="student/make-appointment/new/${exam.examId}">
-                                    ${exam.madeBy}
-                                </a>
-                            </td>
-                            <td>
-                                <a href="student/make-appointment/new/${exam.examId}">
-                                    ${exam.startDateTime}
-                                </a>
-                            </td>
-                            <td>
-                                <a href="student/make-appointment/new/${exam.examId}">
-                                    ${exam.endDateTime}
-                                </a>
-                            </td>
+                            <td>${exam.term}</td>
+                            <td>${exam.courseName}</td>
+                            <td>${exam.duration}</td>
+                            <td>${exam.startDateTime}</td>
+                            <td>${exam.endDateTime}</td>
                         </tr>
                     </c:forEach>
+                    </tbody>
                 </table>
             </div>
         </div>

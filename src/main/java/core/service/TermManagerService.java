@@ -2,19 +2,17 @@ package core.service;
 
 
 import core.event.Term;
-import core.user.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class TermManagerService {
 
-    public List getAllPopulatedTerms(){
+    public List<Term> getAllPopulatedTerms(){
 
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;

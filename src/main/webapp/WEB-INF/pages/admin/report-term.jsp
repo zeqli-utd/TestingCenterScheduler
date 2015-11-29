@@ -31,8 +31,7 @@
             <jsp:include page="sidebar.jsp" flush="true"/>
         </div>
         <div class="content">
-            <p>${errorMessage}</p>
-            <form:form modelAttribute="selectedTerm" action="admin/report/term">
+            <form:form modelAttribute="selectedTerm" action="admin/report/term" target="_blank">
                 <form:select path="termName">
                     <form:option value="Select Term"/>
                     <form:options items="${terms}"/>

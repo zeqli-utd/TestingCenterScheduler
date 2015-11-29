@@ -1,12 +1,12 @@
 package core.event;
 
-import core.event.dao.AppointmentDaoImp;
+import core.event.dao.AppointmentDao;
 import core.event.dao.CourseDao;
-import core.event.dao.TestingCenterTimeSlotsDaoImp;
 import core.service.TestingCenterInfoRetrieval;
 import core.user.dao.InstructorDao;
 import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -21,10 +21,10 @@ import java.util.List;
 public class Exam {
     @Id
     @Column (name = "exam_id")
-    private String examId;      //
+    private String examId;
 
     @Basic(optional = false)
-    @Column(name = "exam_name" )
+    @Column(name = "exam_name")
     private String examName;    // CSE308-01_1158_ex2 or "Math Placement"
 
     @Enumerated(EnumType.STRING)
@@ -33,7 +33,7 @@ public class Exam {
 
     @Enumerated(EnumType.STRING)
     @Basic(optional = false)
-    private ExamStatusType statusType;  // PENDING, DENIED, or APROVED
+    private ExamStatusType statusType;  // PENDING, DENIED, or APPROVED
 
     @Basic(optional = false)
     @Column(name = "capacity")
@@ -46,11 +46,13 @@ public class Exam {
     @Temporal(TemporalType.TIMESTAMP)
     @Basic(optional = false)
     @Type(type = "org.hibernate.type.LocalDateTimeType")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime startDateTime; // start time of an exam
 
     @Temporal(TemporalType.TIMESTAMP)
     @Basic(optional = false)
     @Type(type = "org.hibernate.type.LocalDateTimeType")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime endDateTime;   // end time of an exam
 
     @Basic(optional = false)
@@ -79,6 +81,10 @@ public class Exam {
     @Transient
     @Autowired
     private InstructorDao instructorDao;
+
+    @Transient
+    @Autowired
+    private AppointmentDao appointmentDao;
 
     @Transient
     private int numAttended;
@@ -153,9 +159,7 @@ public class Exam {
         int gap = tci.getGap();
         int pastDuration = 0;
         if(LocalDateTime.now().isAfter(startDateTime)){
-            //current time slot
-            AppointmentDaoImp apptImp = new AppointmentDaoImp();
-            List<Appointment> appts = apptImp.findAllAppointmentByTime(LocalDateTime.now());
+            List<Appointment> appts = appointmentDao.findAllAppointmentByTime(LocalDateTime.now());
             Appointment appt = new Appointment();
             Appointment apptIter = new Appointment();
             for(int i = 0; i < appts.size(); i++){
