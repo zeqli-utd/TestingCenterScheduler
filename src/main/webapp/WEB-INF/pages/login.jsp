@@ -24,5 +24,13 @@
     </form>
     <div class="error-message">${errorMessage}</div>
 </div>
+
+<div class="popup-overlay" id="popup1">
+    <div class="popup">
+        <a class="close" href="#"><i class="fa fa-times"></i></a>
+        <jsp:include page="${popup_content}"/>
+    </div>
+</div>
+
 </body>
 </html>
