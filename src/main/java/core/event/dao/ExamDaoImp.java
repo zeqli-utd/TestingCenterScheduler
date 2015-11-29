@@ -2,6 +2,7 @@ package core.event.dao;
 
 import core.event.*;
 import core.service.SessionManager;
+import core.service.TestingCenterInfoRetrieval;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -9,10 +10,16 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Repository
 public class ExamDaoImp implements ExamDao {
+
+    @Autowired
+    private TestingCenterInfoRetrieval tciRe;
 
     @Autowired
     private TestingCenterTimeSlotsDaoImp tctsImp;
@@ -140,13 +147,63 @@ public class ExamDaoImp implements ExamDao {
         return result;
     }
 
+    public boolean checkLegalExam(Exam exam){
+        TestingCenterInfo tci = tciRe.findByTerm(exam.getTerm());
+        LocalTime open = tci.getOpen();
+        LocalTime close = tci.getClose();
+        int gap = tci.getGap();
+        LocalDateTime startDateTime = exam.getStartDateTime();
+        LocalDateTime endDateTime = exam.getEndDateTime();
+
+        //check exam time between open hour and close hour
+        LocalTime startTime = startDateTime.toLocalTime();
+        LocalTime endTime = endDateTime.toLocalTime();
+        if(startTime.isBefore(open) || !startTime.isBefore(close) ||
+                endTime.isAfter(close) || !endTime.isAfter(open))
+            return false;
+
+        //check exam time between reserved dateTimes
+        List<ETSTestTimeRangeTuple> reservedRanges = tci.getReserveRanges();
+        for (ETSTestTimeRangeTuple ets: reservedRanges){
+            LocalDateTime begin = ets.getTestDateTimeFrom();
+            LocalDateTime end = ets.getTeseDateTimeTo();
+            if ( !(startDateTime.isBefore(end)) ||
+                    !(endDateTime.isAfter(begin)) ) {
+                //continue;
+            }
+            else{
+                return false;
+            }
+        }
+
+        //check exam time between closed dates
+        LocalDate startDate = startDateTime.toLocalDate();
+        LocalDate endDate = endDateTime.toLocalDate();
+        List<CloseDateRangeTuple> closedRanges = tci.getCloseDateRanges();
+        for (CloseDateRangeTuple cTuple: closedRanges){
+            LocalDate begin = cTuple.getCloseDateFrom();
+            LocalDate end = cTuple.getCloseDateTo();
+            if ( startDate.isAfter(end) || endDate.isBefore(begin) ) {
+                //continue;
+            }
+            else{
+                return false;
+            }
+        }
+        return true;
+
+    }
+
     @Override
     public boolean addExam(Exam exam) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            session.save(exam);
+            if(checkLegalExam(exam))
+                session.save(exam);
+            else
+                return false;
             tx.commit();
         } catch (HibernateException he) {
             if (tx != null) {

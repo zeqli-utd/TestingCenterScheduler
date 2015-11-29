@@ -25,6 +25,15 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         return tscs;
     }
 
+    public List<TestingCenterTimeSlots> findAllAvailableTimeSlots(){
+        List<TestingCenterTimeSlots> list = findAllTimeSlots();
+        for (TestingCenterTimeSlots tcts: list){
+            if(tcts.getOccupiedNum() == tcts.getNumSeat())
+                list.remove(tcts);
+        }
+        return list;
+    }
+
     public List<TestingCenterTimeSlots> findAllTimeSlotsByExamId(String examId){
         List result;
         Session session = SessionManager.getInstance().openSession();
@@ -105,7 +114,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         } finally {
             session.close();
         }
-        return  true;
+        return true;
     }
     //need to fix
     public boolean updateTimeSlot(TestingCenterTimeSlots tcts){

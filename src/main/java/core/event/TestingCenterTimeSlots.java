@@ -114,6 +114,35 @@ public class TestingCenterTimeSlots {
             System.out.print("Error when releasing a seat.");
     }
 
+    public String getTimeSlotId() {
+        return timeSlotId;
+    }
 
+    public String getExamId() {
+        return examId;
+    }
 
+    public LocalDateTime getBegin() {
+        return begin;
+    }
+
+    public LocalDateTime getEnd() {
+        return end;
+    }
+
+    public String[] getSeatArrangement() {
+        return seatArrangement;
+    }
+
+    public int getNumSeat() {
+        return numSeat;
+    }
+
+    public int getSetAsideSeat() {
+        return setAsideSeat;
+    }
+
+    public int getOccupiedNum() {
+        return occupiedNum;
+    }
 }
