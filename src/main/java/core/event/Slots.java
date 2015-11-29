@@ -25,7 +25,7 @@ public class Slots {
 
     @Autowired
     TestingCenterInfoRetrieval tcir;
-    TestingCenterInfo tci = tcir.findByTerm(tcir.getCurrentTerm());
+    TestingCenterInfo tci = tcir.findByTerm(tcir.getCurrentTerm().getTermId());
     int numSeats = tci.getNumSeats();
     int gap = tci.getGap();
     int numSetAsideSeats = tci.getNumSetAsideSeats();

@@ -45,7 +45,7 @@ public class AdministratorPageController {
         model.addObject("pageHeader", StringResources.ADMINISTRATOR_VIEW_INFO);
         Term term = infoRetrieval.getCurrentTerm();
         model.addObject("term", term);
-        model.addObject("centerInfo", infoRetrieval.findByTerm(term));
+        model.addObject("centerInfo", infoRetrieval.findByTerm(term.getTermId()));
         return model;
     }
 
@@ -73,8 +73,7 @@ public class AdministratorPageController {
     public ModelAndView viewAppointments(ModelAndView model) {
         model.setViewName("admin/view-appointments");
         model.addObject("pageHeader", StringResources.ADMINISTRATOR_VIEW_APPOINTMENTS);
-        Term term = infoRetrieval.getCurrentTerm();
-        model.addObject("appointments", appointmentDao.findAllAppointmentsByTerm(term));
+        model.addObject("appointments", appointmentDao.findAllAppointmentsByTerm(infoRetrieval.getCurrentTerm()));
         return model;
     }
 

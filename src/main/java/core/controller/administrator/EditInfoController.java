@@ -48,7 +48,7 @@ public class EditInfoController {
     public ModelAndView newInfoSubmit(@ModelAttribute("newInfo") TestingCenterInfo info,
                                       @ModelAttribute("newTerm") Term term,
                                       RedirectAttributes redirectAttributes) {
-        info.setTerm(term);
+        info.setTerm(term.getTermId());
         redirectAttributes.addFlashAttribute("newInfo", info);
         ModelAndView model = new ModelAndView("redirect:/admin/home");
         model.addObject("content", "admin/include/add-term-two");

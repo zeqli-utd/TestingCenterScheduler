@@ -15,7 +15,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Component
-@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @Entity
 @Table(name = "Exam")
 public class Exam {
@@ -66,9 +65,6 @@ public class Exam {
     @Basic(optional = false)
     @Column(name = "duration")
     private int duration;   // Duration in minute
-
-    @OneToMany (fetch = FetchType.LAZY, mappedBy = "id.exam")
-    private List<Appointment> appointments;
 
     @Basic(optional = false)
     @Column(name = "num_appointments")
@@ -154,7 +150,7 @@ public class Exam {
     public int getActualDuration(){
         int actualDuration;
         TestingCenterInfoRetrieval tcir = new TestingCenterInfoRetrieval();
-        TestingCenterInfo tci = tcir.findByTerm(tcir.getCurrentTerm());
+        TestingCenterInfo tci = tcir.findByTerm(tcir.getCurrentTerm().getTermId());
         int numSeats = tci.getNumSeats();
         int gap = tci.getGap();
         int pastDuration = 0;
@@ -184,14 +180,6 @@ public class Exam {
         return courseDao
                 .findByCourseId(this.courseId)
                     .getSubject();
-    }
-
-    public List<Appointment> getAppointments() {
-        return appointments;
-    }
-
-    public void setAppointments(List<Appointment> appointments) {
-        this.appointments = appointments;
     }
 
     public double getAttendance() {
