@@ -33,6 +33,10 @@ public class Appointment {
     @Basic(optional = false)
     private String madeBy;  // Student Id or AdminID
 
+    @Column(name = "slot_id")
+    @Basic(optional = false)
+    private String slotId;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Basic(optional = false)
     @Type(type = "org.hibernate.type.LocalDateTimeType")
@@ -69,6 +73,7 @@ public class Appointment {
         this.seat = "";
         this.isAttend = false;
         this.status = "";
+        this.slotId = "";
     }
 
     //LocalDateTime startDateTime, LocalDateTime endDateTime, String seat
@@ -217,6 +222,13 @@ public class Appointment {
         this.status = status;
     }
 
+    public String getSlotId() {
+        return slotId;
+    }
+
+    public void setSlotId(String slotId) {
+        this.slotId = slotId;
+    }
     // Legacy Code
 
 //    public LocalDateTime getStartDateTime() {// date to
