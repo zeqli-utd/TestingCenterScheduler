@@ -20,77 +20,78 @@ import java.util.List;
 public class Exam {
     @Id
     @Column (name = "exam_id")
-    private String examId;
+    protected String examId;
 
     @Basic(optional = false)
     @Column(name = "exam_name")
-    private String examName;    // CSE308-01_1158_ex2 or "Math Placement"
+    protected String examName;    // CSE308-01_1158_ex2 or "Math Placement"
 
     @Enumerated(EnumType.STRING)
     @Basic(optional = false)
-    private ExamType examType;        // REGULAR, or AD_HOC
+    protected ExamType examType = ExamType.REGULAR;        // REGULAR, or AD_HOC
 
     @Enumerated(EnumType.STRING)
     @Basic(optional = false)
-    private ExamStatusType statusType;  // PENDING, DENIED, or APPROVED
+    protected ExamStatusType statusType = ExamStatusType.PENDING;  // PENDING, DENIED, or APPROVED
 
     @Basic(optional = false)
     @Column(name = "capacity")
-    private int capacity;           // Number of Students
+    protected int capacity;           // Number of Students
 
     @Basic(optional = false)
     @Column(name = "term")
-    private int term;           // 1158 for Fall 2015 or 0 for ad hoc exam
+    protected int term;           // 1158 for Fall 2015 or 0 for ad hoc exam
 
     @Temporal(TemporalType.TIMESTAMP)
     @Basic(optional = false)
     @Type(type = "org.hibernate.type.LocalDateTimeType")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime startDateTime; // start time of an exam
+    protected LocalDateTime startDateTime; // start time of an exam
 
     @Temporal(TemporalType.TIMESTAMP)
     @Basic(optional = false)
     @Type(type = "org.hibernate.type.LocalDateTimeType")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private LocalDateTime endDateTime;   // end time of an exam
+    protected LocalDateTime endDateTime;   // end time of an exam
 
     @Basic(optional = false)
     @Column(name = "instructor_id" )
-    private String instructorId;    // NetId of the person who made this appointment
+    protected String instructorId;    // NetId of the person who made this appointment
 
     @Basic(optional = false)
     @Column(name = "course_id" )
-    private String courseId;    // CSE308-01_1158 or "adhoc" for ad hoc exam
+    protected String courseId;    // CSE308-01_1158 or "adhoc" for ad hoc exam
 
     @Basic(optional = false)
     @Column(name = "duration")
-    private int duration;   // Duration in minute
+    protected int duration = 0;;   // Duration in minute
 
-    @Basic(optional = false)
-    @Column(name = "num_appointments")
-    private int numAppointments;// num of students who have made appointments
+
 
     @Transient
     @Autowired
-    private CourseDao courseDao;
+    protected CourseDao courseDao;
 
     @Transient
     @Autowired
-    private InstructorDao instructorDao;
+    protected InstructorDao instructorDao;
 
     @Transient
     @Autowired
-    private AppointmentDao appointmentDao;
+    protected AppointmentDao appointmentDao;
 
     @Transient
-    private int numAttended;
+    protected int numAttended = 0;;
 
     @Transient
-    private double attendance;  // Calculate on the fly.
+    protected int numAppointments = 0;// num of students who have made appointments
+
+    @Transient
+    protected double attendance  = 0.0;;  // Calculate on the fly.
 
     //the number of times of exams needed for all student to take this exam
     @Transient
-    private int numRemainingTime = 0;
+    protected int numRemainingTime = 0;
 
     public Exam(){
 
@@ -145,6 +146,40 @@ public class Exam {
         this(Id, type, start, end, duration, numApp, numNeed);
         this.instructorId = instructorId;
         this.numAttended = 0;
+    }
+
+    /**
+     * Add Regular Exam
+     * @param examId
+     * @param examName
+     * @param capacity
+     * @param term
+     * @param startDateTime
+     * @param endDateTime
+     * @param instructorId
+     * @param courseId
+     * @param duration
+     */
+    public Exam(String examId,
+                String examName,
+                int capacity,
+                int term,
+                LocalDateTime startDateTime,
+                LocalDateTime endDateTime,
+                String instructorId,
+                String courseId,
+                int duration) {
+        this.examId = examId;
+        this.examName = examName;
+        this.examType = ExamType.REGULAR;
+        this.statusType = ExamStatusType.PENDING;
+        this.capacity = capacity;
+        this.term = term;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+        this.instructorId = instructorId;
+        this.courseId = courseId;
+        this.duration = duration;
     }
 
     public int getActualDuration(){

@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 @Embeddable
 public class ETSTestTimeRangeTuple implements Serializable{
 
-    @Type(type = "org.hibernate.type.LocalDateTime")
+    @Type(type = "org.hibernate.type.LocalDateTimeType")
     private LocalDateTime testDateTimeFrom;
 
-    @Type(type = "org.hibernate.type.LocalDateTime")
+    @Type(type = "org.hibernate.type.LocalDateTimeType")
     private LocalDateTime teseDateTimeTo;
 
     public ETSTestTimeRangeTuple() {

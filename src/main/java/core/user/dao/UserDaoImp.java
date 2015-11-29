@@ -7,13 +7,16 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Repository
 public class UserDaoImp implements UserDao {
 
+    public UserDaoImp() {
+    }
 
     @Override
     public List<User> getAllUsers() {

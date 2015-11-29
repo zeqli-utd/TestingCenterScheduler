@@ -9,10 +9,10 @@ import java.time.LocalDate;
 @Embeddable
 public class CloseDateRangeTuple implements Serializable{
 
-    @Type(type = "org.hibernate.type.LocalDate")
+    @Type(type = "org.hibernate.type.LocalDateType")
     private LocalDate closeDateFrom;
 
-    @Type(type = "org.hibernate.type.LocalDate")
+    @Type(type = "org.hibernate.type.LocalDateType")
     private LocalDate closeDateTo;
 
     public CloseDateRangeTuple() {

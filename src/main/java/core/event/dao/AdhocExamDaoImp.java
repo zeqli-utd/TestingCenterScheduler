@@ -41,8 +41,9 @@ public class AdhocExamDaoImp implements AdhocExamDao{
         return null;
     }
 
+
     @Override
-    public boolean addExam(AdhocExam exam) {
+    public boolean addAdhocExam(AdhocExam exam) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {

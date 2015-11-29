@@ -61,7 +61,7 @@ public class Appointment {
     private boolean isAttend;
 
     @Column(name="status")
-    private String status;      // 's' marked superfluous
+    private String status;      // 's' marked superfluous || 'r' marked regular
 
     @Transient
     private String examName;

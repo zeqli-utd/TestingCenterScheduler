@@ -112,7 +112,7 @@ public class AuthenticationServiceImp implements AuthenticationService{
             }
 
             if( admin && ins && stu ){
-                authorization = Authorization.ADMINISTRATOR_INSTRUCTOR_STUDENT;
+                authorization = Authorization.TRINITY;
             }
             else if( admin && ins ){
                 authorization = Authorization.ADMINISTRATOR_INSTRUCTOR;

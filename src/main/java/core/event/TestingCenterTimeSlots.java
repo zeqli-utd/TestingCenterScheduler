@@ -2,6 +2,7 @@ package core.event;
 
 import core.event.dao.AppointmentDaoImp;
 import core.service.TestingCenterInfoRetrieval;
+import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
@@ -23,10 +24,12 @@ public class TestingCenterTimeSlots {
 
     @Basic(optional = false)
     @Column(name = "begin")
+    @Type(type = "org.hibernate.type.LocalDateTimeType")
     private LocalDateTime begin;
 
     @Basic(optional = false)
     @Column(name = "end")
+    @Type(type = "org.hibernate.type.LocalDateTimeType")
     private LocalDateTime end;
 
     @Basic(optional = false)

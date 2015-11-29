@@ -120,7 +120,7 @@ public class DataCollection {
                         if (hash.get(appt.getStudentId()) == appt.getExamId()) {    // Reinstate Appointment
                             appt.setStatus("r");
                             session.update(appt);
-                            //TODO 尝试着将学生加入系统
+                            //TODO reinstate
                         } else {
                             //TODO cancel appointment
                         }
