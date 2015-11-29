@@ -51,8 +51,13 @@ public class TestingCenterInfoRetrieval {
         return result;
     }
 
-    public Term getTermByDay(LocalDateTime day){
-        LocalDate now = day.toLocalDate();
+    /**
+     * Get numbering Term Id.
+     * @param day
+     * @return 4 digit representing Term id
+     */
+    public int getTermByDay(LocalDateTime day){
+        LocalDate date = day.toLocalDate();
         Term result = null;
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
@@ -60,7 +65,7 @@ public class TestingCenterInfoRetrieval {
             tx = session.beginTransaction();
             Query query = session.createQuery
                     ("FROM Term T WHERE T.termStartDate <= :date AND  :date <= T.termEndDate");
-            query.setParameter("date", now);
+            query.setParameter("date", date);
             tx.commit();
             result = (Term)query.uniqueResult();
         }
@@ -72,9 +77,36 @@ public class TestingCenterInfoRetrieval {
         } finally {
             session.close();
         }
-        return result;
+        return result.getTermId();
     }
 
+    /**
+     * This method is for update TestingcenterInfo
+     * @param tc
+     * @return
+     */
+    public boolean updateTestingCenterInfo(TestingCenterInfo tc){
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        boolean result = false;
+        try {
+            tx = session.beginTransaction();
+            session.update(tc);
+            tx.commit();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
+        return result;
+
+
+    }
+
+    @Deprecated
     public boolean updateField(Term term, String fieldName, Object value) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
@@ -84,7 +116,7 @@ public class TestingCenterInfoRetrieval {
             Query query = session.createQuery
                     ("FROM TestingCenterInfo T WHERE T.term = :termId");
             query.setParameter("termId", term);
-            tx.commit();
+
             TestingCenterInfo tc = (TestingCenterInfo) query.uniqueResult();
             switch (fieldName) {
                 case "numSeats":
@@ -118,6 +150,8 @@ public class TestingCenterInfoRetrieval {
                     result = true;
                     return true;
             }
+            session.update(tc);
+            tx.commit();
         }
         catch (HibernateException he){
             if(tx != null){
@@ -130,41 +164,42 @@ public class TestingCenterInfoRetrieval {
     }
 
     /**
-     * add function for both closeDateRanges and reserveRanges
+     * Specify closeDateRanges and reserveRanges
      * @param term
      * @param fieldName: closeDateRanges and reserveRanges
      * @param dates
      * @return
      */
+    @Deprecated
     public boolean addDates(Term term, String fieldName, Object dates){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         boolean result = false;
-        try {
-            tx = session.beginTransaction();
-            Query query = session.createQuery
-                    ("FROM TestingCenterInfo T WHERE T.term = :termId");
-            query.setParameter("termId", term);
-            tx.commit();
-            TestingCenterInfo tc = (TestingCenterInfo)query.uniqueResult();
-            switch (fieldName){
-                case "closeDateRanges":
-                    tc.getCloseDateRanges().add((LocalDate[]) dates);
-                    result = true;
-                    break;
-                case "reserveRanges":
-                    tc.getReserveRanges().add((LocalDateTime[]) dates);
-                    result = true;
-                    break;
-            }
-        }
-        catch (HibernateException he){
-            if(tx != null){
-                tx.rollback();
-            }
-        } finally {
-            session.close();
-        }
+//        try {
+//            tx = session.beginTransaction();
+//            Query query = session.createQuery
+//                    ("FROM TestingCenterInfo T WHERE T.term = :termId");
+//            query.setParameter("termId", term);
+//            tx.commit();
+//            TestingCenterInfo tc = (TestingCenterInfo)query.uniqueResult();
+//            switch (fieldName){
+//                case "closeDateRanges":
+//                    tc.getCloseDateRanges().add((LocalDate[]) dates);
+//                    result = true;
+//                    break;
+//                case "reserveRanges":
+//                    tc.getReserveRanges().add((LocalDateTime[]) dates);
+//                    result = true;
+//                    break;
+//            }
+//        }
+//        catch (HibernateException he){
+//            if(tx != null){
+//                tx.rollback();
+//            }
+//        } finally {
+//            session.close();
+//        }
         return result;
     }
 
@@ -176,73 +211,75 @@ public class TestingCenterInfoRetrieval {
      * @param dates
      * @return
      */
+    @Deprecated
     public boolean editDates(Term term, String fieldName, int i, Object dates){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         boolean result = false;
-        try {
-            tx = session.beginTransaction();
-            Query query = session.createQuery
-                    ("FROM TestingCenterInfo T WHERE T.term = :termId");
-            query.setParameter("termId", term);
-            tx.commit();
-            TestingCenterInfo tc = (TestingCenterInfo)query.uniqueResult();
-            switch (fieldName){
-                case "closeDateRanges":
-                    tc.getCloseDateRanges().set(i, (LocalDate[])dates);
-                    result = true;
-                    break;
-                case "reserveRanges":
-                    tc.getReserveRanges().set(i, (LocalDateTime[]) dates);
-                    result = true;
-                    break;
-            }
-        }
-        catch (HibernateException he){
-            if(tx != null){
-                tx.rollback();
-            }
-        } finally {
-            session.close();
-        }
+//        try {
+//            tx = session.beginTransaction();
+//            Query query = session.createQuery
+//                    ("FROM TestingCenterInfo T WHERE T.term = :termId");
+//            query.setParameter("termId", term);
+//            tx.commit();
+//            TestingCenterInfo tc = (TestingCenterInfo)query.uniqueResult();
+//            switch (fieldName){
+//                case "closeDateRanges":
+//                    tc.getCloseDateRanges().set(i, (LocalDate[])dates);
+//                    result = true;
+//                    break;
+//                case "reserveRanges":
+//                    tc.getReserveRanges().set(i, (LocalDateTime[]) dates);
+//                    result = true;
+//                    break;
+//            }
+//        }
+//        catch (HibernateException he){
+//            if(tx != null){
+//                tx.rollback();
+//            }
+//        } finally {
+//            session.close();
+//        }
         return result;
     }
 
     /**
-     * delete functino for closeDateRanges and reserveRanges
+     * Delete function for closeDateRanges and reserveRanges
      * @param term
      * @param i: index of the close dates that should be removed
      * @return
      */
+    @Deprecated
     public boolean deleteCloseDates(Term term, String fieldName, int i){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         boolean result = false;
-        try {
-            tx = session.beginTransaction();
-            Query query = session.createQuery
-                    ("FROM TestingCenterInfo T WHERE T.term = :termId");
-            query.setParameter("termId", term);
-            tx.commit();
-            TestingCenterInfo tc = (TestingCenterInfo)query.uniqueResult();
-            switch (fieldName){
-                case "closeDateRanges":
-                    tc.getCloseDateRanges().remove(i);
-                    result = true;
-                    break;
-                case "reserveRanges":
-                    tc.getReserveRanges().remove(i);
-                    result = true;
-                    break;
-            }
-        }
-        catch (HibernateException he){
-            if(tx != null){
-                tx.rollback();
-            }
-        } finally {
-            session.close();
-        }
+//        try {
+//            tx = session.beginTransaction();
+//            Query query = session.createQuery
+//                    ("FROM TestingCenterInfo T WHERE T.term = :termId");
+//            query.setParameter("termId", term);
+//            tx.commit();
+//            TestingCenterInfo tc = (TestingCenterInfo)query.uniqueResult();
+//            switch (fieldName){
+//                case "closeDateRanges":
+//                    tc.getCloseDateRanges().remove(i);
+//                    result = true;
+//                    break;
+//                case "reserveRanges":
+//                    tc.getReserveRanges().remove(i);
+//                    result = true;
+//                    break;
+//            }
+//        }
+//        catch (HibernateException he){
+//            if(tx != null){
+//                tx.rollback();
+//            }
+//        } finally {
+//            session.close();
+//        }
         return result;
     }
 }
