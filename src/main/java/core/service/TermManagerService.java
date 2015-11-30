@@ -30,4 +30,25 @@ public class TermManagerService {
         }
         return terms;
     }
+
+
+    public boolean insertTerm (Term term){
+
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            session.save(term);
+            tx.commit();
+        } catch (HibernateException e) {
+            if(tx != null) {
+                tx.rollback();
+            }
+            return false;
+        } finally {
+            session.close();
+        }
+        return true;
+    }
 }
