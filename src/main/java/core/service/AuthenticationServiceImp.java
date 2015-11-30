@@ -10,137 +10,78 @@ import java.util.Iterator;
 import java.util.List;
 
 @Repository
-public class AuthenticationServiceImp implements AuthenticationService{
+public class AuthenticationServiceImp implements AuthenticationService {
     /*      SessionFactory sessionFactory = sessionManager.createSessionFactory();
             Session session = sessionFactory.openSession();
             session.beginTransaction();
             session.save(e);                    //save object using hibernate
             session.getTransaction().commit();*/
 
-   // private static SessionManager sessionManager = new SessionManager();
+    // private static SessionManager sessionManager = new SessionManager();
     //SessionFactory sessionFactory = sessionManager.createSessionFactory();
 
     //UserType AllUser = new UserType();
 
     @Override
     public boolean registeredUserId(String userId) {
-        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         boolean result = false;
-        try {
+        try (Session session = SessionManager.getInstance().openSession()) {
             tx = session.beginTransaction();
 
             List allUserId = session.createQuery("SELECT netId FROM UserType").list();
 
             result = allUserId.contains(userId);
-        }
-        catch (HibernateException he){
-            if(tx != null){
+        } catch (HibernateException he) {
+            if (tx != null) {
                 tx.rollback();
             }
             return false;
-        } finally {
-            session.close();
         }
         return result;
     }
 
     @Override
     public boolean userMatchPassword(String userId, String password) {
-        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         //boolean result = false;
-        try {
+        try (Session session = SessionManager.getInstance().openSession()) {
             tx = session.beginTransaction();
 
             List allUser = session.createQuery("FROM User").list();
             Iterator userIter = allUser.iterator();
 
-            while(userIter.hasNext()){
-                User user = (User)userIter.next();
-                if(user.getNetId().equals(userId)){
-                    if(user.getPassword().equals(password)){
+            while (userIter.hasNext()) {
+                User user = (User) userIter.next();
+                if (user.getNetId().equals(userId)) {
+                    if (user.getPassword().equals(password)) {
                         return true;
                     }
                     return false;
                 }
             }
-        }
-        catch (HibernateException he){
-            if(tx != null){
+        } catch (HibernateException he) {
+            if (tx != null) {
                 tx.rollback();
             }
             return false;
-        } finally {
-            session.close();
         }
         return false;
     }
 
     @Override
     public Authorization login(String userId) {
-        Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
-        Authorization authorization = null;
-        boolean admin = false;
-        boolean ins = false;
-        boolean stu = false;
-        try {
+        User user = new User();
+        try (Session session = SessionManager.getInstance().openSession()) {
             tx = session.beginTransaction();
-
-            List<Administrator> allAdministrator = session.createQuery("FROM Administrator").list();
-            List<Instructor> allInstructor = session.createQuery("FROM Instructor").list();
-            List<Student> allStudent = session.createQuery("FROM Student").list();
-
-
-            for (Administrator administrator : allAdministrator) {
-                if(administrator.getNetId().equals(userId)){
-                    admin = true;
-                }
-            }
-
-            for (Instructor instructor : allInstructor){
-                if(instructor.getNetId().equals(userId)){
-                    ins = true;
-                }
-            }
-
-            for (Student student : allStudent){
-                if(student.getNetId().equals(userId)){
-                    stu = true;
-                }
-            }
-
-            if( admin && ins && stu ){
-                authorization = Authorization.TRINITY;
-            }
-            else if( admin && ins ){
-                authorization = Authorization.ADMINISTRATOR_INSTRUCTOR;
-            }
-            else if( admin && stu ){
-                authorization = Authorization.ADMINISTRATOR_STUDENT;
-            }
-            else if( ins && stu ){
-                authorization = Authorization.INSTRUCTOR_STUDENT;
-            }
-            else if( admin ){
-                authorization = Authorization.ADMINISTRATOR;
-            }
-            else if( ins ){
-                authorization = Authorization.INSTRUCTOR;
-            }
-            else if( stu ){
-                authorization = Authorization.STUDENT;
-            }
-        }
-        catch (HibernateException he){
-            if(tx != null){
+            user = session.get(User.class, userId);
+        } catch (HibernateException he) {
+            if (tx != null) {
                 tx.rollback();
             }
-        } finally {
-            session.close();
         }
-        return authorization;
+        return user.getAuthorization();
     }
 //    @Override
 //    public Authorization login(String userId, String password) {

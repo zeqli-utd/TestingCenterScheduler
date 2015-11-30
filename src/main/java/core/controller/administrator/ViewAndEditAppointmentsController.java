@@ -22,7 +22,7 @@ public class ViewAndEditAppointmentsController {
 
     @RequestMapping(value = "view-appointment/cancel/{id}",
             method = RequestMethod.POST)
-    public String cancelAppointment(@PathVariable("id") String appointmentId) {
+    public String cancelAppointment(@PathVariable("id") int appointmentId) {
         appointmentDao.deleteAppointment(appointmentId);
 
         return "redirect:admin/view-appointment";

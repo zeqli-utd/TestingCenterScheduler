@@ -1,5 +1,4 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%--@elvariable id="errorMessage" type="java.lang.String"--%>
 <html>
 <head>
     <title>Testing Center Scheduler</title>
@@ -16,7 +15,7 @@
     </div>
 </div>
 <div>
-    <form action="authorizing" class="login-box">
+    <form action="authorizing" class="login-box" method="post">
         <h3 class="login-heading">Sign in</h3>
         <input type="text" class="login-text" placeholder="NetID" name="uerId">
         <input type="password" class="login-text" placeholder="Password" name="password">
@@ -24,11 +23,9 @@
     </form>
     <div class="error-message">${errorMessage}</div>
 </div>
-
 <div class="popup-overlay" id="popup1">
     <div class="popup">
         <a class="close" href="#"><i class="fa fa-times"></i></a>
-        <jsp:include page="${popup_content}"/>
     </div>
 </div>
 

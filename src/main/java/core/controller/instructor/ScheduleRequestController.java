@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/instructor/schedule-event")
-public class ScheduleController {
+public class ScheduleRequestController {
     @Autowired
     ExamDao examDao;
 

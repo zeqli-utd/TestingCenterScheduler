@@ -4,6 +4,7 @@ public class SessionProfile {
 
     private String userId;
     private String password;
+    private Authorization authorization;
 
     public String getUserId() {
         return userId;
@@ -19,5 +20,13 @@ public class SessionProfile {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Authorization getAuthorization() {
+        return authorization;
+    }
+
+    public void setAuthorization(Authorization authorization) {
+        this.authorization = authorization;
     }
 }
