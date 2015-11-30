@@ -104,7 +104,7 @@ public class UnitTest  {
      * Display utilization during a specified date range (3 pts each for actual utilization and 6
      * expected utilization; each of these includes 1pt for taking gap time into account)
      */
-    @Test
+    //@Test
     public void TestUtilization(){
         //Exam exam1 = new Exam("308","ad hoc", LocalDateTime.of(2015,6,20,10,30),LocalDateTime.of(2015,6,20,15,0), 4.5,50,80, "prof");
         //Exam exam2 = new Exam("390","course", LocalDateTime.of(2015,6,20,15,10),LocalDateTime.of(2015,6,20,18,40), 2.5,50,80, "prof");
@@ -141,11 +141,11 @@ public class UnitTest  {
         Appointment appointment2 = new Appointment();//
         appointment1.setStartDateTime(LocalDateTime.of(2015,10,2,5,10));
         appointment1.setEndDateTime(LocalDateTime.of(2015, 10, 2, 5, 40));
-        appointment1.setAppointmentID(1);
+//        appointment1.setAppointmentID(1);
 
         appointment2.setStartDateTime(LocalDateTime.of(2015, 10, 2, 5, 10));
         appointment2.setEndDateTime(LocalDateTime.of(2015, 10, 2, 5, 40));
-        appointment2.setAppointmentID(2);
+//        appointment2.setAppointmentID(2);
 
         util.getAppointmentDao().insertAppointment(appointment1);
         util.getAppointmentDao().insertAppointment(appointment2);
@@ -242,65 +242,40 @@ public class UnitTest  {
      in adjacent seats
      */
 
-//    @Test
-//    public void TestMakeAppointment(){
-//        TestingCenterTimeSlots initSlot = new TestingCenterTimeSlots(
-//                "examId",
-//                LocalDateTime.of(2015,10,2,5,10),
-//                LocalDateTime.of(2015,10,2,6,20),
-//                64,
-//                5
-//        );
-//
-//        TestingCenterTimeSlotsDaoImp dao = new TestingCenterTimeSlotsDaoImp();
-//        dao.insertTimeSlot(initSlot);
-//
-//
-//        Appointment appointment = new Appointment();
-//        TestingCenterTimeSlots slot
-//                = dao.findTimeSlotById(initSlot.getTimeSlotId());
-//        appointment.setExamId(slot.getExamId());
-//        appointment.setStartDateTime(slot.getBegin());
-//        appointment.setEndDateTime(slot.getEnd());
-//        appointment.setStudentId("Zeqli");
-//        appointment.setExamName("Exam Name");
-//        appointment.setTerm(1158);
-//
-//        AppointmentDaoImp appointmentDaoImp = new AppointmentDaoImp();
-//        appointmentDaoImp.insertAppointment(appointment);
-//
-//        Assert.assertEquals(
-//                dao.findTimeSlotById(initSlot.getTimeSlotId()).getSeatArrangement().get(0),
-//                appointmentDaoImp.findAppointmentById(appointment.getAppointmentID()).getAppointmentID());
-//        ;
-//        ;
-//
-//    }
-//
-//        TestingCenterTimeSlotsDaoImp dao = new TestingCenterTimeSlotsDaoImp();
-//        dao.insertTimeSlot(initSlot);
-//
-//
-//        Appointment appointment = new Appointment();
-//        TestingCenterTimeSlots slot
-//                = dao.findTimeSlotById(initSlot.getTimeSlotId());
-//        appointment.setExamId(slot.getExamId());
-//        appointment.setStartDateTime(slot.getBegin());
-//        appointment.setEndDateTime(slot.getEnd());
-//        appointment.setStudentId("Zeqli");
-//        appointment.setExamName("Exam Name");
-//        appointment.setTerm(1158);
-//
-//        AppointmentDaoImp appointmentDaoImp = new AppointmentDaoImp();
-//        appointmentDaoImp.insertAppointment(appointment);
-//
-//        Assert.assertEquals(
-//                dao.findTimeSlotById(initSlot.getTimeSlotId()).getSeatArrangement().get(0),
-//                appointmentDaoImp.findAppointmentById(appointment.getAppointmentID()).getAppointmentID());
-//        ;
-//        ;
-//
-//    }
+   // @Test
+    public void TestMakeAppointment(){
+        TestingCenterTimeSlots initSlot = new TestingCenterTimeSlots(
+                "examId",
+                LocalDateTime.of(2015,10,2,5,10),
+                LocalDateTime.of(2015,10,2,6,20),
+                64,
+                5
+        );
+
+        TestingCenterTimeSlotsDaoImp dao = new TestingCenterTimeSlotsDaoImp();
+        dao.insertTimeSlot(initSlot);
+
+
+        Appointment appointment = new Appointment();
+        TestingCenterTimeSlots slot
+                = dao.findTimeSlotById(initSlot.getTimeSlotId());
+        appointment.setExamId(slot.getExamId());
+        appointment.setStartDateTime(slot.getBegin());
+        appointment.setEndDateTime(slot.getEnd());
+        appointment.setStudentId("Zeqli");
+        appointment.setExamName("Exam Name");
+        appointment.setTerm(1158);
+
+        AppointmentDaoImp appointmentDaoImp = new AppointmentDaoImp();
+        appointmentDaoImp.insertAppointment(appointment);
+
+        Assert.assertEquals(
+                dao.findTimeSlotById(initSlot.getTimeSlotId()).getSeatArrangement().get(0),
+                appointmentDaoImp.findAppointmentById(appointment.getAppointmentID()).getAppointmentID());
+        ;
+        ;
+
+    }
 
     /**
      *  Cancel an appointment 3
@@ -319,20 +294,19 @@ public class UnitTest  {
      * Appointment reminders sent by email. 4
      *
      */
-//   @Test
-//    public void TestEmailReminder(){
-//       boolean isSuccess = true;
-//        try {
-//            EmailService.sendEmail(StringResources.EMAIL_HOST, StringResources.EMAIL_PORT,
-//                    StringResources.EMAIL_LOGIN, StringResources.EMAIL_PASSWORD,
-//                    StringResources.EMAIL_LOGIN,"test","test");
-//        } catch (MessagingException e) {
-//           isSuccess = false;
-//
-//        }
-//        Assert.assertEquals(true, isSuccess);
-//
-//    }
+   @Test
+    public void TestEmailReminder(){
+       boolean isSuccess = true;
+        try {
+            EmailService.sendEmail(StringResources.EMAIL_HOST, StringResources.EMAIL_PORT,
+                    StringResources.EMAIL_LOGIN, StringResources.EMAIL_PASSWORD,
+                    StringResources.EMAIL_LOGIN,"test","test");
+        } catch (MessagingException e) {
+           isSuccess = false;
+        }
+        Assert.assertEquals(true, isSuccess);
+
+    }
 
     
 
