@@ -89,9 +89,8 @@ public class Appointment {
 
     //LocalDateTime startDateTime, LocalDateTime endDateTime, String seat
     // are automatically assigned from Time Slots
-    public Appointment(int appointmentID, String examId, String madeBy,
+    public Appointment(String examId, String madeBy,
                        String netId){
-        this.appointmentID = appointmentID;
         this.examId = examId;
         this.madeBy = madeBy;
         //this.startDateTime = startDateTime;
@@ -155,10 +154,6 @@ public class Appointment {
 
     public int getAppointmentID() {
         return appointmentID;
-    }
-
-    public void setAppointmentID(int appointmentID) {
-        this.appointmentID = appointmentID;
     }
 
     public String getExamId() {
