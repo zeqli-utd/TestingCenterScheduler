@@ -14,6 +14,8 @@ public interface TestingCenterTimeSlotsDao {
 
     boolean insertTimeSlot(TestingCenterTimeSlots timeSlots);
 
+    boolean insertTimeSlots(List<TestingCenterTimeSlots> listTimeSlots);
+
     boolean insertTimeSlotsByExamId(String examId);
 
     boolean deleteTimeSlot(String timeSlotId);

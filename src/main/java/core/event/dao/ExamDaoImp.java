@@ -206,6 +206,11 @@ public class ExamDaoImp implements ExamDao {
      */
     @Override
     public boolean addExam(Exam exam) {
+        //check  schedubility
+        //add  slots to database
+        Slots slot = new Slots(exam);
+        tctsImp.insertTimeSlots(slot.generateTimeSlots());
+        //add exam to database
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {

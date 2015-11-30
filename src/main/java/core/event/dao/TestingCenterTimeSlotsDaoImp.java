@@ -78,6 +78,16 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         return  true;
     }
 
+    public boolean insertTimeSlots(List<TestingCenterTimeSlots> listTimeSlots){
+        boolean result = true;
+        for (TestingCenterTimeSlots t: listTimeSlots)
+            if(insertTimeSlot(t) == false)
+                result = false;
+        //result is false doesn't mean it failed
+        //it means it didn't import the complete list
+        return result;
+    }
+
     public boolean insertTimeSlotsByExamId(String examId){
         ExamDaoImp examImp = new ExamDaoImp();
         Exam exam = examImp.findByExamId(examId);
