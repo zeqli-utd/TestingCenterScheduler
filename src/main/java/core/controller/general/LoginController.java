@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class LoginController{
+public class LoginController {
     @Autowired
     private AuthenticationService authenticationService;
 
