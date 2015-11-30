@@ -1,4 +1,4 @@
-package core.controller;
+package core.controller.general;
 
 import core.helper.StringResources;
 import core.service.AuthenticationService;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -16,7 +17,7 @@ public class LoginController{
     @Autowired
     private AuthenticationService authenticationService;
 
-    @RequestMapping(value = "authorizing")
+    @RequestMapping(value = "authorizing", method = RequestMethod.POST)
     public ModelAndView authorizeUser (@RequestParam("userId") String userId,
                                        @RequestParam("password") String password,
                                        @ModelAttribute("sessionUser")SessionProfile profile,
@@ -25,19 +26,19 @@ public class LoginController{
         if (authorization != null) {
             switch (authorization) {
                 case STUDENT:
-                    model.setViewName("student/home");
+                    model.setViewName("redirect:/student/home");
                 case INSTRUCTOR:
-                    model.setViewName("instructor/home");
+                    model.setViewName("redirect:/instructor/home");
                 case ADMINISTRATOR:
-                    model.setViewName("admin/home");
+                    model.setViewName("redirect:/admin/home");
             }
         }else {
             if (authenticationService.registeredUserId(userId)) {
                 model.addObject("errorMessage", StringResources.LOGIN_PASSWORD_ERROR);
-                model.setViewName("login");
+                model.setViewName("redirect:/login");
             }else {
                 model.addObject("errorMessage", StringResources.LOGIN_USER_ERROR);
-                model.setViewName("login");
+                model.setViewName("redirect:/login");
             }
         }
         return model;

@@ -25,7 +25,7 @@ public class InstructorPageController {
     }
 
     @RequestMapping("/schedule-event")
-    public ModelAndView scheduleEvent(ModelAndView model) {
+    public ModelAndView scheduleRequest(ModelAndView model) {
         model.setViewName("instructor/schedule-event");
         model.addObject("heading", StringResources.INSTRUCTOR_SCHEDULE);
         model.addObject("terms", termManager.getAllPopulatedTerms());

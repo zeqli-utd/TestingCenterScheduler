@@ -66,8 +66,6 @@ public class Exam {
     @Column(name = "duration")
     protected int duration = 0;;   // Duration in minute
 
-
-
     @Transient
     @Autowired
     protected CourseDao courseDao;
