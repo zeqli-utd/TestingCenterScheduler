@@ -93,10 +93,9 @@ public class TestingCenterInfoRetrieval {
             tx = session.beginTransaction();
             Query query = session.createQuery
                     ("FROM Term T WHERE T.termStartDate <= :date AND  :date <= T.termEndDate");
-
             query.setTimestamp("date", Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-            tx.commit();
             result = (Term)query.uniqueResult();
+            tx.commit();
         }
         catch (HibernateException he){
             if(tx != null){

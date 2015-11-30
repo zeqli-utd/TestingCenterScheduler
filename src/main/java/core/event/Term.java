@@ -45,7 +45,7 @@ public class Term {
         this.setTermId(termId);
         this.setTermStartDate(termStartDate);
         this.setTermEndDate(termEndDate);
-        termIdToName(termId);
+        this.setTermName(termIdToName(termId));
     }
 
     public int getTermId() {

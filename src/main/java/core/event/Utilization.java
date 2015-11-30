@@ -23,7 +23,11 @@ public class Utilization {
     private double gap;
     private String exam;
     private int numSeat;
+
+    @Autowired
     AppointmentDao appointmentDao;
+
+    @Autowired
     ExamDao examDao;
 
     @Autowired
