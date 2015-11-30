@@ -12,7 +12,6 @@
         <hibernate.version>5.0.4.Final</hibernate.version>
     </properties>
 
-
     <dependencies>
         <dependency>
             <groupId>jstl</groupId>

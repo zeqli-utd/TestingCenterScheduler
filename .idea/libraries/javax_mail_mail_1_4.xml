@@ -4,6 +4,8 @@
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/mail-1.4.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/activation-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/mail-1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/activation-1.1.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

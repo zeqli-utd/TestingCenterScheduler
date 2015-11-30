@@ -23,10 +23,6 @@ public class AdministratorPageController {
     @Autowired
     private TermManagerService termManager;
 
-    public AdministratorPageController() {
-
-    }
-
     @RequestMapping("home")
     public ModelAndView goToHome(ModelAndView model) {
         model.setViewName("admin/home");
@@ -58,6 +54,7 @@ public class AdministratorPageController {
     public ModelAndView uploadFile(ModelAndView model) {
         model.setViewName("admin/upload");
         model.addObject("pageHeader", StringResources.ADMINISTRATOR_UPLOAD);
+        model.addObject("terms", termManager.getAllPopulatedTerms());
         return model;
     }
 
