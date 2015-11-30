@@ -49,7 +49,7 @@ public class UnitTest  {
 
 
     @BeforeClass
-    public static void addUser(){
+    public static void InitializeTestingCenterInfo(){
         User admin = new User("admin", "123", "admin", "admin", "admin@example", Authorization.ADMINISTRATOR);
         User student = new User("student", "123", "student", "student", "student@example", Authorization.STUDENT);
 
@@ -181,26 +181,85 @@ public class UnitTest  {
         dao.insertTimeSlot(initSlot);
 
         // 2. Initialize appointment
-        Appointment appointment = new Appointment();
-        TestingCenterTimeSlots slot
-                = dao.findTimeSlotById(initSlot.getTimeSlotId());
+        TestingCenterTimeSlots slot = dao.findTimeSlotById(initSlot.getTimeSlotId());
 
-        appointment.setExamId(slot.getExamId());
-        appointment.setStartDateTime(slot.getBegin());
-        appointment.setEndDateTime(slot.getEnd());
-        appointment.setStudentId("Zeqli");
-        appointment.setExamName("Exam Name");
-        appointment.setTerm(1158);
+        // 3.1 Add Student 1
+        Appointment ap1 = new Appointment(slot.getExamId(),"Zeqing","zeqli");
+        ap1.setSlotId(slot.getTimeSlotId());
+        ap1.setStartDateTime(slot.getBegin());
+        ap1.setEndDateTime(slot.getEnd());
+        ap1.setStudentId("Zeqli");
+        ap1.setExamName("Exam Name");
+        ap1.setTerm(1158);
 
+        // 3.2 Add Student 2
+        Appointment ap2 = new Appointment(slot.getExamId(),"Zeqing","zeqli");
+        ap2.setSlotId(slot.getTimeSlotId());
+        ap2.setStartDateTime(slot.getBegin());
+        ap2.setEndDateTime(slot.getEnd());
+        ap2.setStudentId("Zeqli");
+        ap2.setExamName("Exam Name");
+        ap2.setTerm(1158);
+
+
+        // 4. Persist Appointments, should be Automatically Assign One Another Seats
         AppointmentDaoImp appointmentDaoImp = new AppointmentDaoImp();
-        appointmentDaoImp.insertAppointment(appointment);
+        appointmentDaoImp.insertAppointment(ap1);
 
-        int left = dao.findTimeSlotById(initSlot.getTimeSlotId()).getSeatArrangement().get(0);
-        int test = appointment.getAppointmentID();
-        int test2=  appointment.getAppointmentID();
-        int right = appointmentDaoImp.findAppointmentById(appointment.getAppointmentID()).getAppointmentID();
+
+        // 5. Test Successfully Add One Student into a seat
+        String left = dao.findTimeSlotById(initSlot.getTimeSlotId()).getSeatArrangement().get(0);
+        String right = appointmentDaoImp.findAppointmentById(ap1.getAppointmentID()).getAppointmentID();
         Assert.assertEquals(left, right);
+    }
 
+    @Test
+    public void TestAppointmentAdjacentSeat(){
+        // 1. Insert slot
+        TestingCenterTimeSlots initSlot = new TestingCenterTimeSlots(
+                "examId",
+                LocalDateTime.of(2015,10,2,5,10),
+                LocalDateTime.of(2015,10,2,6,20),
+                64,
+                5
+        );
+
+        TestingCenterTimeSlotsDaoImp dao = new TestingCenterTimeSlotsDaoImp();
+        dao.insertTimeSlot(initSlot);
+
+        // 2. Initialize appointment
+        TestingCenterTimeSlots slot = dao.findTimeSlotById(initSlot.getTimeSlotId());
+
+        // 3.1 Add Student 1
+        Appointment ap1 = new Appointment(slot.getExamId(),"Zeqing","zeqli");
+        ap1.setSlotId(slot.getTimeSlotId());
+        ap1.setStartDateTime(slot.getBegin());
+        ap1.setEndDateTime(slot.getEnd());
+        ap1.setStudentId("Zeqli");
+        ap1.setExamName("Exam Name");
+        ap1.setTerm(1158);
+
+        // 3.2 Add Student 2
+        Appointment ap2 = new Appointment(slot.getExamId(),"Zeqing","zeqli");
+        ap2.setSlotId(slot.getTimeSlotId());
+        ap2.setStartDateTime(slot.getBegin());
+        ap2.setEndDateTime(slot.getEnd());
+        ap2.setStudentId("Zeqli");
+        ap2.setExamName("Exam Name");
+        ap2.setTerm(1158);
+
+
+        // 4. Persist Appointments, should be Automatically Assign One Another Seats
+        AppointmentDaoImp appointmentDaoImp = new AppointmentDaoImp();
+        appointmentDaoImp.insertAppointment(ap1);
+        appointmentDaoImp.insertAppointment(ap2);
+
+
+        // 5. Test Successfully Add One Student into a seat
+        String left = dao.findTimeSlotById(initSlot.getTimeSlotId()).getSeatArrangement().get(0);
+        String right = appointmentDaoImp.findAppointmentById(ap1.getAppointmentID()).getSeat();
+        String test = appointmentDaoImp.findAppointmentById(ap2.getAppointmentID()).getAppointmentID();
+        Assert.assertEquals(left, right);
     }
 
     /**

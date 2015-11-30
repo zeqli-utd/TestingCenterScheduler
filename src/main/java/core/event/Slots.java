@@ -73,7 +73,7 @@ public class Slots {
 
     public boolean checkConflict(){
         boolean conflict = false;
-        ExamDaoImp examImp = new ExamDaoImp();
+        ExamDaoImp examImp = new ExamDaoImp();  //TODO Wrong way to get ExamDao
         List<Exam> allExams;
         allExams = examImp.getAllExams();
         Exam examIter = new Exam();

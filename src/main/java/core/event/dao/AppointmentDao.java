@@ -23,13 +23,13 @@ public interface AppointmentDao {
      */
     List<Appointment> findAllAppointmentsByExamId(String examId);
 
-    Appointment findAppointmentById(int AppointmentID);
+    Appointment findAppointmentById(String AppointmentID);
 
     boolean insertAppointment(Appointment appointment);
 
     boolean updateAppointment(Appointment appointment, String id);
 
-    boolean deleteAppointment(int appointmentId);
+    boolean deleteAppointment(String appointmentId);
 
     boolean checkLegalAppointment(Appointment appointment);
 

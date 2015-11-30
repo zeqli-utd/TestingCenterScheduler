@@ -18,8 +18,7 @@ import java.util.List;
 public class Appointment {
     @Id
     @Column(name = "appointment_id")
-    @GeneratedValue
-    private int appointmentID;
+    private String appointmentID;
 
     @Column(name = "exam_id")
     @Basic(optional = false)
@@ -75,22 +74,16 @@ public class Appointment {
         this.studentId = "";
         this.seat = "";
         this.isAttend = false;
-        this.status = "";
+        this.status = "r";
         this.slotId = "";
-    }
-
-    public String getExamName() {
-        return examName;
-    }
-
-    public void setExamName(String examName) {
-        this.examName = examName;
     }
 
     //LocalDateTime startDateTime, LocalDateTime endDateTime, String seat
     // are automatically assigned from Time Slots
-    public Appointment(String examId, String madeBy,
-                       String netId){
+    public Appointment(String examId,
+                       String madeBy,
+                       String netId ){
+        this.appointmentID = examId+netId;
         this.examId = examId;
         this.madeBy = madeBy;
         //this.startDateTime = startDateTime;
@@ -152,8 +145,22 @@ public class Appointment {
 
     /*-------------Getter and Setters-------------*/
 
-    public int getAppointmentID() {
+
+
+    public String getExamName() {
+        return examName;
+    }
+
+    public void setExamName(String examName) {
+        this.examName = examName;
+    }
+
+    public String getAppointmentID() {
         return appointmentID;
+    }
+
+    public void setAppointmentID(String appointmentID) {
+        this.appointmentID = appointmentID;
     }
 
     public String getExamId() {

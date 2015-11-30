@@ -36,7 +36,7 @@ public class TestingCenterTimeSlots {
     @Column(name = "seat_arrangement")
     //occupied: appointmentId; nonoccupied: ""
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<Integer> seatArrangement = new ArrayList<>();
+    private List<String> seatArrangement = new ArrayList<>();
 
     @Basic(optional = false)
     @Column(name = "numSeat")
@@ -82,10 +82,10 @@ public class TestingCenterTimeSlots {
         this.occupiedNum = 0;
     }
 
-    public List<Integer> initSeatArrangement(int numSeats) {
-        List<Integer> seatsArrangement = new ArrayList<>(numSeats);
+    public List<String> initSeatArrangement(int numSeats) {
+        List<String> seatsArrangement = new ArrayList<>(numSeats);
         for (int i = 0; i < numSeats; i++) {
-            seatsArrangement.add(-1);
+            seatsArrangement.add(new String());
         }
         return seatsArrangement;
     }
@@ -105,15 +105,14 @@ public class TestingCenterTimeSlots {
      * @return
      */
     public boolean assignSeat(Appointment appt) {
-        int apptId = appt.getAppointmentID();
+        String apptId = appt.getAppointmentID();
         occupiedNum += 1;
         int seat = -1;
         for (int i = 0; i < numSeat; i++) {
-            if (seatArrangement.get(i) == -1) {
+            if (seatArrangement.get(i).isEmpty()) {
                 seatArrangement.remove(i);
                 seatArrangement.add(i, apptId);
                 seat = i + 1;
-                break;
             }
         }
         if (seat == -1) {
@@ -130,11 +129,11 @@ public class TestingCenterTimeSlots {
      * need to be used when remove an appointment
      */
     public void releaseSeat(Appointment appt) {
-        String apptId = Integer.toString(appt.getAppointmentID());
+        String apptId = appt.getAppointmentID();
         int seatNum = Integer.parseInt(appt.getSeat()) - 1;
         if (apptId.equals(seatArrangement.get(seatNum))) {
             seatArrangement.remove(seatNum);
-            seatArrangement.add(seatNum, -1);
+            seatArrangement.add(seatNum, new String());
             occupiedNum -= 1;
         } else
             System.out.print("Error when releasing a seat.");
@@ -172,11 +171,11 @@ public class TestingCenterTimeSlots {
         this.end = end;
     }
 
-    public List<Integer> getSeatArrangement() {
+    public List<String> getSeatArrangement() {
         return seatArrangement;
     }
 
-    public void setSeatArrangement(List<Integer> seatArrangement) {
+    public void setSeatArrangement(List<String> seatArrangement) {
         this.seatArrangement = seatArrangement;
     }
 

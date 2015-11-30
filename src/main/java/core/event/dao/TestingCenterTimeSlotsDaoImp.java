@@ -20,7 +20,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
     public List<TestingCenterTimeSlots> findAllTimeSlots(){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
-        List tscs = session.createQuery("FROM TestingCenterTimeSlots").list();
+        List tscs = session.createQuery("FROM core.event.TestingCenterTimeSlots").list();
         session.close();
         return tscs;
     }
@@ -39,7 +39,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery
-                ("FROM TestingCenterTimeSlots ts WHERE ts.examId = :exId");
+                ("FROM core.event.TestingCenterTimeSlots ts WHERE ts.examId = :exId");
         query.setParameter("exId", examId);
         tx.commit();
         result = query.list();

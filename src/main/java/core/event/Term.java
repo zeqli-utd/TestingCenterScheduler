@@ -28,6 +28,8 @@ public class Term {
 
     private String termName;        // e.g. Fall 2015
 
+    public Term(){}
+
     @Temporal(TemporalType.DATE)
     @Type(type = "org.hibernate.type.LocalDateType")
     private LocalDate termStartDate;
