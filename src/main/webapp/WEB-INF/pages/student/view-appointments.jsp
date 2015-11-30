@@ -16,7 +16,7 @@
         </a>
     </div>
     <div class="main-heading">
-        <h1>Student Home</h1>
+        <h1>View Appointments</h1>
     </div>
     <div class="header-menu">
         <a>Logout</a>
@@ -42,7 +42,7 @@
                 <tbody>
                     <c:forEach items="${appointments}" var="appointment">
                         <tr>
-                            <td><c:out value="${appointment.term}"/></td>
+                            <td><a href="student/view-appointments/cancel/${appointment.appointmentID}"><c:out value="${appointment.term}"/></a></td>
                             <td><c:out value="${appointment.examName}"/></td>
                             <td><c:out value="${appointment.startDateTime}"/></td>
                             <td><c:out value="${appointment.endDateTime}"/></td>
