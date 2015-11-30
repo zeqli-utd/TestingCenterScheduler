@@ -1,31 +1,18 @@
 package test;
 
 import core.event.*;
-import core.event.dao.*;
+import core.event.dao.AdhocExamDaoImp;
+import core.event.dao.AppointmentDaoImp;
+import core.event.dao.ExamDaoImp;
+import core.event.dao.TestingCenterTimeSlotsDaoImp;
 import core.helper.StringResources;
 import core.service.EmailService;
-import core.service.TestingCenterInfoRetrieval;
-import core.user.Student;
-import core.user.dao.InstructorDaoImp;
-import core.user.dao.StudentDaoImp;
-import core.user.dao.UserDaoImp;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-
-import javax.mail.MessagingException;
-import java.util.List;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@WebAppConfiguration
@@ -56,43 +43,6 @@ public class UnitTest  {
 //    private UserDaoImp userDaoImp;
 
 
-
-    public static SessionFactory getSessionFactory() {
-        SessionFactory sessionFactory;
-        StandardServiceRegistryBuilder serviceRegistryBuilder;
-        ServiceRegistry serviceRegistry;
-
-        Configuration configuration = new Configuration()
-                .addAnnotatedClass(core.user.Administrator.class)
-                .addAnnotatedClass(core.user.UserType.class)
-                .addAnnotatedClass(core.user.Student.class)
-                .addAnnotatedClass(core.user.Instructor.class)
-                .addAnnotatedClass(core.user.Instructor.class)
-                .addAnnotatedClass(core.user.Instructor.class)
-                .addAnnotatedClass(core.event.Exam.class)
-                .addAnnotatedClass(core.event.Course.class)
-                .addAnnotatedClass(core.event.Utilization.class)
-                .addAnnotatedClass(core.event.Appointment.class)
-                .addAnnotatedClass(core.event.Reservation.class)
-                .addAnnotatedClass(core.event.Course.class)
-                .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect")
-                .setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver")
-                .setProperty("hibernate.connection.url", "jdbc:mysql://Localhost:3306/test")
-                .setProperty("hibernate.connection.username", "thedueteam")
-                .setProperty("hibernate.connection.password", "thedueteam")
-                .setProperty("hibernate.hbm2ddl.auto", "create-drop")
-                .setProperty("hibernate.show_sql", "true");
-        serviceRegistryBuilder = new StandardServiceRegistryBuilder().applySettings(
-                configuration.getProperties());
-        serviceRegistry = serviceRegistryBuilder.build();
-        sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-        return sessionFactory;
-    }
-
-    @BeforeClass
-    public static void ConnectDB() {
-        sessionFactory = getSessionFactory();
-    }
 
 
     /*---------------------Function for Admin--------------------*/
@@ -203,8 +153,40 @@ public class UnitTest  {
      in adjacent seats
      */
 
-//    @Test
-    public void TestMakeAppointment(){}
+    @Test
+    public void TestMakeAppointment(){
+        TestingCenterTimeSlots initSlot = new TestingCenterTimeSlots(
+                "examId",
+                LocalDateTime.of(2015,10,2,5,10),
+                LocalDateTime.of(2015,10,2,6,20),
+                64,
+                5
+        );
+
+        TestingCenterTimeSlotsDaoImp dao = new TestingCenterTimeSlotsDaoImp();
+        dao.insertTimeSlot(initSlot);
+
+
+        Appointment appointment = new Appointment();
+        TestingCenterTimeSlots slot
+                = dao.findTimeSlotById(initSlot.getTimeSlotId());
+        appointment.setExamId(slot.getExamId());
+        appointment.setStartDateTime(slot.getBegin());
+        appointment.setEndDateTime(slot.getEnd());
+        appointment.setStudentId("Zeqli");
+        appointment.setExamName("Exam Name");
+        appointment.setTerm(1158);
+
+        AppointmentDaoImp appointmentDaoImp = new AppointmentDaoImp();
+        appointmentDaoImp.insertAppointment(appointment);
+
+        Assert.assertEquals(
+                dao.findTimeSlotById(initSlot.getTimeSlotId()).getSeatArrangement().get(0),
+                appointmentDaoImp.findAppointmentById(appointment.getAppointmentID()).getAppointmentID());
+        ;
+        ;
+
+    }
 
     /**
      *  Cancel an appointment 3
@@ -225,13 +207,13 @@ public class UnitTest  {
      */
    @Test
     public void TestEmailReminder(){
-        try {
-            EmailService.sendEmail(StringResources.EMAIL_HOST, StringResources.EMAIL_PORT,
-                    StringResources.EMAIL_LOGIN, StringResources.EMAIL_PASSWORD,
-                    StringResources.EMAIL_LOGIN,"test","test");
-        } catch (MessagingException e) {
-
-        }
+//        try {
+//            EmailService.sendEmail(StringResources.EMAIL_HOST, StringResources.EMAIL_PORT,
+//                    StringResources.EMAIL_LOGIN, StringResources.EMAIL_PASSWORD,
+//                    StringResources.EMAIL_LOGIN,"test","test");
+//        } catch (MessagingException e) {
+//
+//        }
 
     }
 
@@ -299,11 +281,6 @@ public class UnitTest  {
 
     }
 
-    public void TestEmail() throws MessagingException {
-        EmailService.sendEmail(StringResources.EMAIL_HOST, StringResources.EMAIL_PORT,
-                StringResources.EMAIL_LOGIN, StringResources.EMAIL_PASSWORD,
-                StringResources.EMAIL_LOGIN,"test","test");
-    }
 
 
 
