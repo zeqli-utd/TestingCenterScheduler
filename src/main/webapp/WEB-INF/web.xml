@@ -20,4 +20,14 @@
         <welcome-file>welcome.jsp</welcome-file>
     </welcome-file-list>
 
+	<error-page>
+        <error-code>400</error-code>
+        <location>/login/error</location>
+    </error-page>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location></location>
+    </error-page>
+
 </web-app>
