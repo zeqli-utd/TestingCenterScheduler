@@ -94,6 +94,7 @@ public class AdministratorPageController {
         model.setViewName("admin/report-term");
         model.addObject("pageHeader", StringResources.ADMINISTRATOR_REPORT);
         model.addObject("terms", termManager.getAllPopulatedTerms());
+        model.addObject("term", new Term());
         return model;
     }
 }

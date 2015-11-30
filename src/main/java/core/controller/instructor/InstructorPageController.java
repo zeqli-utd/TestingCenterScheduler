@@ -1,5 +1,6 @@
 package core.controller.instructor;
 
+import core.event.Term;
 import core.event.dao.AppointmentDao;
 import core.event.dao.ExamDao;
 import core.helper.StringResources;
@@ -27,11 +28,19 @@ public class InstructorPageController {
         return model;
     }
 
+    @RequestMapping("/schedule-adhoc")
+    public ModelAndView scheduleAdhoc(ModelAndView model) {
+        model.setViewName("instructor/schedule-adhoc");
+
+        return model;
+    }
+
     @RequestMapping("/schedule-event")
     public ModelAndView scheduleRequest(ModelAndView model) {
         model.setViewName("instructor/schedule-event");
         model.addObject("heading", StringResources.INSTRUCTOR_SCHEDULE);
         model.addObject("terms", termManager.getAllPopulatedTerms());
+        model.addObject("term", new Term());
         return model;
     }
 
