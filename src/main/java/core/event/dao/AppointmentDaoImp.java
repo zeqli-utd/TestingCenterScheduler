@@ -107,7 +107,7 @@ public class AppointmentDaoImp implements AppointmentDao {
 
 
     @Override
-    public boolean deleteAppointment(String appointmentId) {
+    public boolean deleteAppointment(int appointmentId) {
         //need to release seat when delete appointment
         Appointment appt = findAppointmentById(appointmentId);
         LocalDateTime begin = appt.getStartDateTime();
@@ -186,7 +186,7 @@ public class AppointmentDaoImp implements AppointmentDao {
     }
 
     @Override
-    public Appointment findAppointmentById(String AppointmentID) {
+    public Appointment findAppointmentById(int AppointmentID) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery("FROM Appointment A WHERE A.appointmentID = :appId");

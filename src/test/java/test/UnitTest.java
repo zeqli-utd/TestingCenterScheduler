@@ -7,8 +7,13 @@ import core.event.dao.ExamDaoImp;
 import core.event.dao.TestingCenterTimeSlotsDaoImp;
 import core.helper.StringResources;
 import core.service.EmailService;
+import core.user.Authorization;
+import core.user.User;
+import core.user.dao.UserDao;
+import core.user.dao.UserDaoImp;
 import org.hibernate.SessionFactory;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -43,7 +48,15 @@ public class UnitTest  {
 //    private UserDaoImp userDaoImp;
 
 
+    @BeforeClass
+    public static void addUser(){
+        User admin = new User("admin", "123", "admin", "admin", "admin@example", Authorization.ADMINISTRATOR);
+        User student = new User("student", "123", "student", "student", "student@example", Authorization.STUDENT);
 
+        UserDao dao = new UserDaoImp();
+        dao.addUser(admin);
+        dao.addUser(student);
+    }
 
     /*---------------------Function for Admin--------------------*/
 

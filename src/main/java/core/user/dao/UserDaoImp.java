@@ -94,7 +94,6 @@ public class UserDaoImp implements UserDao {
             tx = session.beginTransaction();
             session.save(user);
             tx.commit();
-            session.close();
         } catch (HibernateException he) {
             if (tx != null) {
                 tx.rollback();

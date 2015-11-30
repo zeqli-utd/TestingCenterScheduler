@@ -19,7 +19,7 @@ public class Appointment {
     @Id
     @Column(name = "appointment_id")
     @GeneratedValue
-    private String appointmentID;
+    private int appointmentID;
 
     @Column(name = "exam_id")
     @Basic(optional = false)
@@ -89,7 +89,7 @@ public class Appointment {
 
     //LocalDateTime startDateTime, LocalDateTime endDateTime, String seat
     // are automatically assigned from Time Slots
-    public Appointment(String appointmentID, String examId, String madeBy,
+    public Appointment(int appointmentID, String examId, String madeBy,
                        String netId){
         this.appointmentID = appointmentID;
         this.examId = examId;
@@ -153,11 +153,11 @@ public class Appointment {
 
     /*-------------Getter and Setters-------------*/
 
-    public String getAppointmentID() {
+    public int getAppointmentID() {
         return appointmentID;
     }
 
-    public void setAppointmentID(String appointmentID) {
+    public void setAppointmentID(int appointmentID) {
         this.appointmentID = appointmentID;
     }
 

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "testingcentertimeslots")
 public class TestingCenterTimeSlots {
 
     @Id
@@ -106,13 +105,13 @@ public class TestingCenterTimeSlots {
      * @return
      */
     public boolean assignSeat(Appointment appt) {
-        String apptId = appt.getAppointmentID();
+        int apptId = appt.getAppointmentID();
         occupiedNum += 1;
         int seat = -1;
         for (int i = 0; i < numSeat; i++) {
             if (seatArrangement.get(i).isEmpty()) {
                 seatArrangement.remove(i);
-                seatArrangement.add(i, apptId);
+                seatArrangement.add(i, Integer.toString(apptId));
                 seat = i + 1;
             }
         }
@@ -130,7 +129,7 @@ public class TestingCenterTimeSlots {
      * need to be used when remove an appointment
      */
     public void releaseSeat(Appointment appt) {
-        String apptId = appt.getAppointmentID();
+        String apptId = Integer.toString(appt.getAppointmentID());
         int seatNum = Integer.parseInt(appt.getSeat()) - 1;
         if (apptId.equals(seatArrangement.get(seatNum))) {
             seatArrangement.remove(seatNum);

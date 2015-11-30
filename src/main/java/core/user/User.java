@@ -30,6 +30,15 @@ public class User {
 
     public User(){};
 
+    public User(String netId, String password, String firstName, String lastName, String email, Authorization authorization) {
+        this.netId = netId;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.authorization = authorization;
+    }
+
     public String getNetId() {
         return netId;
     }
