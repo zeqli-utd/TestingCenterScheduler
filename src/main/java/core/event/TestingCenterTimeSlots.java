@@ -36,7 +36,7 @@ public class TestingCenterTimeSlots {
     @Column(name = "seat_arrangement")
     //occupied: appointmentId; nonoccupied: ""
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> seatArrangement = new ArrayList<>();
+    private List<Integer> seatArrangement = new ArrayList<>();
 
     @Basic(optional = false)
     @Column(name = "numSeat")
@@ -82,10 +82,10 @@ public class TestingCenterTimeSlots {
         this.occupiedNum = 0;
     }
 
-    public List<String> initSeatArrangement(int numSeats) {
-        List<String> seatsArrangement = new ArrayList<>(numSeats);
+    public List<Integer> initSeatArrangement(int numSeats) {
+        List<Integer> seatsArrangement = new ArrayList<>(numSeats);
         for (int i = 0; i < numSeats; i++) {
-            seatsArrangement.add(new String());
+            seatsArrangement.add(-1);
         }
         return seatsArrangement;
     }
@@ -109,10 +109,11 @@ public class TestingCenterTimeSlots {
         occupiedNum += 1;
         int seat = -1;
         for (int i = 0; i < numSeat; i++) {
-            if (seatArrangement.get(i).isEmpty()) {
+            if (seatArrangement.get(i) == -1) {
                 seatArrangement.remove(i);
-                seatArrangement.add(i, Integer.toString(apptId));
+                seatArrangement.add(i, apptId);
                 seat = i + 1;
+                break;
             }
         }
         if (seat == -1) {
@@ -133,7 +134,7 @@ public class TestingCenterTimeSlots {
         int seatNum = Integer.parseInt(appt.getSeat()) - 1;
         if (apptId.equals(seatArrangement.get(seatNum))) {
             seatArrangement.remove(seatNum);
-            seatArrangement.add(seatNum, new String());
+            seatArrangement.add(seatNum, -1);
             occupiedNum -= 1;
         } else
             System.out.print("Error when releasing a seat.");
@@ -171,11 +172,11 @@ public class TestingCenterTimeSlots {
         this.end = end;
     }
 
-    public List<String> getSeatArrangement() {
+    public List<Integer> getSeatArrangement() {
         return seatArrangement;
     }
 
-    public void setSeatArrangement(List<String> seatArrangement) {
+    public void setSeatArrangement(List<Integer> seatArrangement) {
         this.seatArrangement = seatArrangement;
     }
 

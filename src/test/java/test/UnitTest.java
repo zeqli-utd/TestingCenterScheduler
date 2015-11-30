@@ -168,6 +168,7 @@ public class UnitTest  {
 
     @Test
     public void TestMakeAppointment(){
+        // 1. Insert slot
         TestingCenterTimeSlots initSlot = new TestingCenterTimeSlots(
                 "examId",
                 LocalDateTime.of(2015,10,2,5,10),
@@ -179,10 +180,11 @@ public class UnitTest  {
         TestingCenterTimeSlotsDaoImp dao = new TestingCenterTimeSlotsDaoImp();
         dao.insertTimeSlot(initSlot);
 
-
+        // 2. Initialize appointment
         Appointment appointment = new Appointment();
         TestingCenterTimeSlots slot
                 = dao.findTimeSlotById(initSlot.getTimeSlotId());
+
         appointment.setExamId(slot.getExamId());
         appointment.setStartDateTime(slot.getBegin());
         appointment.setEndDateTime(slot.getEnd());
@@ -193,11 +195,11 @@ public class UnitTest  {
         AppointmentDaoImp appointmentDaoImp = new AppointmentDaoImp();
         appointmentDaoImp.insertAppointment(appointment);
 
-        Assert.assertEquals(
-                dao.findTimeSlotById(initSlot.getTimeSlotId()).getSeatArrangement().get(0),
-                appointmentDaoImp.findAppointmentById(appointment.getAppointmentID()).getAppointmentID());
-        ;
-        ;
+        int left = dao.findTimeSlotById(initSlot.getTimeSlotId()).getSeatArrangement().get(0);
+        int test = appointment.getAppointmentID();
+        int test2=  appointment.getAppointmentID();
+        int right = appointmentDaoImp.findAppointmentById(appointment.getAppointmentID()).getAppointmentID();
+        Assert.assertEquals(left, right);
 
     }
 
