@@ -20,7 +20,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
     public List<TestingCenterTimeSlots> findAllTimeSlots(){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
-        List tscs = session.createQuery("FROM timeSlots").list();
+        List tscs = session.createQuery("FROM TestingCenterTimeSlots").list();
         session.close();
         return tscs;
     }
@@ -39,7 +39,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery
-                ("FROM timeSlots ts WHERE ts.examId = :exId");
+                ("FROM TestingCenterTimeSlots ts WHERE ts.examId = :exId");
         query.setParameter("exId", examId);
         tx.commit();
         result = query.list();
@@ -50,7 +50,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
     public TestingCenterTimeSlots findTimeSlotById(String timeSlotId){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("FROM timeSlots ts WHERE ts.timeSlotId = :tsId");
+        Query query = session.createQuery("FROM core.event.TestingCenterTimeSlots ts WHERE ts.timeSlotId = :tsId");
         query.setParameter("tsId", timeSlotId);
         tx.commit();
         TestingCenterTimeSlots result = (TestingCenterTimeSlots)query.uniqueResult();
@@ -112,7 +112,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
             tx = session.beginTransaction();
 
             Query query = session.createQuery
-                    ("delete from timeSlots ts where ts.timeSlotId = :timeSlotId");
+                    ("delete from TestingCenterTimeSlots ts where ts.timeSlotId = :timeSlotId");
             query.setParameter("timeSlotId", timeSlotId);
             tx.commit();
         }

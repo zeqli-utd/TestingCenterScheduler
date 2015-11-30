@@ -1,7 +1,6 @@
 package core.event;
 
 import core.event.dao.AppointmentDao;
-import core.event.dao.AppointmentDaoImp;
 import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -20,7 +20,7 @@ import java.util.List;
 @Repository
 public class AppointmentDaoImp implements AppointmentDao {
     @Autowired
-    private TestingCenterTimeSlotsDaoImp tctsImp;
+    private TestingCenterTimeSlotsDao tctsDao;
 
     public AppointmentDaoImp() {
 
@@ -76,9 +76,10 @@ public class AppointmentDaoImp implements AppointmentDao {
         LocalDateTime begin = appointment.getStartDateTime();
         String tsId = Integer.toString(begin.getDayOfYear()) +
                 Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute());
-        TestingCenterTimeSlots tcts = tctsImp.findTimeSlotById(tsId);
+        tctsDao = new TestingCenterTimeSlotsDaoImp(); //TODO Delete This Line
+        TestingCenterTimeSlots tcts = tctsDao.findTimeSlotById(tsId);
         tcts.assignSeat(appointment);
-        tctsImp.updateTimeSlot(tcts);
+        tctsDao.updateTimeSlot(tcts);
 
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
@@ -111,9 +112,9 @@ public class AppointmentDaoImp implements AppointmentDao {
         LocalDateTime begin = appt.getStartDateTime();
         String tsId = Integer.toString(begin.getDayOfYear()) +
                 Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute());
-        TestingCenterTimeSlots tcts = tctsImp.findTimeSlotById(tsId);
+        TestingCenterTimeSlots tcts = tctsDao.findTimeSlotById(tsId);
         tcts.releaseSeat(appt);
-        tctsImp.updateTimeSlot(tcts);
+        tctsDao.updateTimeSlot(tcts);
 
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
