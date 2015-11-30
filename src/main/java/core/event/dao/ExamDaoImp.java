@@ -22,7 +22,7 @@ public class ExamDaoImp implements ExamDao {
     private TestingCenterInfoRetrieval tciRe;
 
     @Autowired
-    private TestingCenterTimeSlotsDaoImp tctsImp;
+    private TestingCenterTimeSlotsDao tctsDao;
 
     public ExamDaoImp() {
     }
@@ -139,7 +139,7 @@ public class ExamDaoImp implements ExamDao {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery
-                ("FROM Exam E WHERE E.instructor = :insId");
+                ("FROM Exam E WHERE E.instructorId = :insId");
         query.setParameter("insId", instructorId);
         tx.commit();
         result = query.list();
@@ -209,7 +209,7 @@ public class ExamDaoImp implements ExamDao {
         //check  schedubility
         //add  slots to database
         Slots slot = new Slots(exam);
-        tctsImp.insertTimeSlots(slot.generateTimeSlots());
+        tctsDao.insertTimeSlots(slot.generateTimeSlots());
         //add exam to database
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
@@ -324,7 +324,7 @@ public class ExamDaoImp implements ExamDao {
 
     public boolean approveExam(String examId) {
         //need to add time slot after approving exam request
-        tctsImp.insertTimeSlotsByExamId(examId);
+        tctsDao.insertTimeSlotsByExamId(examId);
 
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;

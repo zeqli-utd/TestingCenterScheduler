@@ -1,13 +1,13 @@
 package core.event;
 
-import core.event.dao.AppointmentDaoImp;
-import core.event.dao.CourseDaoImp;
-import core.event.dao.RosterDaoImp;
+import core.event.dao.AppointmentDao;
+import core.event.dao.CourseDao;
+import core.event.dao.RosterDao;
 import core.service.SessionManager;
 import core.user.Instructor;
 import core.user.Student;
-import core.user.dao.InstructorDaoImp;
-import core.user.dao.StudentDaoImp;
+import core.user.dao.InstructorDao;
+import core.user.dao.StudentDao;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -30,19 +30,19 @@ public class DataCollection {
     static final private String fileExt = ".csv";
 
     @Autowired
-    private AppointmentDaoImp appointmentDaoImpl;
+    private AppointmentDao appointmentDao;
 
     @Autowired
-    private InstructorDaoImp instructorDaoImp;
+    private InstructorDao instructorDao;
 
     @Autowired
-    private CourseDaoImp courseDaoImp;
+    private CourseDao courseDao;
 
     @Autowired
-    private StudentDaoImp studentDaoImp;
+    private StudentDao studentDao;
 
     @Autowired
-    private RosterDaoImp rosterDaoImp;
+    private RosterDao rosterDao;
 
 
     public DataCollection(){}
@@ -52,7 +52,7 @@ public class DataCollection {
         BufferedReader br = null;
         String line = "";
         String cvsSplitBy = ",";
-        List<Appointment> appointmentList = appointmentDaoImpl.findAllAppointment();
+        List<Appointment> appointmentList = appointmentDao.findAllAppointment();
         try {
 
             //Student Data
@@ -65,7 +65,7 @@ public class DataCollection {
 
                     // NetId, FirstName, LastName, Email
                     Student userIter = new Student(listItem[0], listItem[1], listItem[2],listItem[3]);
-                    studentDaoImp.addStudent(userIter);
+                    studentDao.addStudent(userIter);
                 }
             }
             //Instructor Data
@@ -76,24 +76,24 @@ public class DataCollection {
                 while ((line = br.readLine()) != null) {
                     String[] listItem = line.split(cvsSplitBy);
                     Instructor instructorIter = new Instructor(listItem[0], listItem[1], listItem[2],listItem[3]);
-                    instructorDaoImp.addInstructor(instructorIter);
+                    instructorDao.addInstructor(instructorIter);
                 }
             }
             //class data
             else if (path.contains("class.csv")) {
                 // Clear Class Table by term
-                courseDaoImp.deleteCoursesByTerm(termId);
+                courseDao.deleteCoursesByTerm(termId);
 
                 br = new BufferedReader(new FileReader(path));
                 line = br.readLine();   // Discard the first line
                 while ((line = br.readLine()) != null) {
                     String[] listItem = line.split(cvsSplitBy);
                     Course courseIter = new Course(listItem[0], listItem[1], listItem[2], listItem[3], listItem[4], termId);
-                    courseDaoImp.addCourse(courseIter);
+                    courseDao.addCourse(courseIter);
                 }
             } else if (path.contains("roster.csv")) {
                 // Clear roster table by term
-                rosterDaoImp.deleteRostersByTerm(termId);
+                rosterDao.deleteRostersByTerm(termId);
 
                 br = new BufferedReader(new FileReader(path));
                 line = br.readLine();   // Discard the first line
