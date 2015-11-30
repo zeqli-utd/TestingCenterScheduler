@@ -1,5 +1,6 @@
 package core.controller.instructor;
 
+import core.event.dao.AppointmentDao;
 import core.event.dao.ExamDao;
 import core.helper.StringResources;
 import core.service.TermManagerService;
@@ -15,6 +16,8 @@ public class InstructorPageController {
     private ExamDao examDao;
     @Autowired
     private TermManagerService termManager;
+    @Autowired
+    private AppointmentDao appointmentDao;
 
     @RequestMapping("/view-requests")
     public ModelAndView viewRequests(ModelAndView model) {
@@ -43,6 +46,7 @@ public class InstructorPageController {
     public ModelAndView viewAppointments(ModelAndView model) {
         model.setViewName("/instructor/view-appointments");
         model.addObject("heading", StringResources.INSTRUCTOR_VIEW_APPOINTMENTS_DETAIL);
+        model.addObject("appointments", appointmentDao.findAllAppointment());
         return model;
     }
 }
