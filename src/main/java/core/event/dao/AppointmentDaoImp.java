@@ -86,7 +86,7 @@ public class AppointmentDaoImp implements AppointmentDao {
         LocalDateTime begin = appointment.getStartDateTime();
         String tsId = Integer.toString(begin.getDayOfYear()) +
                 Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute());
-        tctsDao = new TestingCenterTimeSlotsDaoImp(); //TODO Delete This Line
+        //tctsDao = new TestingCenterTimeSlotsDaoImp(); //TODO Delete This Line
         TestingCenterTimeSlots tcts = tctsDao.findTimeSlotById(tsId);
         tcts.assignSeat(appointment);
         tctsDao.updateTimeSlot(tcts);

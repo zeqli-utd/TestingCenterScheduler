@@ -38,7 +38,9 @@ public class Utilization {
     }
 
     public double countUtilzActual(LocalDateTime dateTime){
-        center = testingCenterInfoRetrieval.findByTerm(testingCenterInfoRetrieval.getTermByDay(dateTime));
+        testingCenterInfoRetrieval = new TestingCenterInfoRetrieval(); //TODO delete this line
+        int termId  = testingCenterInfoRetrieval.getTermByDay(dateTime);
+        center = testingCenterInfoRetrieval.findByTerm(termId);
         LocalDate date = dateTime.toLocalDate();
 
         double TotalDuration = 0;//

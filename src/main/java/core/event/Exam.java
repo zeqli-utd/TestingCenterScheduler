@@ -166,7 +166,7 @@ public class Exam {
                 LocalDateTime endDateTime,
                 String instructorId,
                 String courseId,
-                int duration) {
+                int duration) {//duration is minutes
         this.examId = examId;
         this.examName = examName;
         this.examType = ExamType.REGULAR;

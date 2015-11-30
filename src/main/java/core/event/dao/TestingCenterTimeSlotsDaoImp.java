@@ -19,9 +19,20 @@ import java.util.List;
 public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
     public List<TestingCenterTimeSlots> findAllTimeSlots(){
         Session session = SessionManager.getInstance().openSession();
-        Transaction tx = session.beginTransaction();
-        List tscs = session.createQuery("FROM core.event.TestingCenterTimeSlots").list();
-        session.close();
+        Transaction tx = null;
+        List tscs = null;
+        try {
+            tx = session.beginTransaction();
+            tscs = session.createQuery("FROM TestingCenterTimeSlots").list();
+            tx.commit();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
         return tscs;
     }
 
@@ -35,26 +46,48 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
     }
 
     public List<TestingCenterTimeSlots> findAllTimeSlotsByExamId(String examId){
-        List result;
         Session session = SessionManager.getInstance().openSession();
-        Transaction tx = session.beginTransaction();
-        Query query = session.createQuery
-                ("FROM core.event.TestingCenterTimeSlots ts WHERE ts.examId = :exId");
-        query.setParameter("exId", examId);
-        tx.commit();
-        result = query.list();
+        Transaction tx = null;
+        List result = null;
+        try {
+            Query query = session.createQuery
+                    ("FROM core.event.TestingCenterTimeSlots ts WHERE ts.examId = :exId");
+            query.setParameter("exId", examId);
+            result = query.list();
+            tx.commit();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
         session.close();
         return result;
     }
 
     public TestingCenterTimeSlots findTimeSlotById(String timeSlotId){
         Session session = SessionManager.getInstance().openSession();
-        Transaction tx = session.beginTransaction();
-        Query query = session.createQuery("FROM core.event.TestingCenterTimeSlots ts WHERE ts.timeSlotId = :tsId");
-        query.setParameter("tsId", timeSlotId);
-        tx.commit();
-        TestingCenterTimeSlots result = (TestingCenterTimeSlots)query.uniqueResult();
-        session.close();
+        Transaction tx = null;
+        TestingCenterTimeSlots result = null;
+        TestingCenterTimeSlots result1 = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery("FROM TestingCenterTimeSlots ts WHERE ts.timeSlotId = :tsId");
+            query.setParameter("tsId", timeSlotId);
+            result = (TestingCenterTimeSlots)query.uniqueResult();
+           // List a = query.list();
+            tx.commit();
+            result1 = (TestingCenterTimeSlots)query.uniqueResult();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+        }
         return result;
     }
 

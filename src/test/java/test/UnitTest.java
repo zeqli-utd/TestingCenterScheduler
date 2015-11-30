@@ -7,6 +7,12 @@ import core.event.dao.ExamDaoImp;
 import core.event.dao.TestingCenterTimeSlotsDaoImp;
 import core.helper.StringResources;
 import core.service.EmailService;
+import core.service.TermManagerService;
+import core.service.TestingCenterInfoRetrieval;
+import core.user.Student;
+import core.user.dao.InstructorDaoImp;
+import core.user.dao.StudentDaoImp;
+import core.user.dao.UserDaoImp;
 import core.user.Authorization;
 import core.user.User;
 import core.user.dao.UserDao;
@@ -16,6 +22,9 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import javax.mail.MessagingException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -58,6 +67,22 @@ public class UnitTest  {
         dao.addUser(student);
     }
 
+
+    @BeforeClass
+    public static void SetTermInformation(){
+
+        Term term1 = new Term(1158, LocalDate.of(2015, 8, 22), LocalDate.of(2015, 12, 17) );
+        Term term2 = new Term(1161,LocalDate.of(2015, 12, 25), LocalDate.of(2016, 1, 23));
+        Term term3 = new Term(1164,LocalDate.of(2016, 1, 24), LocalDate.of(2016, 5, 20));
+
+        TermManagerService tm = new TermManagerService();
+        tm.insertTerm(term1);
+        tm.insertTerm(term2);
+        tm.insertTerm(term3);
+
+
+
+    }
     /*---------------------Function for Admin--------------------*/
 
 
@@ -79,9 +104,60 @@ public class UnitTest  {
      * Display utilization during a specified date range (3 pts each for actual utilization and 6
      * expected utilization; each of these includes 1pt for taking gap time into account)
      */
-//    @Test
+    @Test
     public void TestUtilization(){
+        //Exam exam1 = new Exam("308","ad hoc", LocalDateTime.of(2015,6,20,10,30),LocalDateTime.of(2015,6,20,15,0), 4.5,50,80, "prof");
+        //Exam exam2 = new Exam("390","course", LocalDateTime.of(2015,6,20,15,10),LocalDateTime.of(2015,6,20,18,40), 2.5,50,80, "prof");
+        Utilization util = new Utilization();
 
+        TestingCenterInfo testingCenterInfo = new TestingCenterInfo();
+        testingCenterInfo.setTerm(1158);
+        testingCenterInfo.setOpen(LocalTime.of(9, 0));
+        testingCenterInfo.setClose(LocalTime.of(17, 0));
+        TestingCenterInfoRetrieval testingCenterInfoRetrieval = new TestingCenterInfoRetrieval();
+        testingCenterInfoRetrieval.insertTestingCenterInfo(testingCenterInfo);
+
+        TestingCenterTimeSlotsDaoImp TimeSlotsDaoImp = new TestingCenterTimeSlotsDaoImp();
+        TestingCenterTimeSlots slot = new TestingCenterTimeSlots("rId", LocalDateTime.of(2015,10,2,10,10), LocalDateTime.of(2015,10,2,11,20),
+        64, 2);
+        TimeSlotsDaoImp.insertTimeSlot(slot);
+
+        Exam ex = new Exam("rId", "rName",64,1158,LocalDateTime.of(2015,10,2,10,10),LocalDateTime.of(2015,10,2,11,20), "robert","rTest",60);
+
+        AdhocExam ad = new AdhocExam("aId", "aName",64,1158,LocalDateTime.of(2015,10,2,11,40),LocalDateTime.of(2015,10,2,12,40), "aobert","aTest",60);
+        //StudentEntry se = new StudentEntry("zeqli", "zeqing", "li");
+        //ad.getStudentList().add(se);
+
+        // Persist
+        adhocExamDaoImp = new AdhocExamDaoImp();
+        adhocExamDaoImp.addAdhocExam(ad);
+
+        examDaoImp = new ExamDaoImp();
+        examDaoImp.insertExam(ex);
+
+        util.countUtilzActual(LocalDateTime.of(2015, 10, 2, 5, 10));
+
+        Appointment appointment1 = new Appointment();
+        Appointment appointment2 = new Appointment();//
+        appointment1.setStartDateTime(LocalDateTime.of(2015,10,2,5,10));
+        appointment1.setEndDateTime(LocalDateTime.of(2015, 10, 2, 5, 40));
+        appointment1.setAppointmentID(1);
+
+        appointment2.setStartDateTime(LocalDateTime.of(2015, 10, 2, 5, 10));
+        appointment2.setEndDateTime(LocalDateTime.of(2015, 10, 2, 5, 40));
+        appointment2.setAppointmentID(2);
+
+        util.getAppointmentDao().insertAppointment(appointment1);
+        util.getAppointmentDao().insertAppointment(appointment2);
+
+        util.setNumSeat(64);
+        System.out.println("Actual Utilization: " + util.countUtilzActual(LocalDateTime.of(2015,10,2,5,10)));
+        //
+        //util.setGap(0.25);
+        //util.setDay(2);
+        //util.getExamDao().addExam(exam1);
+        //util.getExamDao().addExam(exam2);
+        //System.out.println(util.countUtilzExpection());
     }
 
     /**
@@ -166,101 +242,65 @@ public class UnitTest  {
      in adjacent seats
      */
 
-    @Test
-    public void TestMakeAppointment(){
-        // 1. Insert slot
-        TestingCenterTimeSlots initSlot = new TestingCenterTimeSlots(
-                "examId",
-                LocalDateTime.of(2015,10,2,5,10),
-                LocalDateTime.of(2015,10,2,6,20),
-                64,
-                5
-        );
-
-        TestingCenterTimeSlotsDaoImp dao = new TestingCenterTimeSlotsDaoImp();
-        dao.insertTimeSlot(initSlot);
-
-        // 2. Initialize appointment
-        TestingCenterTimeSlots slot = dao.findTimeSlotById(initSlot.getTimeSlotId());
-
-        // 3.1 Add Student 1
-        Appointment ap1 = new Appointment(slot.getExamId(),"Zeqing","zeqli");
-        ap1.setSlotId(slot.getTimeSlotId());
-        ap1.setStartDateTime(slot.getBegin());
-        ap1.setEndDateTime(slot.getEnd());
-        ap1.setStudentId("Zeqli");
-        ap1.setExamName("Exam Name");
-        ap1.setTerm(1158);
-
-        // 3.2 Add Student 2
-        Appointment ap2 = new Appointment(slot.getExamId(),"Zeqing","zeqli");
-        ap2.setSlotId(slot.getTimeSlotId());
-        ap2.setStartDateTime(slot.getBegin());
-        ap2.setEndDateTime(slot.getEnd());
-        ap2.setStudentId("Zeqli");
-        ap2.setExamName("Exam Name");
-        ap2.setTerm(1158);
-
-
-        // 4. Persist Appointments, should be Automatically Assign One Another Seats
-        AppointmentDaoImp appointmentDaoImp = new AppointmentDaoImp();
-        appointmentDaoImp.insertAppointment(ap1);
-
-
-        // 5. Test Successfully Add One Student into a seat
-        String left = dao.findTimeSlotById(initSlot.getTimeSlotId()).getSeatArrangement().get(0);
-        String right = appointmentDaoImp.findAppointmentById(ap1.getAppointmentID()).getAppointmentID();
-        Assert.assertEquals(left, right);
-    }
-
-    @Test
-    public void TestAppointmentAdjacentSeat(){
-        // 1. Insert slot
-        TestingCenterTimeSlots initSlot = new TestingCenterTimeSlots(
-                "examId",
-                LocalDateTime.of(2015,10,2,5,10),
-                LocalDateTime.of(2015,10,2,6,20),
-                64,
-                5
-        );
-
-        TestingCenterTimeSlotsDaoImp dao = new TestingCenterTimeSlotsDaoImp();
-        dao.insertTimeSlot(initSlot);
-
-        // 2. Initialize appointment
-        TestingCenterTimeSlots slot = dao.findTimeSlotById(initSlot.getTimeSlotId());
-
-        // 3.1 Add Student 1
-        Appointment ap1 = new Appointment(slot.getExamId(),"Zeqing","zeqli");
-        ap1.setSlotId(slot.getTimeSlotId());
-        ap1.setStartDateTime(slot.getBegin());
-        ap1.setEndDateTime(slot.getEnd());
-        ap1.setStudentId("Zeqli");
-        ap1.setExamName("Exam Name");
-        ap1.setTerm(1158);
-
-        // 3.2 Add Student 2
-        Appointment ap2 = new Appointment(slot.getExamId(),"Zeqing","zeqli");
-        ap2.setSlotId(slot.getTimeSlotId());
-        ap2.setStartDateTime(slot.getBegin());
-        ap2.setEndDateTime(slot.getEnd());
-        ap2.setStudentId("Zeqli");
-        ap2.setExamName("Exam Name");
-        ap2.setTerm(1158);
-
-
-        // 4. Persist Appointments, should be Automatically Assign One Another Seats
-        AppointmentDaoImp appointmentDaoImp = new AppointmentDaoImp();
-        appointmentDaoImp.insertAppointment(ap1);
-        appointmentDaoImp.insertAppointment(ap2);
-
-
-        // 5. Test Successfully Add One Student into a seat
-        String left = dao.findTimeSlotById(initSlot.getTimeSlotId()).getSeatArrangement().get(0);
-        String right = appointmentDaoImp.findAppointmentById(ap1.getAppointmentID()).getSeat();
-        String test = appointmentDaoImp.findAppointmentById(ap2.getAppointmentID()).getAppointmentID();
-        Assert.assertEquals(left, right);
-    }
+//    @Test
+//    public void TestMakeAppointment(){
+//        TestingCenterTimeSlots initSlot = new TestingCenterTimeSlots(
+//                "examId",
+//                LocalDateTime.of(2015,10,2,5,10),
+//                LocalDateTime.of(2015,10,2,6,20),
+//                64,
+//                5
+//        );
+//
+//        TestingCenterTimeSlotsDaoImp dao = new TestingCenterTimeSlotsDaoImp();
+//        dao.insertTimeSlot(initSlot);
+//
+//
+//        Appointment appointment = new Appointment();
+//        TestingCenterTimeSlots slot
+//                = dao.findTimeSlotById(initSlot.getTimeSlotId());
+//        appointment.setExamId(slot.getExamId());
+//        appointment.setStartDateTime(slot.getBegin());
+//        appointment.setEndDateTime(slot.getEnd());
+//        appointment.setStudentId("Zeqli");
+//        appointment.setExamName("Exam Name");
+//        appointment.setTerm(1158);
+//
+//        AppointmentDaoImp appointmentDaoImp = new AppointmentDaoImp();
+//        appointmentDaoImp.insertAppointment(appointment);
+//
+//        Assert.assertEquals(
+//                dao.findTimeSlotById(initSlot.getTimeSlotId()).getSeatArrangement().get(0),
+//                appointmentDaoImp.findAppointmentById(appointment.getAppointmentID()).getAppointmentID());
+//        ;
+//        ;
+//
+//    }
+//
+//        TestingCenterTimeSlotsDaoImp dao = new TestingCenterTimeSlotsDaoImp();
+//        dao.insertTimeSlot(initSlot);
+//
+//
+//        Appointment appointment = new Appointment();
+//        TestingCenterTimeSlots slot
+//                = dao.findTimeSlotById(initSlot.getTimeSlotId());
+//        appointment.setExamId(slot.getExamId());
+//        appointment.setStartDateTime(slot.getBegin());
+//        appointment.setEndDateTime(slot.getEnd());
+//        appointment.setStudentId("Zeqli");
+//        appointment.setExamName("Exam Name");
+//        appointment.setTerm(1158);
+//
+//        AppointmentDaoImp appointmentDaoImp = new AppointmentDaoImp();
+//        appointmentDaoImp.insertAppointment(appointment);
+//
+//        Assert.assertEquals(
+//                dao.findTimeSlotById(initSlot.getTimeSlotId()).getSeatArrangement().get(0),
+//                appointmentDaoImp.findAppointmentById(appointment.getAppointmentID()).getAppointmentID());
+//        ;
+//        ;
+//
+//    }
 
     /**
      *  Cancel an appointment 3
@@ -279,17 +319,22 @@ public class UnitTest  {
      * Appointment reminders sent by email. 4
      *
      */
-   @Test
-    public void TestEmailReminder(){
+//   @Test
+//    public void TestEmailReminder(){
+//       boolean isSuccess = true;
 //        try {
 //            EmailService.sendEmail(StringResources.EMAIL_HOST, StringResources.EMAIL_PORT,
 //                    StringResources.EMAIL_LOGIN, StringResources.EMAIL_PASSWORD,
 //                    StringResources.EMAIL_LOGIN,"test","test");
 //        } catch (MessagingException e) {
+//           isSuccess = false;
 //
 //        }
+//        Assert.assertEquals(true, isSuccess);
+//
+//    }
 
-    }
+    
 
     /*---------------------Other Requirement-------------------*/
     /**
@@ -326,28 +371,46 @@ public class UnitTest  {
     /**
      * Test Read Adhoc Exam from Exam Table
      */
-    @Test
-    public void TestAdhocExam(){
-        Exam ex = new Exam("rId", "rName",64,1158,LocalDateTime.of(2015,10,2,5,10),LocalDateTime.of(2015,10,2,6,20), "robert","rTest",60);
-        AdhocExam ad = new AdhocExam("aId", "aName",64,1158,LocalDateTime.of(2015,10,2,1,10),LocalDateTime.of(2015,10,2,5,30), "aobert","aTest",60);
-        StudentEntry se = new StudentEntry("zeqli", "zeqing", "li");
-        ad.getStudentList().add(se);
+//    @Test
+//    public void TestAdhocExam(){
+//        Exam ex = new Exam("rId", "rName",64,1158,LocalDateTime.of(2015,10,2,5,10),LocalDateTime.of(2015,10,2,6,20), "robert","rTest",60);
+//
+//        AdhocExam ad = new AdhocExam("aId", "aName",64,1158,LocalDateTime.of(2015,10,2,1,10),LocalDateTime.of(2015,10,2,5,30), "aobert","aTest",60);
+//        StudentEntry se = new StudentEntry("zeqli", "zeqing", "li");
+//        ad.getStudentList().add(se);
+//
+//        // Persist
+//        adhocExamDaoImp = new AdhocExamDaoImp();
+//        adhocExamDaoImp.addAdhocExam(ad);
+//
+//        examDaoImp = new ExamDaoImp();
+//        examDaoImp.insertExam(ex);
+//
+//        // Check whether we can retrieve adhoc exam from exam table.
+//        List<Exam> examList = examDaoImp.getAllPending();
+//        for (Exam e: examList){
+//            if (e.getExamType().equals(ExamType.AD_HOC)){
+//                List<StudentEntry> studentEntries= ((AdhocExam)e).getStudentList();
+//                Assert.assertEquals(se, studentEntries.get(0));
+//            }
+//        }
+//    }
 
-        // Persist
-        adhocExamDaoImp = new AdhocExamDaoImp();
-        adhocExamDaoImp.addAdhocExam(ad);
-        examDaoImp = new ExamDaoImp();
-        examDaoImp.insertExam(ex);
-
-        // Check whether we can retrieve adhoc exam from exam table.
-        List<Exam> examList = examDaoImp.getAllPending();
-        for (Exam e: examList){
-            if (e.getExamType().equals(ExamType.AD_HOC)){
-                List<StudentEntry> studentEntries= ((AdhocExam)e).getStudentList();
-                Assert.assertEquals(se, studentEntries.get(0));
-            }
-        }
-    }
+//        // Persist
+//        adhocExamDaoImp = new AdhocExamDaoImp();
+//        adhocExamDaoImp.addAdhocExam(ad);
+//        examDaoImp = new ExamDaoImp();
+//        examDaoImp.insertExam(ex);
+//
+//        // Check whether we can retrieve adhoc exam from exam table.
+//        List<Exam> examList = examDaoImp.getAllPending();
+//        for (Exam e: examList){
+//            if (e.getExamType().equals(ExamType.AD_HOC)){
+//                List<StudentEntry> studentEntries= ((AdhocExam)e).getStudentList();
+//                Assert.assertEquals(se, studentEntries.get(0));
+//            }
+//        }
+//    }
 
     @Test
     public void TestCloseTime(){
