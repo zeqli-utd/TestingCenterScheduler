@@ -58,24 +58,29 @@ public class DataCollection {
             //Student Data
             if (path.contains("user.csv")) {
 
+                // 1. Discard the first line
                 br = new BufferedReader(new FileReader(path));
-                line = br.readLine();   // Discard the first line
+                line = br.readLine();
+
                 while ((line = br.readLine()) != null) {
                     String[] listItem = line.split(cvsSplitBy);
 
-                    // NetId, FirstName, LastName, Email
-                    Student userIter = new Student(listItem[0], listItem[1], listItem[2],listItem[3]);
+                    // FirstName, LastName, NetId, Email
+                    Student userIter = new Student(listItem[2], listItem[0], listItem[1],listItem[3]);
                     studentDao.addStudent(userIter);
                 }
             }
             //Instructor Data
             if (path.contains("instructor.csv")) {
 
+                // 1. Discard the first line
                 br = new BufferedReader(new FileReader(path));
-                line = br.readLine();   // Discard the first line
+                line = br.readLine();
+
                 while ((line = br.readLine()) != null) {
                     String[] listItem = line.split(cvsSplitBy);
-                    Instructor instructorIter = new Instructor(listItem[0], listItem[1], listItem[2],listItem[3]);
+                    // Last Name, First Name, User Id, Email
+                    Instructor instructorIter = new Instructor(listItem[2], listItem[1], listItem[0],listItem[3]);
                     instructorDao.addInstructor(instructorIter);
                 }
             }
@@ -84,8 +89,11 @@ public class DataCollection {
                 // Clear Class Table by term
                 courseDao.deleteCoursesByTerm(termId);
 
+                // 1. Discard the first line
                 br = new BufferedReader(new FileReader(path));
                 line = br.readLine();   // Discard the first line
+
+
                 while ((line = br.readLine()) != null) {
                     String[] listItem = line.split(cvsSplitBy);
                     Course courseIter = new Course(listItem[0], listItem[1], listItem[2], listItem[3], listItem[4], termId);
@@ -95,44 +103,18 @@ public class DataCollection {
                 // Clear roster table by term
                 rosterDao.deleteRostersByTerm(termId);
 
+                // 1. Discard the first line
                 br = new BufferedReader(new FileReader(path));
-                line = br.readLine();   // Discard the first line
-                ArrayList<String[]> list = new ArrayList<String[]>();
+                line = br.readLine();
+
+                ArrayList<String[]> rosterList = new ArrayList<String[]>();
                 while ((line = br.readLine()) != null) {
                     String[] listItem = line.split(cvsSplitBy);
-                    list.add(listItem);
+                    Roster roster = new Roster(listItem[1], listItem[0], termId);
+                    rosterDao.addRoster(roster);
+                    rosterList.add(listItem);
                 }
-                //change the list to hashmap
-                HashMap<String, String> hash = new HashMap();
-                for (int i = 0; i < list.size(); i++) {
-                    hash.put(list.get(i)[0], list.get(i)[1]);
-                }
-                markSuperfluous(appointmentList, list);
 
-                Session session = SessionManager.getInstance().openSession();
-                Transaction tx = null;
-                try {
-                    tx = session.beginTransaction();
-                    List e = session.createQuery("FROM Appointment WHERE Appointment.status = 's' ").list();
-                    Iterator<Appointment> iterator = e.iterator();
-                    while (iterator.hasNext()) {
-                        Appointment appt = (Appointment) iterator.next();
-                        if (hash.get(appt.getStudentId()) == appt.getExamId()) {    // Reinstate Appointment
-                            appt.setStatus("r");
-                            session.update(appt);
-                            //TODO reinstate
-                        } else {
-                            //TODO cancel appointment
-                        }
-                    }
-                } catch (HibernateException var9) {
-                    if (tx != null) {
-                        tx.rollback();
-                    }
-
-                } finally {
-                    session.close();
-                }
             }
         } catch (FileNotFoundException e) {
             return false;
@@ -150,22 +132,5 @@ public class DataCollection {
         return true;
     }
 
-    /**
-     *
-     * @param appointmentList
-     * @param list
-     */
-    public void markSuperfluous(List<Appointment> appointmentList, List<String[]> list) {
-        Iterator databaseIterator = appointmentList.iterator();
-        while (databaseIterator.hasNext()) {
-            Appointment appt = (Appointment) databaseIterator.next();
-            appt.setStatus("s");
-            for (int i = 0; i < list.size(); i++) {
-                if ((appt.getStudentId() == list.get(i)[0]) && (appt.getExamId() == list.get(i)[1])) {
-                    appt.setStatus(null);
-                }
-            }
-        }
-    }
 
 }
