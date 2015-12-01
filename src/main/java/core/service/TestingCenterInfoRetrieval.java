@@ -22,12 +22,10 @@ public class TestingCenterInfoRetrieval {
     public boolean insertTestingCenterInfo(TestingCenterInfo testingCenterInfo){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
-
         try {
             tx = session.beginTransaction();
             session.save(testingCenterInfo);
-
-                    tx.commit();
+            tx.commit();
         } catch (HibernateException e) {
             if(tx != null) {
                 tx.rollback();
@@ -37,7 +35,6 @@ public class TestingCenterInfoRetrieval {
             session.close();
         }
         return true;
-
     }
 
     public TestingCenterInfo findByTerm(int termId) {

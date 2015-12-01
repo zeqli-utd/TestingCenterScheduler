@@ -67,19 +67,24 @@ public class Utilization {
         LocalDate date = dateTime.toLocalDate();
 
         double ExpectedApptmentsDuration = 0;
-        double Hours = (double)ChronoUnit.MINUTES.between(center.getOpen(), center.getClose())/60;////
-
-//      System.out.println(examDao.find);
+        double Hours = (double)ChronoUnit.MINUTES.between(center.getOpen(), center.getClose())/60;
 
         for (Exam exam: examDao.getAllExams()) {
             LocalDate startDay = exam.getStartDateTime().toLocalDate();
             LocalDate endDay = exam.getStartDateTime().toLocalDate();
 
-            if( (startDay.isBefore(date) || startDay.isEqual(date)) && (endDay.isAfter(date) || endDay.isEqual(date)) ){
-                ExpectedApptmentsDuration += (exam.getDuration()+ gap) * (((double)exam.getCapacity() - (double)exam.getNumAppointments())/ exam.getDayDuration()) ;
+            if (exam.getStatusType() == ExamStatusType.APROVED) {
+                if( (startDay.isBefore(date) || startDay.isEqual(date))
+                        && (endDay.isAfter(date) || endDay.isEqual(date))){
+                    ExpectedApptmentsDuration +=
+                            (exam.getDuration()+ gap)
+                                    * (((double)exam.getCapacity()
+                                    - (double)exam.getNumAppointments())
+                                    / exam.getDayDuration()) ;
+                }
             }
         }
-        utilzExpection = utilzActual + ExpectedApptmentsDuration/(numSeat * Hours);
+        utilzExpection = countUtilzActual(dateTime) + ExpectedApptmentsDuration/(numSeat * Hours);
         return  utilzExpection;
     }
 

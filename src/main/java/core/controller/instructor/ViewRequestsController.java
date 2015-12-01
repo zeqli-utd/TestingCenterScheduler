@@ -17,7 +17,7 @@ public class ViewRequestsController {
 
     @RequestMapping("/")
     public ModelAndView viewRequests(ModelAndView model) {
-        model.setViewName("instructor/view-requests");
+        model.setViewName("instructor-view-requests");
         model.addObject("heading", StringResources.INSTRUCTOR_VIEW_REQUESTS);
         model.addObject("requests", examDao.getAllPending());
         return model;

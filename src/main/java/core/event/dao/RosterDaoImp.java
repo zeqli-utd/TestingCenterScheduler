@@ -1,6 +1,5 @@
 package core.event.dao;
 
-import core.event.Exam;
 import core.event.Roster;
 import core.service.SessionManager;
 import org.hibernate.HibernateException;
@@ -8,8 +7,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public class RosterDaoImp implements RosterDao{

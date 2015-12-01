@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <excludeFromCompile>
-      <file url="file://$PROJECT_DIR$/src/main/java/core/config/SecurityConfig.java" />
-    </excludeFromCompile>
     <resourceExtensions />
     <wildcardResourcePatterns>
       <entry name="!?*.java" />
@@ -28,8 +25,8 @@
         <module name="TestingCenterSchduler" />
       </profile>
       <profile default="false" name="Annotation profile for TestingCenterScheduler" enabled="true">
-        <sourceOutputDir name="target\generated-sources\annotations" />
-        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
       </profile>

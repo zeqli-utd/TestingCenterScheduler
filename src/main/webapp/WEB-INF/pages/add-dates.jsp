@@ -15,7 +15,7 @@
         </a>
     </div>
     <div class="main-heading">
-        <h1>${page_heading}</h1>
+        <h1>Testing Center Information</h1>
     </div>
     <div class="header-menu">
         <a>Logout</a>
@@ -25,19 +25,19 @@
 <%--------------------------main content--------------------------%>
 <div class="main-wrapper">
     <div class="container">
-        <div class="sidebar">
-            <jsp:include page="sidebar.jsp" flush="true"/>
-        </div>
-        <div class="content">
-            <p>${errorMessage}</p>
-        </div>
+        <form class="edit-info">
+            <label>
+
+            </label>
+        </form>
     </div>
 </div>
 <%-----------------------popup content-------------------------%>
 <div class="popup-overlay" id="popup1">
     <div class="popup">
         <a class="close" href="#"><i class="fa fa-times"></i></a>
-        <jsp:include page="${popup_content}" flush="true"/>
+
+        <a class="button" href="admin/edit-info">Cancel</a>
     </div>
 </div>
 

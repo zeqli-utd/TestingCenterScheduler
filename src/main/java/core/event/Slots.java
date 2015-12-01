@@ -1,14 +1,16 @@
 package core.event;
 
-import core.event.dao.ExamDaoImp;
-import core.event.dao.TestingCenterTimeSlotsDaoImp;
+import core.event.dao.ExamDao;
 import core.service.TestingCenterInfoRetrieval;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
+@Component
 public class Slots {
 
     private String examId;
@@ -23,8 +25,10 @@ public class Slots {
 
     ArrayList<TestingCenterTimeSlots> tctsList = new ArrayList<TestingCenterTimeSlots>();
 
+    private TestingCenterInfoRetrieval tcir = new TestingCenterInfoRetrieval();
     @Autowired
-    TestingCenterInfoRetrieval tcir;
+    private ExamDao examDao;
+
     TestingCenterInfo tci = tcir.findByTerm(tcir.getCurrentTerm().getTermId());
     int numSeats = tci.getNumSeats();
     int gap = tci.getGap();
@@ -43,8 +47,6 @@ public class Slots {
 
     //suppose duration and start/endDateTime are legal
     public ArrayList<TestingCenterTimeSlots> generateTimeSlots(){
-        TestingCenterTimeSlotsDaoImp tctsImp  = new TestingCenterTimeSlotsDaoImp();
-        tctsImp.findAllTimeSlots();
         LocalDateTime begin = exam.getStartDateTime();
         LocalDateTime end;
         int i = 0;
@@ -64,6 +66,7 @@ public class Slots {
                 }
                 TestingCenterTimeSlots tcts = new TestingCenterTimeSlots(examId, begin, end,
                     numSeats, numSetAsideSeats);
+                tctsList.add(tcts);
                 begin = end.plusMinutes(gap);
                 i++;
             }
@@ -73,9 +76,8 @@ public class Slots {
 
     public boolean checkConflict(){
         boolean conflict = false;
-        ExamDaoImp examImp = new ExamDaoImp();  //TODO Wrong way to get ExamDao
         List<Exam> allExams;
-        allExams = examImp.getAllExams();
+        allExams = examDao.getAllExams();
         Exam examIter = new Exam();
         ArrayList<Exam> conflictExams = new ArrayList<Exam>();
         for(int i = 0; i < allExams.size(); i++){

@@ -47,7 +47,7 @@ public class SessionManager {
                 .setProperty("hibernate.connection.url", "jdbc:mysql://sbu-cse-308.capjijo2fevl.us-east-1.rds.amazonaws.com:3306/testing_center")
                 .setProperty("hibernate.connection.username", "thedueteam")
                 .setProperty("hibernate.connection.password", "thedueteam")
-                .setProperty("hibernate.hbm2ddl.auto", "create-drop")
+                .setProperty("hibernate.hbm2ddl.auto", "update")
                 .setProperty("hibernate.show_sql", "true");
         serviceRegistryBuilder = new StandardServiceRegistryBuilder().applySettings(
                 configuration.getProperties());
