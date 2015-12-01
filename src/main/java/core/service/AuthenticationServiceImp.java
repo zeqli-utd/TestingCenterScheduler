@@ -18,11 +18,10 @@ public class AuthenticationServiceImp implements AuthenticationService {
     public boolean registeredUserId(String userId) {
         Transaction tx = null;
         boolean result = false;
-        try (Session session = SessionManager.getInstance().openSession()) {
+        Session session = SessionManager.getInstance().openSession();
+        try {
             tx = session.beginTransaction();
-
             List allUserId = session.createQuery("SELECT netId FROM core.user.User").list();
-
             result = allUserId.contains(userId);
             tx.commit();
         } catch (HibernateException he) {
@@ -31,6 +30,9 @@ public class AuthenticationServiceImp implements AuthenticationService {
             }
             return false;
         }
+        finally {
+            session.close();
+        }
         return result;
     }
 
@@ -38,7 +40,8 @@ public class AuthenticationServiceImp implements AuthenticationService {
     public boolean userMatchPassword(String userId, String password) {
         Transaction tx = null;
         //boolean result = false;
-        try (Session session = SessionManager.getInstance().openSession()) {
+        Session session = SessionManager.getInstance().openSession();
+        try{
             tx = session.beginTransaction();
 
             List allUser = session.createQuery("FROM User").list();
@@ -60,6 +63,9 @@ public class AuthenticationServiceImp implements AuthenticationService {
             }
             return false;
         }
+        finally {
+            session.close();
+        }
         return false;
     }
 
@@ -67,7 +73,8 @@ public class AuthenticationServiceImp implements AuthenticationService {
     public Authorization login(String userId) {
         Transaction tx = null;
         User user = new User();
-        try (Session session = SessionManager.getInstance().openSession()) {
+        Session session = SessionManager.getInstance().openSession();
+        try {
             tx = session.beginTransaction();
             user = session.get(User.class, userId);
             tx.commit();
@@ -75,6 +82,10 @@ public class AuthenticationServiceImp implements AuthenticationService {
             if (tx != null) {
                 tx.rollback();
             }
+            return Authorization.STUDENT;
+        }
+        finally {
+            session.clear();
         }
         return user.getAuthorization();
     }
