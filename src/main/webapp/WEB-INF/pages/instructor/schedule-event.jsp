@@ -29,21 +29,21 @@
             <jsp:include page="sidebar.jsp"/>
         </div>
         <div class="content">
-            <form action="instructor/schedule-event/submit" method="post">
+            <form:form action="instructor/schedule-event/submit" method="post" modelAttribute="term">
                 <label>Instructor </label>
-                <input name="instructorId"/>
+                <form:input path="instructorId"/>
                 <br/>
                 <label>Term </label>
-                <select name="term">
+                <form:select name="term" path="">
                     <c:forEach items="${terms}" var="term">
                         <option value="${term.termId}"><c:out value="${term.termName}"/></option>
                     </c:forEach>
-                </select>
+                </form:select>
                 <label>Exam Type </label>
-                <select name="examType">
+                <form:select name="examType">
                     <option value="REGULAR">Regular</option>
                     <option value="AD_HOC">Other</option>
-                </select>
+                </form:select>
                 <br/>
                 <label>Exam Name </label>
                 <input name="examName" type="text" placeholder="Name"/>
@@ -61,7 +61,7 @@
                 <input name="duration" type="number" placeholder="Duration"/>
                 <br/>
                 <input type="submit" value="Submit" class="submit-button">
-            </form>
+            </form:form>
         </div>
     </div>
 </div>

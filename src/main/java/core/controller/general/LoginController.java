@@ -19,7 +19,7 @@ public class LoginController {
     public ModelAndView authorizeUser (@ModelAttribute SessionProfile profile,
                                        HttpSession session,
                                        ModelAndView model) {
-        model.setViewName("admin/home");
+        model.setViewName("instructor/home");
         model.addObject("pageHeader", "Administrator");
         //String userId = profile.getUserId();
         //String password = profile.getPassword();

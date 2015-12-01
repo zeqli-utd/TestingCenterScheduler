@@ -33,8 +33,7 @@
         <div class="content">
             <form:form modelAttribute="selectedTerm" action="admin/report/term" target="_blank">
                 <form:select path="termName">
-                    <form:option value="Select Term"/>
-                    <form:options items="${terms}"/>
+                    <form:options items="${terms}" itemLabel="${term.termName}" itemValue="${term.termId}"/>
                 </form:select>
                 <input type="submit" class="submit-button" value="Submit">
             </form:form>
@@ -45,7 +44,6 @@
 <div class="popup-overlay" id="popup1">
     <div class="popup">
         <a class="close" href="#"><i class="fa fa-times"></i></a>
-        <jsp:include page="${popup_content}" flush="true"/>
     </div>
 </div>
 
