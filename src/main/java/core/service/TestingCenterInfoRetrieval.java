@@ -64,7 +64,6 @@ public class TestingCenterInfoRetrieval {
             Query query = session.createQuery
                     ("FROM Term T WHERE T.termStartDate <= :date AND  :date <= T.termEndDate");
             query.setTimestamp("date", Date.from(now.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-
             tx.commit();
             result = (Term)query.uniqueResult();
         }
