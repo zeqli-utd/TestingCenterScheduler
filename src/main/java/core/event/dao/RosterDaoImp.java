@@ -24,6 +24,7 @@ public class RosterDaoImp implements RosterDao{
             try {
                 tx = session.beginTransaction();
                 session.save(roster);
+                tx.commit();
             }
             catch (HibernateException he){
                 if(tx != null){
