@@ -2,6 +2,7 @@ package core.service;
 
 import core.user.*;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
@@ -11,16 +12,7 @@ import java.util.List;
 
 @Repository
 public class AuthenticationServiceImp implements AuthenticationService {
-    /*      SessionFactory sessionFactory = sessionManager.createSessionFactory();
-            Session session = sessionFactory.openSession();
-            session.beginTransaction();
-            session.save(e);                    //save object using hibernate
-            session.getTransaction().commit();*/
 
-    // private static SessionManager sessionManager = new SessionManager();
-    //SessionFactory sessionFactory = sessionManager.createSessionFactory();
-
-    //UserType AllUser = new UserType();
 
     @Override
     public boolean registeredUserId(String userId) {
@@ -29,9 +21,10 @@ public class AuthenticationServiceImp implements AuthenticationService {
         try (Session session = SessionManager.getInstance().openSession()) {
             tx = session.beginTransaction();
 
-            List allUserId = session.createQuery("SELECT netId FROM UserType").list();
+            List allUserId = session.createQuery("SELECT netId FROM core.user.User").list();
 
             result = allUserId.contains(userId);
+            tx.commit();
         } catch (HibernateException he) {
             if (tx != null) {
                 tx.rollback();
@@ -60,6 +53,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
                     return false;
                 }
             }
+            tx.commit();
         } catch (HibernateException he) {
             if (tx != null) {
                 tx.rollback();
@@ -76,6 +70,7 @@ public class AuthenticationServiceImp implements AuthenticationService {
         try (Session session = SessionManager.getInstance().openSession()) {
             tx = session.beginTransaction();
             user = session.get(User.class, userId);
+            tx.commit();
         } catch (HibernateException he) {
             if (tx != null) {
                 tx.rollback();
@@ -83,46 +78,5 @@ public class AuthenticationServiceImp implements AuthenticationService {
         }
         return user.getAuthorization();
     }
-//    @Override
-//    public Authorization login(String userId, String password) {
-//        Session session = SessionManager.getInstance().openSession();
-//        Transaction tx = null;
-//
-//        try {
-//            tx = session.beginTransaction();
-//
-//            List allAdministrator = session.createQuery("FROM Administrator").list();
-//            List allInstructor = session.createQuery("FROM Instructor").list();
-//            //List allStudent = session.createQuery("FROM Student").list();
-//
-//            Iterator AdministratorIter = allAdministrator.iterator();
-//            Iterator InstructorIter = allInstructor.iterator();
-//            //Iterator StudentIter = allStudent.iterator();
-//
-//            while(AdministratorIter.hasNext()){
-//                if(AdministratorIter.hasNext()){
-//                    Administrator ad = (Administrator)AdministratorIter.next();
-//                    if(ad.getNetId().equals(userId)){
-//                        return Authorization.ADMINISTRATOR;
-//                    }
-//                }
-//            }
-//            while(InstructorIter.hasNext()){
-//                if(InstructorIter.hasNext()){
-//                    Instructor ins = (Instructor)InstructorIter.next();
-//                    if(ins.getNetId().equals(userId)){
-//                        return Authorization.INSTRUCTOR;
-//                    }
-//                }
-//            }
-//        }
-//        catch (HibernateException he){
-//            if(tx != null){
-//                tx.rollback();
-//            }
-//        } finally {
-//            session.close();
-//        }
-//        return Authorization.STUDENT;
-//    }
+
 }

@@ -19,11 +19,11 @@ import java.util.List;
 
 @Repository
 public class AppointmentDaoImp implements AppointmentDao {
+
     @Autowired
     private TestingCenterTimeSlotsDao tctsDao;
 
     public AppointmentDaoImp() {
-
     }
 
     @Override
@@ -31,6 +31,7 @@ public class AppointmentDaoImp implements AppointmentDao {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
         List appointments = session.createQuery("FROM Appointment").list();
+        tx.commit();
         session.close();
         return appointments;
     }
