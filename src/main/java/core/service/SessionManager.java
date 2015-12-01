@@ -44,7 +44,7 @@ public class SessionManager {
                 .addAnnotatedClass(core.event.TestingCenterTimeSlots.class)
                 .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect")
                 .setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver")
-                .setProperty("hibernate.connection.url", "jdbc:mysql://sbu-cse-308.capjijo2fevl.us-east-1.rds.amazonaws.com:3306/test")
+                .setProperty("hibernate.connection.url", "jdbc:mysql://sbu-cse-308.capjijo2fevl.us-east-1.rds.amazonaws.com:3306/testing_center")
                 .setProperty("hibernate.connection.username", "thedueteam")
                 .setProperty("hibernate.connection.password", "thedueteam")
                 .setProperty("hibernate.hbm2ddl.auto", "create-drop")

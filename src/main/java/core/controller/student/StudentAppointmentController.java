@@ -12,9 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/student/make-appointment")
-@SessionAttributes("sessionUser")
 public class StudentAppointmentController {
     @Autowired
     private AppointmentDao appointmentDao;
@@ -27,6 +28,7 @@ public class StudentAppointmentController {
     public ModelAndView makeAppointment(@PathVariable("id") String examId,
                                         ModelAndView model){
         model.setViewName("/student/select-appointment");
+        model.addObject("exam", examDao.findByExamId(examId).getExamName());
         model.addObject("heading", StringResources.STUDENT_MAKE_APPOINTMENT);
         model.addObject("timeSlots", timeSlotsDao.findAllTimeSlotsByExamId(examId));
         return model;
@@ -34,9 +36,10 @@ public class StudentAppointmentController {
 
     @RequestMapping(value = "submit", method = RequestMethod.POST)
     public ModelAndView selectAppointment(@ModelAttribute Appointment appointment,
-                                          @ModelAttribute("sessionUser") SessionProfile profile,
+                                          HttpSession session,
                                           ModelAndView model) {
-        model.setViewName("/student/view-appointments");
+        SessionProfile profile = (SessionProfile) session.getAttribute("sessionUser");
+        model.setViewName("redirect:/student/view-appointments");
         model.addObject("heading", StringResources.STUDENT_VIEW_APPOINTMENTS);
         model.addObject("errorMessage", "Appointment submitted.");
         TestingCenterTimeSlots slot

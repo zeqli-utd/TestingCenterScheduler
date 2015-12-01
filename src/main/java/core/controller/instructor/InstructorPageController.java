@@ -1,5 +1,7 @@
 package core.controller.instructor;
 
+import core.event.Term;
+import core.event.dao.AppointmentDao;
 import core.event.dao.ExamDao;
 import core.helper.StringResources;
 import core.service.TermManagerService;
@@ -15,6 +17,8 @@ public class InstructorPageController {
     private ExamDao examDao;
     @Autowired
     private TermManagerService termManager;
+    @Autowired
+    private AppointmentDao appointmentDao;
 
     @RequestMapping("/view-requests")
     public ModelAndView viewRequests(ModelAndView model) {
@@ -24,11 +28,19 @@ public class InstructorPageController {
         return model;
     }
 
+    @RequestMapping("/schedule-adhoc")
+    public ModelAndView scheduleAdhoc(ModelAndView model) {
+        model.setViewName("instructor/schedule-adhoc");
+
+        return model;
+    }
+
     @RequestMapping("/schedule-event")
     public ModelAndView scheduleRequest(ModelAndView model) {
         model.setViewName("instructor/schedule-event");
         model.addObject("heading", StringResources.INSTRUCTOR_SCHEDULE);
         model.addObject("terms", termManager.getAllPopulatedTerms());
+        model.addObject("term", new Term());
         return model;
     }
 
@@ -43,6 +55,7 @@ public class InstructorPageController {
     public ModelAndView viewAppointments(ModelAndView model) {
         model.setViewName("/instructor/view-appointments");
         model.addObject("heading", StringResources.INSTRUCTOR_VIEW_APPOINTMENTS_DETAIL);
+        model.addObject("appointments", appointmentDao.findAllAppointment());
         return model;
     }
 }

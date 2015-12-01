@@ -16,10 +16,10 @@ public class GenerateReportController {
     private Report report;
 
     @RequestMapping(value = "/term", method = RequestMethod.POST)
-    public ModelAndView termHandler(@ModelAttribute("selectedTerm")Term term,
+    public ModelAndView termHandler(@ModelAttribute Term selectedTerm,
                                     ModelAndView model) {
         model.setViewName("redirect:/admin/generate-report");
-        model.addObject("reportContent", report.showTermReport(term));
+        model.addObject("reportContent", report.showTermReport(selectedTerm));
         return model;
     }
 }

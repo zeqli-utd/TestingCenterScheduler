@@ -23,7 +23,11 @@ public class Utilization {
     private double gap;
     private String exam;
     private int numSeat;
+
+    @Autowired
     AppointmentDao appointmentDao;
+
+    @Autowired
     ExamDao examDao;
 
     @Autowired
@@ -38,7 +42,9 @@ public class Utilization {
     }
 
     public double countUtilzActual(LocalDateTime dateTime){
-        center = testingCenterInfoRetrieval.findByTerm(testingCenterInfoRetrieval.getTermByDay(dateTime));
+        testingCenterInfoRetrieval = new TestingCenterInfoRetrieval(); //TODO delete this line
+        int termId  = testingCenterInfoRetrieval.getTermByDay(dateTime);
+        center = testingCenterInfoRetrieval.findByTerm(termId);
         LocalDate date = dateTime.toLocalDate();
 
         double TotalDuration = 0;//

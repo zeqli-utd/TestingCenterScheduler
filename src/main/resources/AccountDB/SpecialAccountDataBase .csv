@@ -1,0 +1,5 @@
+FirstName,LastName,NetID,Email,Password,Role
+Admin, Admin, admin, admin@example.com, 123, administrator
+AdminInstructor,AdminInstructor,adminInstructor,admin@example.com,123,administratorinstructor
+
+

@@ -19,11 +19,11 @@ import java.util.List;
 
 @Repository
 public class AppointmentDaoImp implements AppointmentDao {
+
     @Autowired
     private TestingCenterTimeSlotsDao tctsDao;
 
     public AppointmentDaoImp() {
-
     }
 
     @Override
@@ -31,6 +31,7 @@ public class AppointmentDaoImp implements AppointmentDao {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
         List appointments = session.createQuery("FROM Appointment").list();
+        tx.commit();
         session.close();
         return appointments;
     }
@@ -86,7 +87,7 @@ public class AppointmentDaoImp implements AppointmentDao {
         LocalDateTime begin = appointment.getStartDateTime();
         String tsId = Integer.toString(begin.getDayOfYear()) +
                 Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute());
-        tctsDao = new TestingCenterTimeSlotsDaoImp(); //TODO Delete This Line
+        //tctsDao = new TestingCenterTimeSlotsDaoImp(); //TODO Delete This Line
         TestingCenterTimeSlots tcts = tctsDao.findTimeSlotById(tsId);
         tcts.assignSeat(appointment);
         tctsDao.updateTimeSlot(tcts);

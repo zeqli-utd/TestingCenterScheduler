@@ -29,35 +29,36 @@
             <jsp:include page="sidebar.jsp"/>
         </div>
         <div class="content">
-            <form:form modelAttribute="exam" action="instructor/schedule-event/submit" method="post">
+            <form:form action="instructor/schedule-event/submit" method="post" modelAttribute="term">
                 <label>Instructor </label>
                 <form:input path="instructorId"/>
                 <br/>
                 <label>Term </label>
-                <form:select path="term">
-                    <form:options items="${terms}" itemLabel="termName" itemValue="termId"/>
+                <form:select name="term" path="">
+                    <c:forEach items="${terms}" var="term">
+                        <option value="${term.termId}"><c:out value="${term.termName}"/></option>
+                    </c:forEach>
                 </form:select>
                 <label>Exam Type </label>
-                <form:select path="examType">
-                    <form:option value="">Exam type</form:option>
-                    <form:option value="REGULAR">Regular</form:option>
-                    <form:option value="AD_HOC">Other</form:option>
+                <form:select name="examType">
+                    <option value="REGULAR">Regular</option>
+                    <option value="AD_HOC">Other</option>
                 </form:select>
                 <br/>
                 <label>Exam Name </label>
-                <form:input path="examName"/>
+                <input name="examName" type="text" placeholder="Name"/>
                 <br/>
                 <label>Start</label>
-                <form:input path="startDateTime"/>
+                <input name="startDateTime" type="datetime-local" placeholder="Starts at"/>
                 <br/>
                 <label>End</label>
-                <form:input path="endDateTime"/>
+                <input name="endDateTime" type="datetime-local" placeholder="Ends at"/>
                 <br/>
                 <label>Capacity</label>
-                <form:input path="capacity"/>
+                <input name="capacity" type="number" placeholder="Max number"/>
                 <br/>
                 <label>Duration</label>
-                <form:input path="duration"/>
+                <input name="duration" type="number" placeholder="Duration"/>
                 <br/>
                 <input type="submit" value="Submit" class="submit-button">
             </form:form>
@@ -70,7 +71,6 @@
         <a class="close" href="#"><i class="fa fa-times"></i></a>
     </div>
 </div>
-
 <footer>
 
 </footer>

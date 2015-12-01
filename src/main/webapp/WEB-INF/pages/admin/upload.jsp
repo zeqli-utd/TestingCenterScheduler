@@ -1,8 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%--@elvariable id="page_heading" type="java.lang.String"--%>
-<%--@elvariable id="content" type="java.lang.String"--%>
-<%--@elvariable id="popup_content" type="java.lang.String"--%>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -19,7 +16,7 @@
         </a>
     </div>
     <div class="main-heading">
-        <h1>${page_heading}</h1>
+        <h1>${pageHeader}</h1>
     </div>
     <div class="header-menu">
         <a>Logout</a>
@@ -33,14 +30,14 @@
             <jsp:include page="sidebar.jsp" flush="true"/>
         </div>
         <div class="content">
-            <p>${"errorMessage"}</p>
-            <form:form action="admin/upload/confirm">
-                <form:select path="termId">
-                    <form:options items="${terms}" itemLabel="termName" itemValue="termId"/>
-                </form:select>
-                <input class="input-info" type="file" name="fileName" value="Select file">
-                <input class="submit-button" type="button" value="Submit">
-            </form:form>
+            <p>${errorMessage}</p>
+            <form action="admin/upload/confirm" method="post">
+                <select title="Term" name="termId">
+                    <c:forEach items="${terms}" var="term">
+                        <option value="${term.termId}"><c:out value="${term.termName}"/></option>
+                    </c:forEach>
+                </select>
+            </form>
         </div>
     </div>
 </div>
@@ -48,7 +45,6 @@
 <div class="popup-overlay" id="popup1">
     <div class="popup">
         <a class="close" href="#"><i class="fa fa-times"></i></a>
-        <jsp:include page="${popup_content}" flush="true"/>
     </div>
 </div>
 

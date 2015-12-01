@@ -39,11 +39,13 @@ public class Term {
     private LocalDate termEndDate;
 
 
+
+
     public Term(int termId, LocalDate termStartDate, LocalDate termEndDate) {
         this.setTermId(termId);
         this.setTermStartDate(termStartDate);
         this.setTermEndDate(termEndDate);
-        termIdToName(termId);
+        this.setTermName(termIdToName(termId));
     }
 
     public int getTermId() {

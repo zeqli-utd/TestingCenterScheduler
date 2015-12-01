@@ -73,6 +73,7 @@ public class TestingCenterTimeSlots {
                                   int setAsideSeat) {
         this.timeSlotId = Integer.toString(begin.getDayOfYear()) +
                 Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute());
+
         this.examId = examId;
         this.begin = begin;
         this.end = end;

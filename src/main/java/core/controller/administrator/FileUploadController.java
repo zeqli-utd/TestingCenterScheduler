@@ -18,7 +18,7 @@ public class FileUploadController {
     @Autowired
     private TermManagerService termManager;
 
-    @RequestMapping(value = "confirm", method = RequestMethod.POST)
+    @RequestMapping(value = "confirm")
     public ModelAndView uploadFile (@RequestParam("file-name") String fileName,
                                     @RequestParam("termId") int termId,
                                     ModelAndView model) {

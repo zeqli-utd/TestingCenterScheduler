@@ -11,9 +11,34 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 @Service
 public class TestingCenterInfoRetrieval {
+
+    public TestingCenterInfoRetrieval(){}
+
+    public boolean insertTestingCenterInfo(TestingCenterInfo testingCenterInfo){
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            session.save(testingCenterInfo);
+
+                    tx.commit();
+        } catch (HibernateException e) {
+            if(tx != null) {
+                tx.rollback();
+            }
+            return false;
+        } finally {
+            session.close();
+        }
+        return true;
+
+    }
 
     public TestingCenterInfo findByTerm(int termId) {
         Session session = SessionManager.getInstance().openSession();
@@ -21,8 +46,10 @@ public class TestingCenterInfoRetrieval {
         Query query = session.createQuery
                 ("FROM TestingCenterInfo T WHERE T.term = :tId");
         query.setParameter("tId", termId);
-        tx.commit();
+
         TestingCenterInfo result = (TestingCenterInfo)query.uniqueResult();
+
+        tx.commit();
         session.close();
         return result;
     }
@@ -36,7 +63,7 @@ public class TestingCenterInfoRetrieval {
             tx = session.beginTransaction();
             Query query = session.createQuery
                     ("FROM Term T WHERE T.termStartDate <= :date AND  :date <= T.termEndDate");
-            query.setParameter("date", now);
+            query.setTimestamp("date", Date.from(now.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
             tx.commit();
             result = (Term)query.uniqueResult();
         }
@@ -65,9 +92,9 @@ public class TestingCenterInfoRetrieval {
             tx = session.beginTransaction();
             Query query = session.createQuery
                     ("FROM Term T WHERE T.termStartDate <= :date AND  :date <= T.termEndDate");
-            query.setParameter("date", date);
-            tx.commit();
+            query.setTimestamp("date", Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
             result = (Term)query.uniqueResult();
+            tx.commit();
         }
         catch (HibernateException he){
             if(tx != null){

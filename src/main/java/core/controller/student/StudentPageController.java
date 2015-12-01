@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/student")
-@SessionAttributes("sessionUser")
 public class StudentPageController {
     @Autowired
     private ExamDao examDao;
@@ -21,8 +22,9 @@ public class StudentPageController {
     private AppointmentDao appointmentDao;
 
     @RequestMapping("/view-appointments")
-    public ModelAndView viewAppointments(@ModelAttribute("sessionUser") SessionProfile profile,
+    public ModelAndView viewAppointments(HttpSession session,
                                          ModelAndView model) {
+        SessionProfile profile = (SessionProfile) session.getAttribute("sessionUser");
         model.setViewName("student/view-appointments");
         model.addObject("appointments",
                 appointmentDao.findAllByStudent(profile.getUserId()));
