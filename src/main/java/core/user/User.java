@@ -1,8 +1,6 @@
 package core.user;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * This class is for store account info.
@@ -26,6 +24,7 @@ public class User {
     protected String email;
 
     @Basic(optional = false)
+    @Enumerated(EnumType.STRING)
     private Authorization authorization;
 
     public User(){};
