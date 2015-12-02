@@ -1,6 +1,6 @@
 <ul class="side-nav">
     <li>
-        <a class="button" href="admin/home">
+        <a class="button" href="student/home">
             <i class="fa fa-home"></i>&nbsp;Home
         </a>
     </li>

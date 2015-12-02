@@ -1,7 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%--@elvariable id="page_heading" type="java.lang.String"--%>
-<%--@elvariable id="content" type="java.lang.String"--%>
-<%--@elvariable id="popup_content" type="java.lang.String"--%>
+<%--@elvariable id="appointment" type="core.event.Appointment"--%>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -18,7 +16,7 @@
         </a>
     </div>
     <div class="main-heading">
-        <h1>${page_heading}</h1>
+        <h1>Appointments</h1>
     </div>
     <div class="header-menu">
         <a>Logout</a>
@@ -29,11 +27,34 @@
 <div class="main-wrapper">
     <div class="container">
         <div class="sidebar">
-            <jsp:include page="sidebar.jsp" flush="true"/>
+            <jsp:include page="admin-sidebar.jsp" flush="true"/>
         </div>
         <div class="content">
-            <p>${errorMessage}</p>
-
+            <p><c:out value="${errorMessage}"/></p>
+            <table>
+                <thead>
+                <tr>
+                    <th>Appointment ID</th>
+                    <th>Starts</th>
+                    <th>Ends</th>
+                    <th>Student</th>
+                    <th>Made by</th>
+                    <th>Seat</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${appointments}" var="appointment">
+                    <tr>
+                        <td><c:out value="${appointment.appointmentID}"/></td>
+                        <td><c:out value="${appointment.startDateTime}"/></td>
+                        <td><c:out value="${appointment.endDateTime}"/></td>
+                        <td><c:out value="${appointment.studentId}"/></td>
+                        <td><c:out value="${appointment.madeBy}"/></td>
+                        <td><c:out value="${appointment.seat}"/></td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -41,7 +62,6 @@
 <div class="popup-overlay" id="popup1">
     <div class="popup">
         <a class="close" href="#"><i class="fa fa-times"></i></a>
-        <jsp:include page="${popup_content}" flush="true"/>
     </div>
 </div>
 

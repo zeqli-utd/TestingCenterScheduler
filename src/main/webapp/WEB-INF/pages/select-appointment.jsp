@@ -27,7 +27,7 @@
 <div class="main-wrapper">
     <div class="container">
         <div class="sidebar">
-            <jsp:include page="sidebar.jsp"/>
+            <jsp:include page="student-sidebar.jsp"/>
         </div>
         <div class="content">
             <form:form modelAttribute="appointment">

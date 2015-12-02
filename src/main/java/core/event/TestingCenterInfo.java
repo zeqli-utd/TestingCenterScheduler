@@ -2,6 +2,7 @@ package core.event;
 
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -25,11 +26,13 @@ public class TestingCenterInfo {
     private int numSetAsideSeats;
 
     @Basic(optional = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     private LocalTime open;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Type(type = "org.hibernate.type.LocalTimeType")
     @Basic(optional = false)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.TIME)
     private LocalTime close;
 
     @Cascade(CascadeType.ALL)

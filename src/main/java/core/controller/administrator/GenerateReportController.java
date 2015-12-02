@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -15,10 +14,10 @@ public class GenerateReportController {
     @Autowired
     private Report report;
 
-    @RequestMapping(value = "/term", method = RequestMethod.POST)
+    @RequestMapping(value = "/term")
     public ModelAndView termHandler(@ModelAttribute Term selectedTerm,
                                     ModelAndView model) {
-        model.setViewName("redirect:/admin/generate-report");
+        model.setViewName("generate-report");
         model.addObject("reportContent", report.showTermReport(selectedTerm));
         return model;
     }

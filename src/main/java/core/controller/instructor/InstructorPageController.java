@@ -1,6 +1,5 @@
 package core.controller.instructor;
 
-import core.event.Term;
 import core.event.dao.AppointmentDao;
 import core.event.dao.ExamDao;
 import core.helper.StringResources;
@@ -22,7 +21,7 @@ public class InstructorPageController {
 
     @RequestMapping("/view-requests")
     public ModelAndView viewRequests(ModelAndView model) {
-        model.setViewName("instructor/view-requests");
+        model.setViewName("instructor-view-requests");
         model.addObject("heading", StringResources.INSTRUCTOR_VIEW_REQUESTS);
         model.addObject("requests", examDao.getAllPending());
         return model;
@@ -30,30 +29,27 @@ public class InstructorPageController {
 
     @RequestMapping("/schedule-adhoc")
     public ModelAndView scheduleAdhoc(ModelAndView model) {
-        model.setViewName("instructor/schedule-adhoc");
+        model.setViewName("schedule-adhoc");
 
         return model;
     }
 
     @RequestMapping("/schedule-event")
     public ModelAndView scheduleRequest(ModelAndView model) {
-        model.setViewName("instructor/schedule-event");
-        model.addObject("heading", StringResources.INSTRUCTOR_SCHEDULE);
+        model.setViewName("schedule-event");
         model.addObject("terms", termManager.getAllPopulatedTerms());
-        model.addObject("term", new Term());
         return model;
     }
 
     @RequestMapping("/home")
     public ModelAndView goToHome(ModelAndView model) {
-        model.setViewName("instructor/home");
-        model.addObject("heading", "Home");
+        model.setViewName("instructor-home");
         return model;
     }
 
     @RequestMapping("/view-appointments")
     public ModelAndView viewAppointments(ModelAndView model) {
-        model.setViewName("/instructor/view-appointments");
+        model.setViewName("instructor-view-appointments");
         model.addObject("heading", StringResources.INSTRUCTOR_VIEW_APPOINTMENTS_DETAIL);
         model.addObject("appointments", appointmentDao.findAllAppointment());
         return model;

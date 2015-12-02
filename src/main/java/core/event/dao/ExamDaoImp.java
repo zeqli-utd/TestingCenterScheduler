@@ -1,6 +1,9 @@
 package core.event.dao;
 
-import core.event.*;
+import core.event.Exam;
+import core.event.ExamStatusType;
+import core.event.Slots;
+import core.event.TestingCenterInfo;
 import core.service.SessionManager;
 import core.service.TestingCenterInfoRetrieval;
 import org.hibernate.HibernateException;
@@ -10,7 +13,6 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -189,31 +191,33 @@ public class ExamDaoImp implements ExamDao {
             return false;
 
         //check exam time between reserved dateTimes
-        List<ETSTestTimeRangeTuple> reservedRanges = tci.getReserveRanges();
-        for (ETSTestTimeRangeTuple ets : reservedRanges) {
-            LocalDateTime begin = ets.getTestDateTimeFrom();
-            LocalDateTime end = ets.getTeseDateTimeTo();
-            if (!(startDateTime.isBefore(end)) ||
-                    !(endDateTime.isAfter(begin))) {
-                //continue;
-            } else {
-                return false;
-            }
-        }
-
-        //check exam time between closed dates
-        LocalDate startDate = startDateTime.toLocalDate();
-        LocalDate endDate = endDateTime.toLocalDate();
-        List<CloseDateRangeTuple> closedRanges = tci.getCloseDateRanges();
-        for (CloseDateRangeTuple cTuple : closedRanges) {
-            LocalDate begin = cTuple.getCloseDateFrom();
-            LocalDate end = cTuple.getCloseDateTo();
-            if (startDate.isAfter(end) || endDate.isBefore(begin)) {
-                //continue;
-            } else {
-                return false;
-            }
-        }
+        //List<ETSTestTimeRangeTuple> reservedRanges = tci.getReserveRanges();
+        //for (ETSTestTimeRangeTuple ets: reservedRanges){
+        //    LocalDateTime begin = ets.getTestDateTimeFrom();
+        //    LocalDateTime end = ets.getTeseDateTimeTo();
+        //    if ( !(startDateTime.isBefore(end)) ||
+        //            !(endDateTime.isAfter(begin)) ) {
+        //        //continue;
+        //    }
+        //    else{
+        //        return false;
+        //    }
+        //}
+        //
+        ////check exam time between closed dates
+        //LocalDate startDate = startDateTime.toLocalDate();
+        //LocalDate endDate = endDateTime.toLocalDate();
+        //List<CloseDateRangeTuple> closedRanges = tci.getCloseDateRanges();
+        //for (CloseDateRangeTuple cTuple: closedRanges){
+        //    LocalDate begin = cTuple.getCloseDateFrom();
+        //    LocalDate end = cTuple.getCloseDateTo();
+        //    if ( startDate.isAfter(end) || endDate.isBefore(begin) ) {
+        //        //continue;
+        //    }
+        //    else{
+        //        return false;
+        //    }
+        //}
         return true;
 
     }

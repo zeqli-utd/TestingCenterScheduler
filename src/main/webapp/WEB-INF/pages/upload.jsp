@@ -5,7 +5,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Testing Center Scheduler</title>
-    <link rel="stylesheet" href="assets/css/styles.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/styles.css" type="text/css">
 </head>
 <body>
 <%-------------------------header--------------------------%>
@@ -31,13 +31,16 @@
         </div>
         <div class="content">
             <p>${errorMessage}</p>
-            <form action="admin/upload/confirm" method="post">
-                <select title="Term" name="termId">
-                    <c:forEach items="${terms}" var="term">
-                        <option value="${term.termId}"><c:out value="${term.termName}"/></option>
-                    </c:forEach>
-                </select>
+            <select title="Term" name="termId" form="upload-form">
+            <c:forEach items="${terms}" var="term">
+                <option value="${term.termId}"><c:out value="${term.termName}"/></option>
+            </c:forEach>
+            </select>
+            <form action="/admin/upload/confirm" id="upload-form">
+                <input type="file" placeholder="Upload a file" name="fileName">
+                <input type="submit" value="Submit" class="submit-button">
             </form>
+
         </div>
     </div>
 </div>

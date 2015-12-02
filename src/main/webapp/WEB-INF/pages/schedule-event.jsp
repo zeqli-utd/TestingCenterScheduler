@@ -1,6 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -16,7 +16,7 @@
         </a>
     </div>
     <div class="main-heading">
-        <h1>${heading}</h1>
+        <h1>Schedule a request</h1>
     </div>
     <div class="header-menu">
         <a>Logout</a>
@@ -26,24 +26,18 @@
 <div class="main-wrapper">
     <div class="container">
         <div class="sidebar">
-            <jsp:include page="sidebar.jsp"/>
+            <jsp:include page="instructor-sidebar.jsp"/>
         </div>
         <div class="content">
-            <form:form action="instructor/schedule-event/submit" method="post" modelAttribute="term">
+            <form action="schedule-event/submit" method="post" name="term" id="request-form">
                 <label>Instructor </label>
-                <form:input path="instructorId"/>
+                <input name="instructorId" type="text" placeholder="Instructor"/>
                 <br/>
-                <label>Term </label>
-                <form:select name="term" path="">
-                    <c:forEach items="${terms}" var="term">
-                        <option value="${term.termId}"><c:out value="${term.termName}"/></option>
-                    </c:forEach>
-                </form:select>
-                <label>Exam Type </label>
-                <form:select name="examType">
-                    <option value="REGULAR">Regular</option>
-                    <option value="AD_HOC">Other</option>
-                </form:select>
+                <label>Exam ID</label>
+                <input name="examId" type="text" placeholder="Exam ID">
+                <br/>
+                <label>Course ID</label>
+                <input name="courseId" type="text" placeholder="Course ID">
                 <br/>
                 <label>Exam Name </label>
                 <input name="examName" type="text" placeholder="Name"/>
@@ -61,7 +55,12 @@
                 <input name="duration" type="number" placeholder="Duration"/>
                 <br/>
                 <input type="submit" value="Submit" class="submit-button">
-            </form:form>
+            </form>
+            <select name="term" form="request-form" title="Term">
+                <c:forEach items="${terms}" var="term">
+                    <option value="${term.termId}"><c:out value="${term.termName}"/></option>
+                </c:forEach>
+            </select>
         </div>
     </div>
 </div>

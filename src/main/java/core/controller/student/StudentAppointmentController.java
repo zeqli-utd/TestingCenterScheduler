@@ -27,7 +27,7 @@ public class StudentAppointmentController {
     @RequestMapping("new/{id}")
     public ModelAndView makeAppointment(@PathVariable("id") String examId,
                                         ModelAndView model){
-        model.setViewName("/student/select-appointment");
+        model.setViewName("select-appointment");
         model.addObject("exam", examDao.findByExamId(examId).getExamName());
         model.addObject("heading", StringResources.STUDENT_MAKE_APPOINTMENT);
         model.addObject("timeSlots", timeSlotsDao.findAllTimeSlotsByExamId(examId));

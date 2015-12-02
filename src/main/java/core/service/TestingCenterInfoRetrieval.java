@@ -36,7 +36,6 @@ public class TestingCenterInfoRetrieval {
             session.close();
         }
         return true;
-
     }
 
     public TestingCenterInfo findByTerm(int termId) {

@@ -5,17 +5,17 @@
         </a>
     </li>
     <li>
-        <a class="button" href="admin/view-requests">
+        <a class="button" href="instructor/view-requests">
             <i class="fa fa-spinner"></i>&nbsp;View requests
         </a>
     </li>
     <li>
-        <a class="button" href="admin/view-appointments">
+        <a class="button" href="instructor/view-appointments">
             <i class="fa fa-eye"></i>&nbsp;View appointments
         </a>
     </li>
     <li>
-        <a class="button" href="admin/make-appointment">
+        <a class="button" href="instructor/schedule-event">
             <i class="fa fa-plus-square"></i>&nbsp;Make a reservation
         </a>
     </li>

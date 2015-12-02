@@ -1,7 +1,4 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%--@elvariable id="page_heading" type="java.lang.String"--%>
-<%--@elvariable id="content" type="java.lang.String"--%>
-<%--@elvariable id="popup_content" type="java.lang.String"--%>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -18,7 +15,7 @@
         </a>
     </div>
     <div class="main-heading">
-        <h1>${pageHeader}</h1>
+        <h1>${page_heading}</h1>
     </div>
     <div class="header-menu">
         <a>Logout</a>
@@ -29,11 +26,10 @@
 <div class="main-wrapper">
     <div class="container">
         <div class="sidebar">
-            <jsp:include page="sidebar.jsp" flush="true"/>
+            <jsp:include page="admin-sidebar.jsp" flush="true"/>
         </div>
         <div class="content">
             <p>${errorMessage}</p>
-            <jsp:include page="fragments/content.jsp" flush="true"/>
         </div>
     </div>
 </div>

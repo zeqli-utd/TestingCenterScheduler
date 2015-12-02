@@ -19,17 +19,11 @@
     <c:url value="/authorizing" var="authorizing"/>
     <form class="login-box" method="post" action="${authorizing}">
         <h3 class="login-heading">Sign in</h3>
-        <input name="userId" class="login-text" placeholder="NetID"/>
-        <input name="password" class="login-text" placeholder="Password"/>
+        <input name="userId" class="login-text" placeholder="NetID" type="text"/>
+        <input name="password" class="login-text" placeholder="Password" type="password"/>
         <input type="submit" value="Login" class="submit-button"/>
     </form>
     <div class="error-message">${errorMessage}</div>
 </div>
-<div class="popup-overlay" id="popup1">
-    <div class="popup">
-        <a class="close" href="#"><i class="fa fa-times"></i></a>
-    </div>
-</div>
-
 </body>
 </html>

@@ -1,8 +1,8 @@
 package core.service;
 
-import core.user.*;
+import core.user.Authorization;
+import core.user.User;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
