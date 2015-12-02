@@ -50,4 +50,25 @@ public class TermManagerService {
         }
         return true;
     }
+
+    public Term getTermById(int termId){
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        Term term = null;
+        try {
+            tx = session.beginTransaction();
+            term = (Term)session.get(Term.class, termId);
+            tx.commit();
+        } catch (HibernateException e) {
+            if(tx != null) {
+                tx.rollback();
+            }
+            term = new Term();
+            return term;
+        } finally {
+            session.close();
+        }
+        return term;
+
+    }
 }
