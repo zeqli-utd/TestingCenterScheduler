@@ -17,6 +17,8 @@ import java.util.List;
 
 @Repository
 public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
+
+    @Override
     public List<TestingCenterTimeSlots> findAllTimeSlots(){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
@@ -36,6 +38,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         return tscs;
     }
 
+
     public List<TestingCenterTimeSlots> findAllAvailableTimeSlots(){
         List<TestingCenterTimeSlots> list = findAllTimeSlots();
         for (TestingCenterTimeSlots tcts: list){
@@ -45,6 +48,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         return list;
     }
 
+    @Override
     public List<TestingCenterTimeSlots> findAllTimeSlotsByExamId(String examId){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
@@ -67,11 +71,11 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         return result;
     }
 
+    @Override
     public TestingCenterTimeSlots findTimeSlotById(String timeSlotId){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         TestingCenterTimeSlots result = null;
-        TestingCenterTimeSlots result1 = null;
         try {
             tx = session.beginTransaction();
             Query query = session.createQuery("FROM TestingCenterTimeSlots ts WHERE ts.timeSlotId = :tsId");
@@ -79,7 +83,6 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
             result = (TestingCenterTimeSlots)query.uniqueResult();
            // List a = query.list();
             tx.commit();
-            result1 = (TestingCenterTimeSlots)query.uniqueResult();
         }
         catch (HibernateException he){
             if(tx != null){
@@ -92,6 +95,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
     }
 
 
+    @Override
     public boolean insertTimeSlot(TestingCenterTimeSlots timeSlots){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
@@ -111,6 +115,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         return  true;
     }
 
+    @Override
     public boolean insertTimeSlots(List<TestingCenterTimeSlots> listTimeSlots){
         boolean result = true;
         for (TestingCenterTimeSlots t: listTimeSlots)
@@ -121,6 +126,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         return result;
     }
 
+    @Override
     public boolean insertTimeSlotsByExamId(String examId){
         ExamDaoImp examImp = new ExamDaoImp();
         Exam exam = examImp.findByExamId(examId);
@@ -138,6 +144,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         return true;
     }
 
+    @Override
     public boolean deleteTimeSlot(String timeSlotId){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;

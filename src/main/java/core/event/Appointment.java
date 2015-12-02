@@ -18,7 +18,8 @@ import java.util.List;
 public class Appointment {
     @Id
     @Column(name = "appointment_id")
-    private String appointmentID;
+    @GeneratedValue
+    private int appointmentID;
 
     @Column(name = "exam_id")
     @Basic(optional = false)
@@ -33,16 +34,16 @@ public class Appointment {
     private String madeBy;  // Student Id or AdminID
 
     @Column(name = "slot_id")
-    @Basic(optional = false)
+//    @Basic(optional = false)
     private String slotId;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Basic(optional = false)
+//    @Basic(optional = false)
     @Type(type = "org.hibernate.type.LocalDateTimeType")
     private LocalDateTime startDateTime;
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Basic(optional = false)
+//    @Basic(optional = false)
     @Type(type = "org.hibernate.type.LocalDateTimeType")
     private LocalDateTime endDateTime;
 
@@ -50,9 +51,8 @@ public class Appointment {
     @Basic(optional = false)
     private String studentId;
 
-    //seat: number
+    //seat
     @Column(name="seat")
-    @Basic(optional = false)
     private String seat;
 
     @Column(name="is_attend")
@@ -66,7 +66,7 @@ public class Appointment {
     private String examName;
 
     public Appointment(){
-        this.examId = "";
+        this.examId = "Default_Exam";
         this.term = 0;
         this.madeBy = "";
         this.startDateTime = LocalDateTime.MIN;
@@ -80,17 +80,31 @@ public class Appointment {
 
     //LocalDateTime startDateTime, LocalDateTime endDateTime, String seat
     // are automatically assigned from Time Slots
+
+    /**
+     * Initialize an appointment
+     * @param examId
+     * @param madeBy
+     * @param netId
+     * @param begin
+     * @param end
+     */
     public Appointment(String examId,
+                       String slotId,
                        String madeBy,
-                       String netId ){
-        this.appointmentID = examId+netId;
+                       String netId,
+                       LocalDateTime begin,
+                       LocalDateTime end){
         this.examId = examId;
+        this.slotId = slotId;
         this.madeBy = madeBy;
-        //this.startDateTime = startDateTime;
-        //this.endDateTime = endDateTime;
         this.studentId = netId;
-        this.seat = Integer.toString(-1);
+        this.startDateTime = begin;
+        this.endDateTime = end;
+        this.seat = "";
         this.isAttend = false;
+        this.status = "r";
+        this.term = 1158;   // By Default
     }
 
     /**
@@ -155,11 +169,11 @@ public class Appointment {
         this.examName = examName;
     }
 
-    public String getAppointmentID() {
+    public int getAppointmentID() {
         return appointmentID;
     }
 
-    public void setAppointmentID(String appointmentID) {
+    public void setAppointmentID(int appointmentID) {
         this.appointmentID = appointmentID;
     }
 

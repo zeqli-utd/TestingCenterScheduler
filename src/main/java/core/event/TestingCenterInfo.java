@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -46,8 +47,19 @@ public class TestingCenterInfo {
     private int reminderInterval;
 
     public TestingCenterInfo() {
+        this(1151);
     }
 
+    /**
+     * Default Constructor,
+     * 64 Seats, 4 Set Aside Seats, Open at 9am, Close at 7pm, Gap Time 10 min, Interval 10 min.
+     * @param term
+     */
+    public TestingCenterInfo(int term){
+        this(term, 60, 4,
+                LocalTime.of(9, 0),LocalTime.of(17, 0),
+                new ArrayList<>(), new ArrayList<>(), 10, 10);
+    }
     public TestingCenterInfo(int term, int numSeats, int numSetAsideSeats, LocalTime open,
                              LocalTime close, List<CloseDateRangeTuple> closeDateRanges,
                              List<ETSTestTimeRangeTuple> reserveRanges, int gap, int reminderInterval) {

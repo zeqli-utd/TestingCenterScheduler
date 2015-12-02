@@ -1,10 +1,13 @@
 package core.event;
 
+import core.event.dao.ExamDao;
 import core.event.dao.ExamDaoImp;
+import core.event.dao.TestingCenterTimeSlotsDao;
 import core.event.dao.TestingCenterTimeSlotsDaoImp;
 import core.service.TestingCenterInfoRetrieval;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
@@ -19,18 +22,32 @@ public class Slots {
     //the "shortest" time needed for all students to take the exam
     private int actualDuration;
 
+    TestingCenterInfo tci;
+
+    int numSeats;
+
+    int gap;
+
+    int numSetAsideSeats;
+
+    LocalTime close;
+
+    LocalTime open;
+
+
+    @Autowired
+    TestingCenterTimeSlotsDao tcts;
+
+    @Autowired
+    ExamDao examDao;
+
     private ArrayList<TestingCenterTimeSlots> timeSlots = new ArrayList<TestingCenterTimeSlots>();
 
-    ArrayList<TestingCenterTimeSlots> tctsList = new ArrayList<TestingCenterTimeSlots>();
+
 
     @Autowired
     TestingCenterInfoRetrieval tcir;
-    TestingCenterInfo tci = tcir.findByTerm(tcir.getCurrentTerm().getTermId());
-    int numSeats = tci.getNumSeats();
-    int gap = tci.getGap();
-    int numSetAsideSeats = tci.getNumSetAsideSeats();
-    LocalTime close = tci.getClose();
-    LocalTime open = tci.getOpen();
+
 
     public Slots(){}
 
@@ -39,66 +56,50 @@ public class Slots {
         this.exam = e;
         this.actualDuration = e.getActualDuration();
         this.numRemainingTimes = e.getNumRemainingTime();
+
+
+        tci = tcir.findByTerm(tcir.getCurrentTerm().getTermId());
+        numSeats = tci.getNumSeats();
+        gap = tci.getGap();
+        numSetAsideSeats = tci.getNumSetAsideSeats();
+        close = tci.getClose();
+        open = tci.getOpen();
     }
 
     //suppose duration and start/endDateTime are legal
     public ArrayList<TestingCenterTimeSlots> generateTimeSlots(){
-        TestingCenterTimeSlotsDaoImp tctsImp  = new TestingCenterTimeSlotsDaoImp();
-        tctsImp.findAllTimeSlots();
+        ArrayList<TestingCenterTimeSlots> tctsList = new ArrayList<TestingCenterTimeSlots>();
         LocalDateTime begin = exam.getStartDateTime();
         LocalDateTime end;
+
+        exam.getStartDateTime();//TODO modify
+
+
+
+
         int i = 0;
-        if (checkConflict() == false) {
-            while(i < numRemainingTimes) {
-                end = begin.plusMinutes(exam.getDuration());
-                if( (end.getHour() <= close.getHour()) && (end.getMinute() <= close.getMinute()) ){
 
-                }
-                else{
-                    begin = LocalDateTime.of(begin.plusDays(1).toLocalDate(), open);
-                    end = begin.plusMinutes(exam.getDuration());
-                }
+        while(i < numRemainingTimes) {
+            end = begin.plusMinutes(exam.getDuration());
+            if( (end.getHour() <= close.getHour()) && (end.getMinute() <= close.getMinute()) ){
 
-                if(end.isAfter(exam.getEndDateTime())){
-                    return null;
-                }
-                TestingCenterTimeSlots tcts = new TestingCenterTimeSlots(examId, begin, end,
-                    numSeats, numSetAsideSeats);
-                begin = end.plusMinutes(gap);
-                i++;
-            }
-        }
-        return tctsList;
-    }
-
-    public boolean checkConflict(){
-        boolean conflict = false;
-        ExamDaoImp examImp = new ExamDaoImp();  //TODO Wrong way to get ExamDao
-        List<Exam> allExams;
-        allExams = examImp.getAllExams();
-        Exam examIter = new Exam();
-        ArrayList<Exam> conflictExams = new ArrayList<Exam>();
-        for(int i = 0; i < allExams.size(); i++){
-            examIter = (Exam)allExams.get(i);
-            examIter.getStartDateTime();
-            if( ((exam.getStartDateTime().minusMinutes(gap).minusMinutes
-                    (examIter.getActualDuration())).isAfter(examIter.
-                    getStartDateTime())) || ((exam.getStartDateTime().
-                    minusMinutes(gap).minusMinutes(examIter.getActualDuration())).
-                    isEqual(examIter.getStartDateTime()))|| (exam.getEndDateTime().
-                    isBefore(examIter.getEndDateTime().minusMinutes(gap).
-                            minusMinutes(examIter.getActualDuration()))) ||
-                    (exam.getEndDateTime().isEqual(examIter.getEndDateTime().
-                            minusMinutes(gap).minusMinutes(examIter.getActualDuration()))) ){
-                //no conflict
             }
             else{
-                conflictExams.add(allExams.get(i));
-                conflict = true;
+                begin = LocalDateTime.of(begin.plusDays(1).toLocalDate(), open);
+                end = begin.plusMinutes(exam.getDuration());
             }
-        }
-        return conflict;
 
+            if(end.isAfter(exam.getEndDateTime())){
+                return null;
+            }
+            TestingCenterTimeSlots tcts = new TestingCenterTimeSlots(examId, begin, end,
+                numSeats, numSetAsideSeats);
+            tctsList.add(tcts);
+            begin = end.plusMinutes(gap);
+            i++;
+        }
+
+        return tctsList;
     }
 
 //    public boolean checkSchedulability(){

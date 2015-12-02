@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class WelcomeController {
     @RequestMapping(method = RequestMethod.GET)
     public String welcome() {
-        return "welcome";
+        return "/WEB-INF/welcome.jsp";
     }
 
     @RequestMapping(value = "login", method = RequestMethod.GET)

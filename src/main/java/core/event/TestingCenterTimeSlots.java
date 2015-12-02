@@ -4,6 +4,7 @@ import core.event.dao.AppointmentDao;
 import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import core.event.Seat;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,10 +34,15 @@ public class TestingCenterTimeSlots {
     private LocalDateTime end;
 
 
-    @Column(name = "seat_arrangement")
+
     //occupied: appointmentId; nonoccupied: ""
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> seatArrangement = new ArrayList<>();
+    @OneToMany( fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "slots_seat",
+            joinColumns = @JoinColumn(name = "slotid"),
+            inverseJoinColumns = @JoinColumn(name = "seatid")
+    )
+    private List<Seat> seatArrangement = new ArrayList<>();
 
     @Basic(optional = false)
     @Column(name = "numSeat")
@@ -77,16 +83,18 @@ public class TestingCenterTimeSlots {
         this.examId = examId;
         this.begin = begin;
         this.end = end;
-        this.numSeat = (numSeats - 1) / setAsideSeat + 1;
+        this.numSeat = numSeats;
         this.seatArrangement = initSeatArrangement(numSeats);
         this.setAsideSeat = setAsideSeat;
         this.occupiedNum = 0;
     }
 
-    public List<String> initSeatArrangement(int numSeats) {
-        List<String> seatsArrangement = new ArrayList<>(numSeats);
+    public List<Seat> initSeatArrangement(int numSeats) {
+        List<Seat> seatsArrangement = new ArrayList<>(numSeats);
         for (int i = 0; i < numSeats; i++) {
-            seatsArrangement.add(new String());
+            Seat seat = new Seat();
+            seat.setTimeSlot(this);
+            seatsArrangement.add(seat);
         }
         return seatsArrangement;
     }
@@ -106,19 +114,21 @@ public class TestingCenterTimeSlots {
      * @return
      */
     public boolean assignSeat(Appointment appt) {
-        String apptId = appt.getAppointmentID();
+        int apptId = appt.getAppointmentID();
         occupiedNum += 1;
         int seat = -1;
         for (int i = 0; i < numSeat; i++) {
-            if (seatArrangement.get(i).isEmpty()) {
-                seatArrangement.remove(i);
-                seatArrangement.add(i, apptId);
+            if (seatArrangement.get(i).getAssignId() == 0) {
+                Seat seat1 = seatArrangement.get(i);
+                seat1.setAssignId(apptId);
                 seat = i + 1;
+                break;
             }
         }
         if (seat == -1) {
             return false; // There is no more seat
         } else {
+            appt.setSlotId(this.timeSlotId);
             appt.setStartDateTime(begin);
             appt.setEndDateTime(end);
             appt.setSeat(Integer.toString(seat));
@@ -130,11 +140,12 @@ public class TestingCenterTimeSlots {
      * need to be used when remove an appointment
      */
     public void releaseSeat(Appointment appt) {
-        String apptId = appt.getAppointmentID();
+        int apptId = appt.getAppointmentID();
         int seatNum = Integer.parseInt(appt.getSeat()) - 1;
-        if (apptId.equals(seatArrangement.get(seatNum))) {
-            seatArrangement.remove(seatNum);
-            seatArrangement.add(seatNum, new String());
+        if (apptId == seatArrangement.get(seatNum).getAssignId()) {
+            seatArrangement.get(seatNum).setAssignId(0);
+//            seatArrangement.remove(seatNum);
+//            seatArrangement.add(seatNum, 0);
             occupiedNum -= 1;
         } else
             System.out.print("Error when releasing a seat.");
@@ -172,11 +183,11 @@ public class TestingCenterTimeSlots {
         this.end = end;
     }
 
-    public List<String> getSeatArrangement() {
+    public List<Seat> getSeatArrangement() {
         return seatArrangement;
     }
 
-    public void setSeatArrangement(List<String> seatArrangement) {
+    public void setSeatArrangement(List<Seat> seatArrangement) {
         this.seatArrangement = seatArrangement;
     }
 

@@ -82,26 +82,35 @@ public class AppointmentDaoImp implements AppointmentDao {
      */
     @Override
     public boolean insertAppointment(Appointment appointment) {
-        //need to assign seat when make appointment
-        tctsDao = new TestingCenterTimeSlotsDaoImp(); //TODO delete this line
-        LocalDateTime begin = appointment.getStartDateTime();
-        String tsId = Integer.toString(begin.getDayOfYear()) +
-                Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute());
-        //tctsDao = new TestingCenterTimeSlotsDaoImp(); //TODO Delete This Line
-        TestingCenterTimeSlots tcts = tctsDao.findTimeSlotById(tsId);
-        tcts.assignSeat(appointment);
-        tctsDao.updateTimeSlot(tcts);
-
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-
-//            LocalDateTime begin = appointment.getStartDateTime();
-//            TestingCenterTimeSlots tscs = tscsImp.findTimeSlotById(Integer.toString(begin.getDayOfYear()) +
-//                    Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute()));
-//            tscsImp.insertTimeSlot(tscs);
             session.save(appointment);
+            tx.commit();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+            return false;
+        } finally {
+            session.close();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean makeAppointment(Appointment appointment, TestingCenterTimeSlots slots) {
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(appointment);
+            slots.assignSeat(appointment);
+
+            session.update(slots);
+            session.update(appointment);
             tx.commit();
         }
         catch (HibernateException he){
@@ -117,23 +126,13 @@ public class AppointmentDaoImp implements AppointmentDao {
 
 
     @Override
-    public boolean deleteAppointment(String appointmentId) {
-        //need to release seat when delete appointment
-        Appointment appt = findAppointmentById(appointmentId);
-        LocalDateTime begin = appt.getStartDateTime();
-        String tsId = Integer.toString(begin.getDayOfYear()) +
-                Integer.toString(begin.getHour()) + Integer.toString(begin.getMinute());
-        TestingCenterTimeSlots tcts = tctsDao.findTimeSlotById(tsId);
-        tcts.releaseSeat(appt);
-        tctsDao.updateTimeSlot(tcts);
-
+    public boolean deleteAppointment(int appointmentId) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            Query query = session.createQuery
-                    ("delete from Appointment R where R.appointmentID = :appointmentID");
-            query.setParameter("appointmentID", appointmentId);
+            Appointment appointment = session.get(Appointment.class, appointmentId);
+            session.delete(appointment);
             tx.commit();
         }
         catch (HibernateException he){
@@ -148,7 +147,7 @@ public class AppointmentDaoImp implements AppointmentDao {
     }
 
     @Override
-    public boolean updateAppointment(Appointment appointment, String id){
+    public boolean updateAppointment(Appointment appointment, int id){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
@@ -196,7 +195,7 @@ public class AppointmentDaoImp implements AppointmentDao {
     }
 
     @Override
-    public Appointment findAppointmentById(String AppointmentID) {
+    public Appointment findAppointmentById(int AppointmentID) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = session.beginTransaction();
         Query query = session.createQuery("FROM Appointment A WHERE A.appointmentID = :appId");

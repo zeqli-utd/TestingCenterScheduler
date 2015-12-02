@@ -37,7 +37,6 @@ public class Utilization {
 
     public Utilization(){
         //center = new TestingCenterInfo();
-        appointmentDao = new AppointmentDaoImp();
         examDao = new ExamDaoImp();
     }
 

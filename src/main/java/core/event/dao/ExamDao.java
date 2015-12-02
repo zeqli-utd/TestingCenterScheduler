@@ -27,7 +27,7 @@ public interface ExamDao {
 
     void listExamByApprovedRequest(String exId);
 
-    boolean approveExam(String examId);
+    boolean updateExam(Exam exam);
 
     List<Exam> getAllAvailableExamsToStudent(String studentId);
 }

@@ -2,6 +2,7 @@ package core.event.dao;
 
 import core.event.Appointment;
 import core.event.Term;
+import core.event.TestingCenterTimeSlots;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,15 +24,23 @@ public interface AppointmentDao {
      */
     List<Appointment> findAllAppointmentsByExamId(String examId);
 
-    Appointment findAppointmentById(String AppointmentID);
+    Appointment findAppointmentById(int AppointmentID);
 
     boolean insertAppointment(Appointment appointment);
 
-    boolean updateAppointment(Appointment appointment, String id);
+    boolean updateAppointment(Appointment appointment, int id);
 
-    boolean deleteAppointment(String appointmentId);
+    boolean deleteAppointment(int appointmentId);
 
     boolean checkLegalAppointment(Appointment appointment);
+
+    /**
+     * Make appointment.
+     * @param ap
+     * @param slots
+     * @return
+     */
+    boolean makeAppointment(Appointment ap, TestingCenterTimeSlots slots);
 
 
 }

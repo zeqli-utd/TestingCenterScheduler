@@ -44,7 +44,7 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public User getUserById(int netid) {
+    public User getUserById(String netid) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         User user = null;
