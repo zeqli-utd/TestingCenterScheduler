@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("admin/view-requests")
 public class ViewAndEditRequestsController {
+
     @Autowired
     ExamManageService examManageService;
 

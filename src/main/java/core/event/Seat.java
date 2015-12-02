@@ -5,7 +5,6 @@ import javax.persistence.*;
 // This is a helper entity that store seat data for timeslot
 @Entity
 public class Seat {
-
     @Id
     @GeneratedValue
     int seatId;

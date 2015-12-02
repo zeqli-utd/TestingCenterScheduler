@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
+
     @Autowired
     private AuthenticationService authenticationService;
 

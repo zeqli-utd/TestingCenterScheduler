@@ -19,7 +19,6 @@ import java.util.List;
 
 @Repository
 public class AppointmentDaoImp implements AppointmentDao {
-
     @Autowired
     private TestingCenterTimeSlotsDao tctsDao;
 
@@ -72,10 +71,6 @@ public class AppointmentDaoImp implements AppointmentDao {
     }
 
     /**
-     * examId,
-     * term,
-     * madeBy???
-     * slotId,
      *
      * @param appointment
      * @return

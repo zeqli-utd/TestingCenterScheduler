@@ -26,24 +26,10 @@ public class Slots {
     //the "shortest" time needed for all students to take the exam
     private int actualDuration;
 
-    TestingCenterInfo tci;
-
-    int numSeats;
-
-    int gap;
-
-    int numSetAsideSeats;
-
-    LocalTime close;
-
-    LocalTime open;
-
 
     @Autowired
     TestingCenterTimeSlotsDao tcts;
 
-    @Autowired
-    ExamDao examDao;
 
     private ArrayList<TestingCenterTimeSlots> timeSlots = new ArrayList<TestingCenterTimeSlots>();
 

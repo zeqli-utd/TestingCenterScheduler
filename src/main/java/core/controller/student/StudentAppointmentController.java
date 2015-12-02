@@ -6,6 +6,7 @@ import core.event.dao.AppointmentDao;
 import core.event.dao.ExamDao;
 import core.event.dao.TestingCenterTimeSlotsDao;
 import core.helper.StringResources;
+import core.service.AppointmentManageService;
 import core.user.SessionProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/student/make-appointment")
 public class StudentAppointmentController {
     @Autowired
-    private AppointmentDao appointmentDao;
+    private AppointmentManageService appointmentManageService;
     @Autowired
     private TestingCenterTimeSlotsDao timeSlotsDao;
     @Autowired
@@ -55,7 +56,8 @@ public class StudentAppointmentController {
                 (examDao.findByExamId
                         (appointment.getExamId()).getTerm());
 
-        appointmentDao.insertAppointment(appointment);
+        //TODO ADD FROM TIMESLOT
+//        appointmentManageService.makeAppointment(appointment, timeslots);
         return model;
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class FileUploadController {
+
     @Autowired
     private DataCollection dataCollection;
     @Autowired

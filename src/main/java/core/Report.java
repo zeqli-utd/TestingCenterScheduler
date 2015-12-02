@@ -143,8 +143,7 @@ public class Report {
             tx = session.beginTransaction();
 
             // Get all exams for this term.
-            Query query = session
-                    .createQuery
+            Query query = session.createQuery
                             ("select e.examId from Exam e where  :startDate <= e.startDateTime and e.endDateTime <= :endDate");
             query.setTimestamp("endDate",
                     Date.from(term.getTermEndDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));

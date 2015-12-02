@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AdministratorPageController {
+
     @Autowired
     private TestingCenterInfoRetrieval infoRetrieval;
     @Autowired

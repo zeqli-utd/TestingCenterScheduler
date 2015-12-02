@@ -21,6 +21,7 @@ import java.util.List;
 @Entity
 @Table(name = "Exam")
 public class Exam {
+
     @Id
     @Column (name = "exam_id")
     protected String examId;

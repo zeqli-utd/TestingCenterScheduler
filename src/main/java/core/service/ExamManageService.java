@@ -25,7 +25,6 @@ import java.util.List;
  */
 @Service
 public class ExamManageService {
-
     @Autowired
     TestingCenterInfoRetrieval tcr;
 

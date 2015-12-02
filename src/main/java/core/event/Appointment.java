@@ -16,6 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "appointments")
 public class Appointment {
+
     @Id
     @Column(name = "appointment_id")
     @GeneratedValue

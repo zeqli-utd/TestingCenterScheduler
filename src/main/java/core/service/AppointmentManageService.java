@@ -14,8 +14,6 @@ import javax.mail.MessagingException;
 
 @Service
 public class AppointmentManageService {
-
-
     @Autowired
     AppointmentDao appointmentDao;
 

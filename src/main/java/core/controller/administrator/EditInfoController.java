@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("admin/edit-info")
 public class EditInfoController {
+
     @Autowired
     private TestingCenterInfoRetrieval infoRetrieval;
 

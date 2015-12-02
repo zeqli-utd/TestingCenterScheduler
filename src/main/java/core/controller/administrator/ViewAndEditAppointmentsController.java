@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("admin")
 public class ViewAndEditAppointmentsController {
+
     @Autowired
     AppointmentDao appointmentDao;
 

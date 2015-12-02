@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/admin/report")
 public class GenerateReportController {
+
     @Autowired
     private Report report;
 

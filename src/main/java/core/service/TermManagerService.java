@@ -11,7 +11,6 @@ import java.util.*;
 
 @Service
 public class TermManagerService {
-
     public List<Term> getAllPopulatedTerms(){
 
         Session session = SessionManager.getInstance().openSession();
