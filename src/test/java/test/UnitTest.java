@@ -2,14 +2,13 @@ package test;
 
 import core.event.*;
 import core.event.dao.*;
-import core.service.TermManagerService;
-import core.service.TestingCenterInfoRetrieval;
+import core.service.*;
 import core.user.Authorization;
 import core.user.User;
 import core.user.dao.InstructorDao;
 import core.user.dao.StudentDao;
 import core.user.dao.UserDao;
-import org.hibernate.SessionFactory;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,13 +20,13 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration("file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml")
 public class UnitTest {
 
-    private static SessionFactory sessionFactory;
 
     @Autowired
     private CourseDao courseDao;
@@ -43,7 +42,7 @@ public class UnitTest {
     @Autowired
     private AppointmentDao appointmentDao;
     @Autowired
-    private TestingCenterTimeSlotsDao testingCenterTimeSlotsDao;
+    private TestingCenterTimeSlotsDao timeSlotsDao;
     @Autowired
     private InstructorDao instructorDao;
     @Autowired
@@ -52,6 +51,33 @@ public class UnitTest {
     private UserDao userDao;
     @Autowired
     private ExamDao examDao;
+
+    @Autowired
+    private ExamManageService ems;
+
+    @Autowired
+    private AuthenticationService authen;
+
+    @Autowired
+    AppointmentManageService ams;
+
+    @Autowired
+    private DataCollection dc;
+
+    private String path = "./src/main/resources/1158/";
+
+    @Before
+    public void initEntities() {
+        initTerm();
+
+        initTestingCenterInfo();
+
+        initAccountDatabase();
+
+        initExams();
+
+
+    }
 
 
     public void initTerm(){
@@ -93,74 +119,56 @@ public class UnitTest {
         User admin = new User("admin", "123", "admin", "admin", "admin@example", Authorization.ADMINISTRATOR);
         User student = new User("student", "123", "student", "student", "student@example", Authorization.STUDENT);
         User student1 = new User("student1", "123", "student", "student", "student@example", Authorization.STUDENT);
+        User ins = new User("instructor", "123", "instructor", "instructor", "instructor@example", Authorization.INSTRUCTOR);
 
         userDao.addUser(admin);
         userDao.addUser(student);
         userDao.addUser(student1);
+        userDao.addUser(ins);
     }
 
-    //    @Before
-    public static void InitializeTestingCenterInfo() {
-        // 1. Init Term
 
+    public void initTestingCenterInfo(){
+        int[] terms = {1151, 1154, 1156, 1158,1161, 1164, 1166, 1158,1171, 1174, 1176, 1178};
+        for (int term: terms){
+            TestingCenterInfo t = new TestingCenterInfo(term);
+            testingCenterInfoRetrieval.insertTestingCenterInfo(t);
+        }
     }
 
-    public void initTestingCenter(){
-
-        TestingCenterInfo testingCenterInfo = new TestingCenterInfo();
-        testingCenterInfo.setTerm(1158);
-        testingCenterInfo.setOpen(LocalTime.of(9, 0));
-        testingCenterInfo.setClose(LocalTime.of(17, 0));
-        TestingCenterInfoRetrieval testingCenterInfoRetrieval = new TestingCenterInfoRetrieval();
-        testingCenterInfoRetrieval.insertTestingCenterInfo(testingCenterInfo);
-    }
-
-    @Before
-    public void initEntities() {
-        initTerm();
-
-        initAccountDatabase();
-        // 1. Insert slot
-        TestingCenterTimeSlots initSlot = new TestingCenterTimeSlots(
-                "examId",
+    public void initExams(){
+        Exam ex = new Exam(
+                "CSE308-01-1158_ex1",
+                "CSE308-01-1158_ex1",
+                64,
+                1158,
                 LocalDateTime.of(2015, 10, 2, 5, 10),
                 LocalDateTime.of(2015, 10, 2, 6, 20),
+                "scott",
+                "CSE308-01-1158",
+                60);
+        AdhocExam ad = new AdhocExam(
+                "1158_01_ex1",
+                "Math Placement",
                 64,
-                5
-        );
+                1158,
+                LocalDateTime.of(2015, 10, 2, 1, 10),
+                LocalDateTime.of(2015, 10, 2, 5, 30),
+                "scott",
+                "1158_01",
+                60);
+        StudentEntry se1 = new StudentEntry("zeqli", "zeqing", "li");
+        StudentEntry se2 = new StudentEntry("yisw", "yishuo", "wang");
+        ad.getStudentList().add(se1);
+        ad.getStudentList().add(se2);
 
-        //
-        initTestingCenter();
-
-        TestingCenterTimeSlotsDaoImp dao = new TestingCenterTimeSlotsDaoImp();
-        dao.insertTimeSlot(initSlot);
-
-        // 2. Initialize appointment
-        TestingCenterTimeSlots slot = dao.findTimeSlotById(initSlot.getTimeSlotId());
-
-        // 3.1 Add Student 1
-        Appointment ap1 = new Appointment(slot.getExamId(), "Zeqing", "zeqli");
-        ap1.setSlotId(slot.getTimeSlotId());
-        ap1.setStartDateTime(slot.getBegin());
-        ap1.setEndDateTime(slot.getEnd());
-        ap1.setStudentId("Zeqli");
-        ap1.setExamName("Exam Name");
-        ap1.setTerm(1158);
-
-        // 3.2 Add Student 2
-        Appointment ap2 = new Appointment(slot.getExamId(), "Zeqing", "zeqli");
-        ap2.setSlotId(slot.getTimeSlotId());
-        ap2.setStartDateTime(slot.getBegin());
-        ap2.setEndDateTime(slot.getEnd());
-        ap2.setStudentId("Zeqli");
-        ap2.setExamName("Exam Name");
-        ap2.setTerm(1158);
-
-        appointmentDao.insertAppointment(ap1);
-        appointmentDao.insertAppointment(ap2);
-
+        examDao.addExam(ex);
+        adhocExamDao.addAdhocExam(ad);
+        // Persist
 
     }
+
+
     /*---------------------Function for Admin--------------------*/
 
 
@@ -176,7 +184,27 @@ public class UnitTest {
      * Import data (2 pts for handling superfluous appointments) 5
      */
 //    @Test
-    public void TestImportDate() {
+    public void TestImportClass() {
+        String classPath = path + "class.csv";
+        Assert.assertEquals(true,dc.readFile(classPath, 1158));
+    }
+
+//    @Test
+    public void TestImportInstructor() {
+        String instructorPath = path + "instructor.csv";
+        Assert.assertEquals(true,dc.readFile(instructorPath, 1158));
+    }
+
+//    @Test
+    public void TestImportRoster() {
+        String rosterPath = path + "roster.csv";
+        Assert.assertEquals(true,dc.readFile(rosterPath, 1158));
+    }
+
+//    @Test
+    public void TestImportUser() {
+        String userPath = path + "user.csv";
+        Assert.assertEquals(true,dc.readFile(userPath, 1158));
     }
 
 
@@ -204,7 +232,7 @@ public class UnitTest {
 //        TimeSlotsDaoImp.insertTimeSlot(slot);
 //    }
 
-    @Test
+//    @Test
     public void TestUtilization() {
 
         Utilization util = new Utilization();
@@ -236,6 +264,7 @@ public class UnitTest {
      */
 //    @Test
     public void TestApplyOrDeniedExam() {
+        ems.approveExam("1158_01_ex1");
     }
 
 
@@ -443,6 +472,13 @@ public class UnitTest {
      */
 //    @Test
     public void TestAuthentication() {
+        Assert.assertEquals(true,authen.userMatchPassword("admin", "123"));
+    }
+
+//    @Test
+    public void TestGetAuthen() {
+        Assert.assertEquals(Authorization.ADMINISTRATOR,authen.login("admin"));
+
     }
 
     /**
@@ -502,5 +538,63 @@ public class UnitTest {
 
     }
 
+//    @Test
+    public void TestAdjustTime(){
+        LocalTime time = LocalTime.of(5,40);
+        // Adjust time to on hour or half hour
+            if(time.getMinute()!=0 || time.getMinute()!=30){
+                if(time.getMinute()>30){
+                    time = time.plusHours(1);
+                    time = time.withMinute(0);
+                }else if(time.getMinute() < 30){
+                    time = time.withMinute(30);
+                }else{}
+            }
+
+        LocalTime expected = LocalTime.of(6,0);
+        Assert.assertEquals(true, expected.equals(time) );
+
+    }
+
+//    @Test
+    public void TestSlotsGenerate(){
+        Exam exam = examDao.findByExamId("1158_01_ex1");
+        List<TestingCenterTimeSlots> timeSlotses = ems.generateTimeSlots(exam);
+        timeSlotsDao.insertTimeSlots(timeSlotses);
+
+        TestingCenterTimeSlots slot = timeSlotsDao.findTimeSlotById("2751030");
+
+        Appointment ap1 = new Appointment();
+        ams.makeAppointment(ap1, slot);
+
+
+
+    }
+
+//    @Test
+    public void TestArrangement(){
+        TestingCenterTimeSlots slot = timeSlotsDao.findTimeSlotById("27590");
+        Appointment ap1 = new Appointment(
+                slot.getExamId(),
+                slot.getTimeSlotId(),
+                "zeqli",
+                "robert",
+                slot.getBegin(),
+                slot.getEnd()
+        );
+        ams.makeAppointment(ap1, slot);
+    }
+
+//    @Test
+    // Success
+    public void TestApproveExam(){
+        ems.approveExam("CSE308-01-1158_ex1");
+    }
+
+    @Test // Success
+    public void TestReleaseSeat(){
+        appointmentDao.deleteAppointment(1442);
+
+    }
 
 }
