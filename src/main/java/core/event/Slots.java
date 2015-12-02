@@ -3,13 +3,10 @@ package core.event;
 import core.event.dao.ExamDao;
 import core.event.dao.ExamDaoImp;
 import core.event.dao.TestingCenterTimeSlotsDao;
-import core.event.dao.TestingCenterTimeSlotsDaoImp;
-import core.event.dao.ExamDao;
 import core.service.TestingCenterInfoRetrieval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -26,10 +23,8 @@ public class Slots {
     //the "shortest" time needed for all students to take the exam
     private int actualDuration;
 
-
     @Autowired
     TestingCenterTimeSlotsDao tcts;
-
 
     private ArrayList<TestingCenterTimeSlots> timeSlots = new ArrayList<TestingCenterTimeSlots>();
 
@@ -55,7 +50,6 @@ public class Slots {
         this.numRemainingTimes = e.getNumRemainingTime();
     }
 
-    //suppose duration and start/endDateTime are legal
     public ArrayList<TestingCenterTimeSlots> generateTimeSlots(){
         LocalDateTime begin = exam.getStartDateTime();
         LocalDateTime end;

@@ -18,6 +18,12 @@ public class LoginController {
     @Autowired
     private AuthenticationService authenticationService;
 
+    @RequestMapping("/logout")
+    public ModelAndView logout (ModelAndView model) {
+        model.setViewName("welcome");
+        return model;
+    }
+
     @RequestMapping(value = "authorizing")
     public ModelAndView authorizeUser (@ModelAttribute SessionProfile profile,
                                        HttpSession session,

@@ -13,7 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AdministratorPageController {
-
     @Autowired
     private TestingCenterInfoRetrieval infoRetrieval;
     @Autowired
@@ -44,6 +43,16 @@ public class AdministratorPageController {
         return model;
     }
 
+    @RequestMapping("/admin/view-info")
+    public ModelAndView viewInfo (ModelAndView model) {
+        model.setViewName("admin-view-info");
+        model.addObject("info", infoRetrieval
+                .findByTerm(infoRetrieval
+                        .getCurrentTerm().getTermId()));
+        model.addObject("terms", termManager.getAllPopulatedTerms());
+        return model;
+    }
+
     /**
      * This method implements administrator's functionality for uploading
      * a file containing all users.
@@ -52,7 +61,6 @@ public class AdministratorPageController {
     @RequestMapping("/admin/upload")
     public ModelAndView uploadFile(ModelAndView model) {
         model.setViewName("upload");
-        model.addObject("pageHeader", StringResources.ADMINISTRATOR_UPLOAD);
         model.addObject("terms", termManager.getAllPopulatedTerms());
         return model;
     }
@@ -60,16 +68,13 @@ public class AdministratorPageController {
     @RequestMapping("/admin/view-requests")
     public ModelAndView viewRequests(ModelAndView model) {
         model.setViewName("admin-view-requests");
-        model.addObject("pageHeader", StringResources.ADMINISTRATOR_VIEW_REQUESTS);
         model.addObject("requests", examDao.getAllPending());
         return model;
     }
 
     @RequestMapping("/admin/view-appointments")
     public ModelAndView viewAppointments(ModelAndView model) {
-        model.clear();
         model.setViewName("admin-view-appointments");
-        model.addObject("pageHeader", StringResources.ADMINISTRATOR_VIEW_APPOINTMENTS);
         model.addObject("appointments", appointmentDao.findAllAppointmentsByTerm(infoRetrieval.getCurrentTerm()));
         return model;
     }
@@ -92,8 +97,13 @@ public class AdministratorPageController {
     @RequestMapping("/admin/generate-report")
     public ModelAndView generateReport(ModelAndView model) {
         model.setViewName("report-term");
-        model.addObject("pageHeader", StringResources.ADMINISTRATOR_REPORT);
         model.addObject("terms", termManager.getAllPopulatedTerms());
+        return model;
+    }
+
+    @RequestMapping("/admin/new-term")
+    public ModelAndView newTerm(ModelAndView model) {
+        model.setViewName("admin-new-term");
         return model;
     }
 }

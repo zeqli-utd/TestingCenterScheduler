@@ -1,22 +1,16 @@
 <%--
   Created by IntelliJ IDEA.
   User: walt
-  Date: 11/27/15
-  Time: 9:50 PM
+  Date: 12/1/15
+  Time: 11:49 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Error</title>
 </head>
 <body>
-
-<div class="popup-overlay" id="popup1">
-  <div class="popup">
-    <a class="close" href="#"><i class="fa fa-times"></i></a>
-
-  </div>
-</div>
+    <p>An error occurred</p>
 </body>
 </html>

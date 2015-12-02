@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%--@elvariable id="term" type="core.event.Term"--%>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -29,32 +30,45 @@
             <jsp:include page="admin-sidebar.jsp" flush="true"/>
         </div>
         <div class="content">
-            <select form="infoForm" name="termId">
+            <select name="viewedTerm" form="changeTerm">
                 <c:forEach items="${terms}" var="term">
                     <option value="${term.termId}"><c:out value="${term.termName}"/></option>
                 </c:forEach>
             </select>
-            <form class="edit-info" id="infoForm" action="/admin/edit-info/general-submit" method="post">
-                <label>
-                    Number of seats <input type="number" name="numSeats" class="input-info">
-                </label>
-                <label>
-                    Number of set aside seats <input type="number" name="numSetAsideSeats" class="input-info">
-                </label>
-                <label>
-                    Open <input type="time" name="open" class="input-info">
-                </label>
-                <label>
-                    Close <input type="time" name="close" class="input-info">
-                </label>
-                <label>
-                    Gap time <input type="number" name="gap" class="input-info">
-                </label>
-                <label>
-                    Reminder interval <input type="number" name="reminderInterval" class="input-info">
-                </label>
-                <input type="submit" class="submit-button" value="Continue">
+            <form id="changeTerm" action="/admin/view-info/change-term">
+                <input type="submit" value="Change Term" class="submit-button" class="stand-alone">
             </form>
+            <ul>
+                <li>
+                    Term
+                    <c:out value="${info.term}"/>
+                </li>
+                <br/>
+                <li>
+                    Hours
+                    <c:out value="${info.open}"/> - <c:out value="${info.close}"/>
+                </li>
+                <br/>
+                <li>
+                    Gap Time
+                    <c:out value="${info.gap}"/>
+                </li>
+                <br/>
+                <li>
+                    Number of Seats
+                    <c:out value="${info.numSeats}"/>
+                </li>
+                <br/>
+                <li>
+                    Number of Set-aside Seats
+                    <c:out value="${info.numSetAsideSeats}"/>
+                </li>
+                <br/>
+                <li>
+                    Reminder Interval
+                    <c:out value="${info.reminderInterval}"/>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

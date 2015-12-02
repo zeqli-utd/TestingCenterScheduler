@@ -2,7 +2,6 @@ package core.event.dao;
 
 import core.event.Exam;
 import core.event.ExamStatusType;
-import core.event.Slots;
 import core.event.TestingCenterInfo;
 import core.service.SessionManager;
 import core.service.TestingCenterInfoRetrieval;
@@ -46,7 +45,6 @@ public class ExamDaoImp implements ExamDao {
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
-            e.printStackTrace();
         } finally {
             session.close();
         }

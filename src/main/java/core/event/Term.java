@@ -1,6 +1,7 @@
 package core.event;
 
 import org.hibernate.annotations.Type;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -28,20 +29,19 @@ public class Term {
 
     private String termName;        // e.g. Fall 2015
 
-    public Term(){
-        this(1158,LocalDate.of(2015, 8, 24), LocalDate.of(2015, 12, 17));
-    }
-
     @Temporal(TemporalType.DATE)
     @Type(type = "org.hibernate.type.LocalDateType")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate termStartDate;
 
     @Temporal(TemporalType.DATE)
     @Type(type = "org.hibernate.type.LocalDateType")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate termEndDate;
 
-
-
+    public Term() {
+        this(1158, LocalDate.of(2015, 8, 24), LocalDate.of(2015, 12, 17));
+    }
 
     public Term(int termId, LocalDate termStartDate, LocalDate termEndDate) {
         this.setTermId(termId);

@@ -2,7 +2,6 @@ package core.controller.student;
 
 import core.event.Appointment;
 import core.event.TestingCenterTimeSlots;
-import core.event.dao.AppointmentDao;
 import core.event.dao.ExamDao;
 import core.event.dao.TestingCenterTimeSlotsDao;
 import core.helper.StringResources;
@@ -10,7 +9,10 @@ import core.service.AppointmentManageService;
 import core.user.SessionProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -39,6 +41,7 @@ public class StudentAppointmentController {
     public ModelAndView selectAppointment(@ModelAttribute Appointment appointment,
                                           HttpSession session,
                                           ModelAndView model) {
+
         SessionProfile profile = (SessionProfile) session.getAttribute("sessionUser");
         model.setViewName("redirect:/student/view-appointments");
         model.addObject("heading", StringResources.STUDENT_VIEW_APPOINTMENTS);
@@ -56,8 +59,7 @@ public class StudentAppointmentController {
                 (examDao.findByExamId
                         (appointment.getExamId()).getTerm());
 
-        //TODO ADD FROM TIMESLOT
-//        appointmentManageService.makeAppointment(appointment, timeslots);
+        appointmentManageService.makeAppointment(appointment, slot);
         return model;
     }
 }

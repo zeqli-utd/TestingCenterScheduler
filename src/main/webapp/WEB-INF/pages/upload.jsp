@@ -5,7 +5,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Testing Center Scheduler</title>
-    <link rel="stylesheet" href="../../assets/css/styles.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/styles.css" type="text/css">
 </head>
 <body>
 <%-------------------------header--------------------------%>
@@ -16,10 +16,10 @@
         </a>
     </div>
     <div class="main-heading">
-        <h1>${pageHeader}</h1>
+        <h1><c:out value="Upload a file"/></h1>
     </div>
     <div class="header-menu">
-        <a>Logout</a>
+        <a href="/logout">Logout</a>
         <a>User <i class="fa fa-chevron-down"></i></a>
     </div>
 </div>
@@ -27,7 +27,7 @@
 <div class="main-wrapper">
     <div class="container">
         <div class="sidebar">
-            <jsp:include page="sidebar.jsp" flush="true"/>
+            <jsp:include page="admin-sidebar.jsp" flush="true"/>
         </div>
         <div class="content">
             <p>${errorMessage}</p>
@@ -36,11 +36,10 @@
                 <option value="${term.termId}"><c:out value="${term.termName}"/></option>
             </c:forEach>
             </select>
-            <form action="/admin/upload/confirm" id="upload-form">
+            <form action="/admin/upload/confirm" id="upload-form" class="edit-info" method="post">
                 <input type="file" placeholder="Upload a file" name="fileName">
                 <input type="submit" value="Submit" class="submit-button">
             </form>
-
         </div>
     </div>
 </div>

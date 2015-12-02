@@ -1,18 +1,16 @@
 package core.event;
 
 import core.event.dao.AppointmentDao;
-import core.event.dao.AppointmentDaoImp;
 import core.event.dao.ExamDao;
-import core.event.dao.ExamDaoImp;
 import core.service.TestingCenterInfoRetrieval;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
-@Component
+@Service
 public class Utilization {
 
     private double utilzExpection;
@@ -36,8 +34,6 @@ public class Utilization {
     TestingCenterInfo center;
 
     public Utilization(){
-        //center = new TestingCenterInfo();
-        examDao = new ExamDaoImp();
     }
 
     public double countUtilzActual(LocalDateTime dateTime){

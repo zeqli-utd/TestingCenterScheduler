@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Testing Center Scheduler</title>
-    <link rel="stylesheet" href="assets/css/styles.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/styles.css" type="text/css">
 </head>
 <body>
 <div class="header-wrapper">

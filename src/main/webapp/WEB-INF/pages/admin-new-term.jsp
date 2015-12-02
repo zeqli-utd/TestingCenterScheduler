@@ -15,7 +15,7 @@
         </a>
     </div>
     <div class="main-heading">
-        <h1>Make an Appointment</h1>
+        <h1>Administrator</h1>
     </div>
     <div class="header-menu">
         <a href="/logout">Logout</a>
@@ -29,7 +29,21 @@
             <jsp:include page="admin-sidebar.jsp" flush="true"/>
         </div>
         <div class="content">
-
+            <form class="edit-info" action="/admin/new-term/submit">
+                <label>
+                    Name
+                    <input type="text" name="termId" class="input-info" placeholder="Term ID">
+                </label>
+                <label>
+                    Start Date
+                    <input type="date" name="termStartDate" class="input-info" placeholder="Starts">
+                </label>
+                <label>
+                    End Date
+                    <input type="date" name="termEndDate" class="input-info" placeholder="Ends">
+                </label>
+                <input type="submit" value="Submit" class="submit-button">
+            </form>
         </div>
     </div>
 </div>

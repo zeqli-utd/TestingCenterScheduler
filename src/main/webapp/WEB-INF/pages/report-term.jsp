@@ -6,7 +6,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Testing Center Scheduler</title>
-    <link rel="stylesheet" href="assets/css/styles.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/styles.css" type="text/css">
 </head>
 <body>
 <%-------------------------header--------------------------%>
@@ -17,10 +17,10 @@
         </a>
     </div>
     <div class="main-heading">
-        <h1>${pageHeader}</h1>
+        <h1>Report</h1>
     </div>
     <div class="header-menu">
-        <a>Logout</a>
+        <a href="/logout">Logout</a>
         <a>User <i class="fa fa-chevron-down"></i></a>
     </div>
 </div>
@@ -31,14 +31,14 @@
             <jsp:include page="admin-sidebar.jsp" flush="true"/>
         </div>
         <div class="content">
-            <form action="admin/report/term" id="report_form">
-                <input type="submit" value="Submit" class="submit-button">
-            </form>
             <select name="termId" form="report_form" title="Term">
             <c:forEach items="${terms}" var="term">
                 <option value="${term.termId}"><c:out value="${term.termName}"/></option>
             </c:forEach>
             </select>
+            <form action="/admin/report/term" id="report_form">
+                <input type="submit" value="Submit" class="submit-button">
+            </form>
         </div>
     </div>
 </div>

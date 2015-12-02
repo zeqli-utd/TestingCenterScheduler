@@ -23,9 +23,12 @@ public class StudentCancelAppointments {
     public ModelAndView cancelAppointment(@PathVariable("id") int appointmentId,
                                           HttpSession session,
                                           ModelAndView model) {
+
         SessionProfile profile = (SessionProfile) session.getAttribute("sessionUser");
+
         appointmentManageService.cancelAppointment(appointmentId);
-        model.setViewName("redirect:/student/view-appointments");
+
+        model.setViewName("redirect:/student-view-appointments");
         model.addObject(appointmentDao.findAllByStudent(profile.getUserId()));
         return model;
     }

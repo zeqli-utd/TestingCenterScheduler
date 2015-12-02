@@ -38,7 +38,6 @@ public class ExamManageService {
     @Autowired
     private EmailService emailService;
 
-
     @Autowired
     ExamDao examDao;
 
@@ -51,6 +50,7 @@ public class ExamManageService {
 
 
     public ExamManageService() {
+
     }
 
     // Schedule an Exam

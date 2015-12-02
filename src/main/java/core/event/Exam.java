@@ -89,7 +89,7 @@ public class Exam {
     protected int numAppointments = 0;// num of students who have made appointments
 
     @Transient
-    protected double attendance  = 0.0;;  // Calculate on the fly.
+    protected double attendance  = 0.0;// Calculate on the fly.
 
     //the number of times of exams needed for all student to take this exam
     @Transient
@@ -108,8 +108,6 @@ public class Exam {
         this.instructorId = "Default_Instructor";
         this.courseId = "Default_Course";
     }
-
-
 
     /**
      *

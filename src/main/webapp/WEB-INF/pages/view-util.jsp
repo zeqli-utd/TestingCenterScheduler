@@ -15,7 +15,7 @@
         </a>
     </div>
     <div class="main-heading">
-        <h1>Make an Appointment</h1>
+        <h1>Utilization</h1>
     </div>
     <div class="header-menu">
         <a href="/logout">Logout</a>
@@ -29,7 +29,18 @@
             <jsp:include page="admin-sidebar.jsp" flush="true"/>
         </div>
         <div class="content">
-
+            <p>${errorMessage}</p>
+            <form>
+                <label>Enter the dates you would like to view utilization information for.</label>
+                <label>
+                    Start Date
+                </label>
+                <input class="input-info" type="date" name="startDate">
+                <label>
+                    End Date
+                </label>
+                <input class="input-info" type="date" name="EndDate">
+            </form>
         </div>
     </div>
 </div>

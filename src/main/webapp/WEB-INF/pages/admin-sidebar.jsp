@@ -6,32 +6,37 @@
   </li>
   <li>
     <a class="button" href="/admin/edit-info">
-      <i class="fa fa-info"></i>&nbsp;View testing center info
+      <i class="fa fa-info"></i>&nbsp;Edit Testing Center Info
     </a>
   </li>
   <li>
+      <a class="button" href="/admin/view-info">
+          <i class="fa fa-info"></i>&nbsp;View Testing Center Info
+      </a>
+  </li>
+  <li>
     <a class="button" href="/admin/upload">
-      <i class="fa fa-upload"></i>&nbsp;Upload a file
+      <i class="fa fa-upload"></i>&nbsp;Upload a File
     </a>
   </li>
   <li>
     <a class="button" href="/admin/view-requests">
-      <i class="fa fa-spinner"></i>&nbsp;View requests
+      <i class="fa fa-spinner"></i>&nbsp;View Requests
     </a>
   </li>
   <li>
     <a class="button" href="/admin/view-appointments">
-      <i class="fa fa-eye"></i>&nbsp;View appointments
+      <i class="fa fa-eye"></i>&nbsp;View Appointments
     </a>
   </li>
   <li>
     <a class="button" href="/admin/make-appointment">
-      <i class="fa fa-plus-square"></i>&nbsp;Make an appointment
+      <i class="fa fa-plus-square"></i>&nbsp;Make an Appointment
     </a>
   </li>
   <li>
     <a class="button" href="/admin/check-in">
-      <i class="fa fa-sign-in"></i>&nbsp;Check in
+      <i class="fa fa-sign-in"></i>&nbsp;Check In
     </a>
   </li>
   <li>

@@ -6,7 +6,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Testing Center Scheduler</title>
-    <link rel="stylesheet" href="assets/css/styles.css"/>
+    <link rel="stylesheet" href="/assets/css/styles.css"/>
 </head>
 <body>
 <div class="header-wrapper">
@@ -19,7 +19,7 @@
         <h1>View Appointments</h1>
     </div>
     <div class="header-menu">
-        <a>Logout</a>
+        <a href="/logout">Logout</a>
         <a>User <i class="fa fa-chevron-down"></i></a>
     </div>
 </div>
@@ -42,7 +42,11 @@
                 <tbody>
                     <c:forEach items="${appointments}" var="appointment">
                         <tr>
-                            <td><a href="student/view-appointments/cancel/${appointment.appointmentID}"><c:out value="${appointment.term}"/></a></td>
+                            <td>
+                                <a href="/student/view-appointments/cancel/${appointment.appointmentID}">
+                                    <c:out value="${appointment.term}"/>
+                                </a>
+                            </td>
                             <td><c:out value="${appointment.examName}"/></td>
                             <td><c:out value="${appointment.startDateTime}"/></td>
                             <td><c:out value="${appointment.endDateTime}"/></td>

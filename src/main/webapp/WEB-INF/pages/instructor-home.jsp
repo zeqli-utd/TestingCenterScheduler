@@ -5,7 +5,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Testing Center Scheduler</title>
-    <link rel="stylesheet" href="assets/css/styles.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/styles.css" type="text/css">
 </head>
 <body>
 <div class="header-wrapper">
@@ -18,7 +18,7 @@
         <h1>Instructor</h1>
     </div>
     <div class="header-menu">
-        <a>Logout</a>
+        <a href="/logout">Logout</a>
         <a>User <i class="fa fa-chevron-down"></i></a>
     </div>
 </div>

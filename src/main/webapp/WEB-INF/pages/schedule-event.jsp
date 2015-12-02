@@ -19,7 +19,7 @@
         <h1>Schedule a request</h1>
     </div>
     <div class="header-menu">
-        <a>Logout</a>
+        <a href="/logout">Logout</a>
         <a>User <i class="fa fa-chevron-down"></i></a>
     </div>
 </div>
@@ -29,7 +29,7 @@
             <jsp:include page="instructor-sidebar.jsp"/>
         </div>
         <div class="content">
-            <form action="schedule-event/submit" method="post" name="term" id="request-form">
+            <form action="/instructor/schedule-event/submit" method="post" name="term" id="request-form">
                 <label>Instructor </label>
                 <input name="instructorId" type="text" placeholder="Instructor"/>
                 <br/>
