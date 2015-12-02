@@ -40,7 +40,7 @@ public class ExamDaoImp implements ExamDao {
         List<Exam> list = null;
         try {
             tx = session.beginTransaction();
-            Query query = session.createQuery("from Exam as e where e.examType = :type");
+            Query query = session.createQuery("from Exam as e where e.statusType = :type");
             query.setParameter("type", ExamStatusType.PENDING);
             list = query.list();
             tx.commit();
@@ -64,7 +64,7 @@ public class ExamDaoImp implements ExamDao {
         List<Exam> list = null;
         try {
             tx = session.beginTransaction();
-            Query query = session.createQuery("from Exam as e where e.examType = :type");
+            Query query = session.createQuery("from Exam as e where e.statusType = :type");
             query.setParameter("type", ExamStatusType.APROVED);
             list = query.list();
             tx.commit();
@@ -88,7 +88,7 @@ public class ExamDaoImp implements ExamDao {
         List<Exam> list = null;
         try {
             tx = session.beginTransaction();
-            Query query = session.createQuery("from Exam as e where e.examType = :type");
+            Query query = session.createQuery("from Exam as e where e.statusType = :type");
             query.setParameter("type", ExamStatusType.DENIED);
             list = query.list();
             tx.commit();

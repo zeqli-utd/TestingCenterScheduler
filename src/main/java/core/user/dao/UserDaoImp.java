@@ -57,8 +57,13 @@ public class UserDaoImp implements UserDao {
             if(tx != null) {
                 tx.rollback();
             }
+
         } finally {
+
             session.close();
+            if(user == null){
+                return new User(); // Default User
+            }
         }
         return user;
     }

@@ -142,17 +142,12 @@ public class AppointmentDaoImp implements AppointmentDao {
     }
 
     @Override
-    public boolean updateAppointment(Appointment appointment, int id){
+    public boolean updateAppointment(Appointment appointment){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-
-            Query query = session.createQuery
-                    ("update Appointment A set A  = :A where A.appointmentID = :appointmentID");
-            query.setParameter("A", appointment);
-            query.setParameter("appointmentID", id);
-            query.executeUpdate();
+            session.merge(appointment);
             tx.commit();
         }
         catch (HibernateException he){

@@ -68,15 +68,15 @@ public class Appointment {
 
     public Appointment(){
         this.examId = "Default_Exam";
-        this.term = 0;
-        this.madeBy = "";
+        this.term = 1158;
+        this.madeBy = "Defaut_MadeBy";
         this.startDateTime = LocalDateTime.MIN;
         this.endDateTime = LocalDateTime.MIN;
-        this.studentId = "";
-        this.seat = "";
+        this.studentId = "Defaut_Student";
+        this.seat = "Defaut_MadeBy";
         this.isAttend = false;
         this.status = "r";
-        this.slotId = "";
+        this.slotId = "Defaut_TimeSlot";
     }
 
     //LocalDateTime startDateTime, LocalDateTime endDateTime, String seat
@@ -96,6 +96,7 @@ public class Appointment {
                        String netId,
                        LocalDateTime begin,
                        LocalDateTime end){
+        this();
         this.examId = examId;
         this.slotId = slotId;
         this.madeBy = madeBy;

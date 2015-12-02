@@ -27,9 +27,17 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Authorization authorization;
 
-    public User(){};
+    public User(){
+        netId = "DEFAULT_USER";
+        password = "123";
+        firstName = "DEFAULT_FIRSTNAME";
+        lastName = "DEFAULT_LASTNAME";
+        email = "thedueteamtest@gmail.com";
+        authorization = Authorization.STUDENT;
+    };
 
     public User(String netId, String password, String firstName, String lastName, String email, Authorization authorization) {
+        this();
         this.netId = netId;
         this.password = password;
         this.firstName = firstName;

@@ -42,7 +42,8 @@ public class AppointmentManageService {
             try {
                 emailService.sendEmail(StringResources.EMAIL_HOST, StringResources.EMAIL_PORT,
                         StringResources.EMAIL_LOGIN, StringResources.EMAIL_PASSWORD,
-                        emailAddress, "Appointment Notification", "You successfully make an appointment");
+                        emailAddress, "Appointment Notification", "You successfully make an appointment!\n" +
+                                "Your Appointment Id is " + newAppointment.getAppointmentID());
             } catch (MessagingException e) {
                 // Do nothing
             }
@@ -70,5 +71,20 @@ public class AppointmentManageService {
             return false;
         }
 
+    }
+
+
+    /**
+     * Check in Student By Administrator
+     * @param apptId
+     * @return
+     */
+    public boolean checkinStudent(int apptId){
+        Appointment appt = appointmentDao.findAppointmentById(apptId);
+        appt.setIsAttend(true);
+        if(appointmentDao.updateAppointment(appt)){
+            return true;
+        }
+        return false;
     }
 }

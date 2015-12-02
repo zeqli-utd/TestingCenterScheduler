@@ -25,6 +25,7 @@ import java.util.List;
  */
 @Service
 public class ExamManageService {
+
     @Autowired
     TestingCenterInfoRetrieval tcr;
 
@@ -47,7 +48,6 @@ public class ExamManageService {
     @Autowired
     UserDao userDao;
 
-    @Autowired
 
 
     public ExamManageService() {
