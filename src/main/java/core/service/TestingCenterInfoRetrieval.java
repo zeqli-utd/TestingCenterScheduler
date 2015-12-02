@@ -25,7 +25,7 @@ public class TestingCenterInfoRetrieval {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            session.save(testingCenterInfo);
+            session.saveOrUpdate(testingCenterInfo);
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {

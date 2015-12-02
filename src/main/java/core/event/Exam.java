@@ -226,16 +226,6 @@ public class Exam {
 
 
 
-    /**
-     * to unburden the front end, this method returns the name of the course
-     * courseId is pointing to
-     * @return subject
-     */
-    public String getCourseName () {
-        return courseDao
-                .findByCourseId(this.courseId)
-                    .getSubject();
-    }
 
     public double getAttendance() {
         return attendance;

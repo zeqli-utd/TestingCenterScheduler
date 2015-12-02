@@ -64,7 +64,7 @@ public class InstructorDaoImp implements InstructorDao {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            session.save(instructor);
+            session.saveOrUpdate(instructor);
             session.getTransaction().commit();
         } catch (HibernateException he) {
             if (tx != null) {

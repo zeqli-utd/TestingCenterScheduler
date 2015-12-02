@@ -234,7 +234,7 @@ public class ExamDaoImp implements ExamDao {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            session.save(exam);
+            session.saveOrUpdate(exam);
             tx.commit();
         } catch (HibernateException he) {
             if (tx != null) {
@@ -259,7 +259,7 @@ public class ExamDaoImp implements ExamDao {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            session.save(exam);
+            session.saveOrUpdate(exam);
             tx.commit();
         } catch (HibernateException he) {
             if (tx != null) {

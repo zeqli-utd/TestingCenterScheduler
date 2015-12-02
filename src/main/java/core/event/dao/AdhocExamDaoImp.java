@@ -48,7 +48,7 @@ public class AdhocExamDaoImp implements AdhocExamDao{
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            session.save(exam);
+            session.saveOrUpdate(exam);
             tx.commit();
         }catch (HibernateException he){
             if(tx != null){

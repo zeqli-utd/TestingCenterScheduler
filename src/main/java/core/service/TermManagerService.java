@@ -38,7 +38,7 @@ public class TermManagerService {
 
         try {
             tx = session.beginTransaction();
-            session.save(term);
+            session.saveOrUpdate(term);
             tx.commit();
         } catch (HibernateException e) {
             if(tx != null) {

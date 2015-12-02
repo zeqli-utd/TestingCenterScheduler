@@ -98,7 +98,7 @@ public class UserDaoImp implements UserDao {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            session.save(user);
+            session.saveOrUpdate(user);
             tx.commit();
         } catch (HibernateException he) {
             if (tx != null) {

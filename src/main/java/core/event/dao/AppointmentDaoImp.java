@@ -81,7 +81,7 @@ public class AppointmentDaoImp implements AppointmentDao {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            session.save(appointment);
+            session.saveOrUpdate(appointment);
             tx.commit();
         }
         catch (HibernateException he){
@@ -101,7 +101,7 @@ public class AppointmentDaoImp implements AppointmentDao {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            session.save(appointment);
+            session.saveOrUpdate(appointment);
             slots.assignSeat(appointment);
 
             session.update(slots);

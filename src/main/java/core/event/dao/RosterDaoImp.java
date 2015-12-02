@@ -20,7 +20,7 @@ public class RosterDaoImp implements RosterDao{
             Transaction tx = null;
             try {
                 tx = session.beginTransaction();
-                session.save(roster);
+                session.saveOrUpdate(roster);
                 tx.commit();
             }
             catch (HibernateException he){
