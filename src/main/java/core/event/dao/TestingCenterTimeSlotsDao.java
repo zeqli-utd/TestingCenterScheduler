@@ -2,7 +2,6 @@ package core.event.dao;
 
 import core.event.TestingCenterTimeSlots;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface TestingCenterTimeSlotsDao {

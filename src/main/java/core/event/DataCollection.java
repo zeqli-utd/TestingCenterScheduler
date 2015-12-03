@@ -76,13 +76,13 @@ public class DataCollection {
                 // 1. Discard the first line
                 br = new BufferedReader(new FileReader(path));
                 line = br.readLine();
-
+                ArrayList<Instructor> instrList = new ArrayList<>();
                 while ((line = br.readLine()) != null) {
                     String[] listItem = line.split(cvsSplitBy);
                     // Last Name, First Name, User Id, Email
-                    Instructor instructorIter = new Instructor(listItem[2], listItem[1], listItem[0],listItem[3]);
-                    instructorDao.addInstructor(instructorIter);
+                    instrList.add(new Instructor(listItem[2], listItem[1], listItem[0],listItem[3]));
                 }
+                instructorDao.addInstructorList(instrList);
             }
             //class data
             else if (path.contains("class.csv")) {
@@ -93,12 +93,14 @@ public class DataCollection {
                 br = new BufferedReader(new FileReader(path));
                 line = br.readLine();   // Discard the first line
 
-
+                ArrayList<Course> courseList = new ArrayList<>();
                 while ((line = br.readLine()) != null) {
                     String[] listItem = line.split(cvsSplitBy);
-                    Course courseIter = new Course(listItem[0], listItem[1], listItem[2], listItem[3], listItem[4], termId);
-                    courseDao.addCourse(courseIter);
-                }
+                    courseList.add(new Course(listItem[0], listItem[1], listItem[2], listItem[3], listItem[4], termId));
+                    }
+                courseDao.addCourseList(courseList);
+
+
             } else if (path.contains("roster.csv")) {
                 // Clear roster table by term
                 rosterDao.deleteRostersByTerm(termId);
@@ -107,14 +109,12 @@ public class DataCollection {
                 br = new BufferedReader(new FileReader(path));
                 line = br.readLine();
 
-                ArrayList<String[]> rosterList = new ArrayList<String[]>();
+                ArrayList<Roster> rosterList = new ArrayList<>();
                 while ((line = br.readLine()) != null) {
                     String[] listItem = line.split(cvsSplitBy);
-                    Roster roster = new Roster(listItem[1], listItem[0], termId);
-                    rosterDao.addRoster(roster);
-                    rosterList.add(listItem);
+                    rosterList.add(new Roster(listItem[1], listItem[0], termId));
                 }
-
+                rosterDao.addRosterList(rosterList);
             }
         } catch (FileNotFoundException e) {
             return false;

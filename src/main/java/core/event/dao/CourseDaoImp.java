@@ -17,6 +17,33 @@ public class CourseDaoImp implements CourseDao {
     public CourseDaoImp(){}
 
     @Override
+    public boolean addCourseList(List<Course> courseList) {
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            for(int i  = 0; i< courseList.size(); i++){
+                session.save(courseList.get(i));
+                if ( i % 50 == 0 ) { //50, same as the JDBC batch size
+                    //flush a batch of inserts and release memory:
+                    session.flush();
+                    session.clear();
+                }
+            }
+            tx.commit();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+            return false;
+        } finally {
+            session.close();
+        }
+        return  true;
+    }
+
+    @Override
     public List getAllCourse() {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;

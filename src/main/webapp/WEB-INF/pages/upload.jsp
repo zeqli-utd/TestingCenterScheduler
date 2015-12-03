@@ -36,8 +36,8 @@
                 <option value="${term.termId}"><c:out value="${term.termName}"/></option>
             </c:forEach>
             </select>
-            <form action="/admin/upload/confirm" id="upload-form" class="edit-info" method="post">
-                <input type="file" placeholder="Upload a file" name="fileName">
+            <form action="/admin/upload/confirm" id="upload-form"  enctype="multipart/form-data" class="edit-info" method="POST">
+                <input type="file" placeholder="Upload a file" name="file">
                 <input type="submit" value="Submit" class="submit-button">
             </form>
         </div>

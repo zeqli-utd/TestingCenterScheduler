@@ -8,10 +8,39 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class RosterDaoImp implements RosterDao{
 
     public RosterDaoImp() {
+    }
+
+    @Override
+    public boolean addRosterList(List<Roster> rosters) {
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            for(int i  = 0; i< rosters.size(); i++){
+                session.save(rosters.get(i));
+                if ( i % 50 == 0 ) { //50, same as the JDBC batch size
+                    //flush a batch of inserts and release memory:
+                    session.flush();
+                    session.clear();
+                }
+            }
+            tx.commit();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+            return false;
+        } finally {
+            session.close();
+        }
+        return  true;
     }
 
     @Override
