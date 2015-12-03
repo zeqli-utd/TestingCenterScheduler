@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%--@elvariable id="slot" type="core.event.TestingCenterTimeSlots"--%>
+<%--@elvariable id="exam" type="core.event.Exam"--%>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -21,7 +20,7 @@
     </div>
     <div class="header-menu">
         <a href="/logout">Logout</a>
-        <a>User <i class="fa fa-chevron-down"></i></a>
+        <a>Administrator</a>
     </div>
 </div>
 <div class="main-wrapper">
@@ -30,22 +29,35 @@
             <jsp:include page="student-sidebar.jsp"/>
         </div>
         <div class="content">
-            <table title="${exam}">
-                <thead>
+            <div>
+                <table>
+                    <thead>
                     <tr>
-                        <th>Begins at</th>
-                        <th>Ends at</th>
+                        <th>Exam</th>
+                        <th>Term</th>
+                        <th>Course</th>
+                        <th>Duration</th>
+                        <th>Start</th>
+                        <th>End</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${timeSlots}" var="slot">
-                    <tr>
-                        <td><a href="/student/make-appointment/commit/${slot.timeSlotId}">${slot.begin}</a></td>
-                        <td><a>${slot.end}</a></td>
-                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${exams}" var="exam">
+                        <tr>
+                            <td>
+                                <a class="button" href="/admin/make-appointment/select/${exam.examId}">
+                                    ${exam.examName}
+                                </a>
+                            </td>
+                            <td>${exam.term}</td>
+                            <td>${exam.duration}</td>
+                            <td>${exam.startDateTime}</td>
+                            <td>${exam.endDateTime}</td>
+                        </tr>
                     </c:forEach>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

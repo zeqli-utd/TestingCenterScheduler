@@ -15,11 +15,11 @@
         </a>
     </div>
     <div class="main-heading">
-        <h1>Administrator</h1>
+        <h1>Testing Center Info</h1>
     </div>
     <div class="header-menu">
         <a href="/logout">Logout</a>
-        <a>User <i class="fa fa-chevron-down"></i></a>
+        <a>Administrator</a>
     </div>
 </div>
 <%--------------------------main content--------------------------%>

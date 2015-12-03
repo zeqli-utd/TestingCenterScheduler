@@ -21,7 +21,7 @@
     </div>
     <div class="header-menu">
         <a href="/logout">Logout</a>
-        <a>User <i class="fa fa-chevron-down"></i></a>
+        <a>Administrator</a>
     </div>
 </div>
 <div class="main-wrapper">
@@ -32,18 +32,18 @@
         <div class="content">
             <table title="${exam}">
                 <thead>
-                    <tr>
-                        <th>Begins at</th>
-                        <th>Ends at</th>
-                    </tr>
+                <tr>
+                    <th>Begins at</th>
+                    <th>Ends at</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <c:forEach items="${timeSlots}" var="slot">
+                <c:forEach items="${slots}" var="slot">
                     <tr>
-                        <td><a href="/student/make-appointment/commit/${slot.timeSlotId}">${slot.begin}</a></td>
+                        <td><a href="/admin/make-appointment/commit/${slot.timeSlotId}">${slot.begin}</a></td>
                         <td><a>${slot.end}</a></td>
                     </tr>
-                    </c:forEach>
+                </c:forEach>
                 </tbody>
             </table>
         </div>

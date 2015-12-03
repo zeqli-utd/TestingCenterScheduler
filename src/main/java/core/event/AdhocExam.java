@@ -1,18 +1,9 @@
 package core.event;
 
-import core.event.dao.CourseDao;
-import core.user.Student;
-import core.user.dao.InstructorDao;
-import org.hibernate.annotations.Type;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
 
 /**
  * This class stores ad hoc exam information about ad hoc exam.
@@ -28,7 +19,15 @@ public class AdhocExam extends Exam{
     public AdhocExam() {
     }
 
-    public AdhocExam(String examId, String examName,int capacity, int term, LocalDateTime startDateTime, LocalDateTime endDateTime, String instructorId, String courseId, int duration) {
+    public AdhocExam(String examId,
+                     String examName,
+                     int capacity,
+                     int term,
+                     LocalDateTime startDateTime,
+                     LocalDateTime endDateTime,
+                     String instructorId,
+                     String courseId,
+                     int duration) {
         super(examId, examName, capacity, term, startDateTime, endDateTime, instructorId, courseId, duration);
         this.examType = ExamType.AD_HOC;
         this.statusType = ExamStatusType.PENDING;

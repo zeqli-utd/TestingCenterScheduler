@@ -5,15 +5,12 @@ import core.event.Appointment;
 import core.event.TestingCenterTimeSlots;
 import core.event.dao.ExamDao;
 import core.event.dao.TestingCenterTimeSlotsDao;
-import core.helper.StringResources;
 import core.service.AppointmentManageService;
 import core.user.SessionProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -33,22 +30,19 @@ public class StudentAppointmentController {
                                         ModelAndView model){
         model.setViewName("select-appointment");
         model.addObject("exam", examDao.findByExamId(examId).getExamName());
-        model.addObject("heading", StringResources.STUDENT_MAKE_APPOINTMENT);
         model.addObject("timeSlots", timeSlotsDao.findAllTimeSlotsByExamId(examId));
         return model;
     }
 
-    @RequestMapping(value = "submit", method = RequestMethod.POST)
-    public ModelAndView selectAppointment(@ModelAttribute Appointment appointment,
+    @RequestMapping("commit/{id}")
+    public ModelAndView commitAppointment(@PathVariable("id") String slotId,
                                           HttpSession session,
                                           ModelAndView model) {
-
         SessionProfile profile = (SessionProfile) session.getAttribute("sessionUser");
-        model.setViewName("redirect:/student/view-appointments");
-        model.addObject("heading", StringResources.STUDENT_VIEW_APPOINTMENTS);
-        model.addObject("errorMessage", "Appointment submitted.");
-        TestingCenterTimeSlots slot
-                = timeSlotsDao.findTimeSlotById(appointment.getSlotId());
+
+        Appointment appointment = new Appointment();
+        TestingCenterTimeSlots slot = timeSlotsDao.findTimeSlotById(slotId);
+
         appointment.setExamId(slot.getExamId());
         appointment.setStartDateTime(slot.getBegin());
         appointment.setEndDateTime(slot.getEnd());
@@ -59,7 +53,6 @@ public class StudentAppointmentController {
         appointment.setTerm
                 (examDao.findByExamId
                         (appointment.getExamId()).getTerm());
-
         try{
             appointmentManageService.makeAppointment(appointment, slot);
         }catch (MakeAppointmentException e){

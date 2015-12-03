@@ -80,8 +80,7 @@ public class TestingCenterInfoRetrieval {
      * @param day
      * @return 4 digit representing Term id
      */
-    public int getTermByDay(LocalDateTime day) {
-        LocalDate date = day.toLocalDate();
+    public int getTermByDay(LocalDate date) {
         Term result = null;
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;

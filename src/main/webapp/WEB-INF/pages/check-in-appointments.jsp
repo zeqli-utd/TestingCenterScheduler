@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%--@elvariable id="slot" type="core.event.TestingCenterTimeSlots"--%>
+<%--@elvariable id="appointment" type="core.event.Appointment"--%>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
@@ -17,11 +16,11 @@
         </a>
     </div>
     <div class="main-heading">
-        <h1>Make an Appointment</h1>
+        <h1>Check In</h1>
     </div>
     <div class="header-menu">
         <a href="/logout">Logout</a>
-        <a>User <i class="fa fa-chevron-down"></i></a>
+        <a>Administrator</a>
     </div>
 </div>
 <div class="main-wrapper">
@@ -30,20 +29,30 @@
             <jsp:include page="student-sidebar.jsp"/>
         </div>
         <div class="content">
-            <table title="${exam}">
+            <table>
                 <thead>
-                    <tr>
-                        <th>Begins at</th>
-                        <th>Ends at</th>
-                    </tr>
+                <tr>
+                    <th>Term</th>
+                    <th>Exam</th>
+                    <th>Starts at</th>
+                    <th>Ends at</th>
+                    <th>Seat</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <c:forEach items="${timeSlots}" var="slot">
+                <c:forEach items="${appointments}" var="appointment">
                     <tr>
-                        <td><a href="/student/make-appointment/commit/${slot.timeSlotId}">${slot.begin}</a></td>
-                        <td><a>${slot.end}</a></td>
+                        <td>
+                            <a href="/admin/make-appointment/commit/${appointment.appointmentID}">
+                                <c:out value="${appointment.term}"/>
+                            </a>
+                        </td>
+                        <td><c:out value="${appointment.examName}"/></td>
+                        <td><c:out value="${appointment.startDateTime}"/></td>
+                        <td><c:out value="${appointment.endDateTime}"/></td>
+                        <td><c:out value="${appointment.seat}"/></td>
                     </tr>
-                    </c:forEach>
+                </c:forEach>
                 </tbody>
             </table>
         </div>

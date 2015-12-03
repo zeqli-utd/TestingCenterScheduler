@@ -6,6 +6,15 @@ body {
     flex-direction: column;
 }
 
+tr:hover{
+    box-shadow: 2px 2px 3px rgba(0,0,0,0.1);
+}
+
+table{
+    margin-left: 2em;
+    min-width: 60%;
+}
+
 table,th,td {
     border-left: 1px solid #b5b5b5;
     border-right: 1px solid #b5b5b5;

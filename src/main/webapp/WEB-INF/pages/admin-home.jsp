@@ -19,7 +19,7 @@
     </div>
     <div class="header-menu">
         <a href="/logout">Logout</a>
-        <a>User <i class="fa fa-chevron-down"></i></a>
+        <a>Administrator</a>
     </div>
 </div>
 <%--------------------------main content--------------------------%>

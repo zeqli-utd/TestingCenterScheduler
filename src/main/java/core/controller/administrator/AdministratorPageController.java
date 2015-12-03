@@ -6,10 +6,15 @@ import core.event.dao.ExamDao;
 import core.helper.StringResources;
 import core.service.TermManagerService;
 import core.service.TestingCenterInfoRetrieval;
+import core.user.Authorization;
+import core.user.SessionProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 @Controller
 public class AdministratorPageController {
@@ -23,7 +28,12 @@ public class AdministratorPageController {
     private TermManagerService termManager;
 
     @RequestMapping("/admin/home")
-    public ModelAndView goToHome() {
+    public ModelAndView goToHome(HttpSession session) {
+        Map<String, Object> sessionAttributes = (Map<String, Object>) session.getAttribute("sessionAttributes");
+        SessionProfile profile = (SessionProfile) sessionAttributes.get("sessionUser");
+        if (profile == null || profile.getAuthorization() != Authorization.ADMINISTRATOR) {
+            return new ModelAndView("no-permission");
+        }
         return new ModelAndView("admin-home");
     }
 
@@ -90,7 +100,6 @@ public class AdministratorPageController {
     @RequestMapping("/admin/make-appointment")
     public ModelAndView makeAppointment(ModelAndView model) {
         model.setViewName("make-appointment");
-        model.addObject("pageHeader", StringResources.ADMINISTRATOR_MAKE_APPOINTMENT);
         return model;
     }
 
@@ -98,6 +107,12 @@ public class AdministratorPageController {
     public ModelAndView generateReport(ModelAndView model) {
         model.setViewName("report-term");
         model.addObject("terms", termManager.getAllPopulatedTerms());
+        return model;
+    }
+
+    @RequestMapping("/admin/view-utilization")
+    public ModelAndView viewUtilization (ModelAndView model) {
+        model.setViewName("view-util");
         return model;
     }
 

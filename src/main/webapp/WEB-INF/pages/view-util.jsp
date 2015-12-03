@@ -29,8 +29,7 @@
             <jsp:include page="admin-sidebar.jsp" flush="true"/>
         </div>
         <div class="content">
-            <p>${errorMessage}</p>
-            <form>
+            <form class="edit-info" action="/admin/view-utilization/submit" method="post">
                 <label>Enter the dates you would like to view utilization information for.</label>
                 <label>
                     Start Date
@@ -40,6 +39,7 @@
                     End Date
                 </label>
                 <input class="input-info" type="date" name="EndDate">
+                <input class="submit-button" type="submit" value="Submit">
             </form>
         </div>
     </div>

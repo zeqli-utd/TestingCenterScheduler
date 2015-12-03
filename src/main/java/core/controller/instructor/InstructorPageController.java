@@ -34,6 +34,12 @@ public class InstructorPageController {
         return model;
     }
 
+    @RequestMapping("/exam-type")
+    public ModelAndView selectExamType (ModelAndView model) {
+        model.setViewName("instructor-exam-type");
+        return model;
+    }
+
     @RequestMapping("/schedule-event")
     public ModelAndView scheduleRequest(ModelAndView model) {
         model.setViewName("schedule-event");

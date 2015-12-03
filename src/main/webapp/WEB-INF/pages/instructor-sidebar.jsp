@@ -15,7 +15,7 @@
         </a>
     </li>
     <li>
-        <a class="button" href="/instructor/schedule-event">
+        <a class="button" href="/instructor/exam-type">
             <i class="fa fa-plus-square"></i>&nbsp;Make a Reservation
         </a>
     </li>

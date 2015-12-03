@@ -1,6 +1,7 @@
 .error-message {
     color: red;
     vertical-align: middle;
+    text-align: center;
     position: absolute;
 }
 
@@ -184,10 +185,12 @@
     max-width: 35em;
     border: 1px solid #b5b5b5;
     margin: 0 5em 5em 13em;
+    padding: 2em;
 }
 
 .input-info {
     width: 12em;
+    margin: 2em;
 }
 
 .button {

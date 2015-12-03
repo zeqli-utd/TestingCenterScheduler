@@ -39,7 +39,6 @@ public class ViewAndEditRequestsController {
                 .getUserById(examDao
                         .findByExamId(id)
                         .getInstructorId()).getEmail();
-
         try {
             emailService.sendEmail(StringResources.EMAIL_HOST,
                     StringResources.EMAIL_PORT,
@@ -76,7 +75,6 @@ public class ViewAndEditRequestsController {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-
         return model;
     }
 }

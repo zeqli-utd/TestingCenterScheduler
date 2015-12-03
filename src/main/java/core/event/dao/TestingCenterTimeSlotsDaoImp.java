@@ -1,8 +1,6 @@
 package core.event.dao;
 
-import core.event.Appointment;
-import core.event.Exam;
-import core.event.Slots;
+
 import core.event.TestingCenterTimeSlots;
 import core.service.SessionManager;
 import org.hibernate.HibernateException;
@@ -11,8 +9,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -129,19 +125,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
 
     @Override
     public boolean insertTimeSlotsByExamId(String examId){
-        ExamDaoImp examImp = new ExamDaoImp();
-        Exam exam = examImp.findByExamId(examId);
-        Slots slots = new Slots(exam);
-        List<TestingCenterTimeSlots> timeSlots = slots.generateTimeSlots();
-        TestingCenterTimeSlots tctsIter;
-        int i = 0;
-        if(timeSlots.size() <= 0)
-            return false;
-        while(i < timeSlots.size()){
-            tctsIter = timeSlots.get(i);
-            insertTimeSlot(tctsIter);
-            i++;
-        }
+
         return true;
     }
 

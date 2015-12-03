@@ -19,7 +19,7 @@
     </div>
     <div class="header-menu">
         <a href="/logout">Logout</a>
-        <a>User <i class="fa fa-chevron-down"></i></a>
+        <a>Administrator</a>
     </div>
 </div>
 <%--------------------------main content--------------------------%>
@@ -29,7 +29,13 @@
             <jsp:include page="admin-sidebar.jsp" flush="true"/>
         </div>
         <div class="content">
-
+            <form class="edit-info">
+                <label>
+                    Student NetID
+                </label>
+                <input class="input-info" type="text" name="studentId" placeholder="Student ID">
+                <input class="submit-button" type="submit" value="Submit">
+            </form>
         </div>
     </div>
 </div>

@@ -61,7 +61,6 @@ public class AdhocExamDaoImp implements AdhocExamDao{
         return true;
     }
 
-
     @Override
     public boolean updateExam(AdhocExam exam, String id) {
         return false;
