@@ -14,4 +14,5 @@ public interface UserDao {
     boolean updateInfo(User user);
     boolean deleteUser(String netid);
     boolean addUser(User user);
+    boolean isAdmin(String netid);
 }

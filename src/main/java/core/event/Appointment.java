@@ -56,6 +56,8 @@ public class Appointment {
     @Column(name="seat")
     private String seat;
 
+    private boolean isSetAside;
+
     @Column(name="is_attend")
     @Basic(optional = false)
     private boolean isAttend;
@@ -77,6 +79,7 @@ public class Appointment {
         this.isAttend = false;
         this.status = "r";
         this.slotId = "Defaut_TimeSlot";
+        isSetAside = false;
     }
 
     //LocalDateTime startDateTime, LocalDateTime endDateTime, String seat
@@ -127,11 +130,10 @@ public class Appointment {
             //map to object
             Query query = session.createQuery("FROM Appointment a WHERE a.studentId = :stuId");
             query.setParameter("stuId", studentCheck.getNetId());
-            List<Appointment> list = query.list();
-            size = list.size();
-            Iterator it = list.iterator();
-            while (it.hasNext()) {
-                Appointment appt = (Appointment) it.next();
+            List<Appointment> apptList = query.list();
+
+
+            for (Appointment appt : apptList){
                 //check b
                 if(appt.getExamId().equals(examIdCheck)) {
                     //check c
@@ -258,6 +260,15 @@ public class Appointment {
     public void setSlotId(String slotId) {
         this.slotId = slotId;
     }
+
+    public boolean isSetAside() {
+        return isSetAside;
+    }
+
+    public void setIsSetAside(boolean isSetAside) {
+        this.isSetAside = isSetAside;
+    }
+
     // Legacy Code
 
 //    public LocalDateTime getStartDateTime() {// date to

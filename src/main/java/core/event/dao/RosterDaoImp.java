@@ -51,7 +51,7 @@ public class RosterDaoImp implements RosterDao{
         try {
             tx = session.beginTransaction();
             Query query = session.createQuery
-                    ("delete from roster where roster.term = :termId");
+                    ("delete from Roster where Roster.termId = :termId");
             query.setParameter("termId", termId);
             tx.commit();
         }
@@ -64,5 +64,25 @@ public class RosterDaoImp implements RosterDao{
             session.close();
         }
         return true;
+    }
+
+    @Override
+    public Roster findRoster(String classId, String netId, int term) {
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        Roster roster = null;
+        try {
+            tx = session.beginTransaction();
+            roster = (Roster)session.get(Roster.class, new Roster(classId, netId, term));
+            tx.commit();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+            return roster;
+        }
     }
 }

@@ -1,5 +1,6 @@
 package core.controller.student;
 
+import core.CancelAppointmentException;
 import core.event.dao.AppointmentDao;
 import core.service.AppointmentManageService;
 import core.user.SessionProfile;
@@ -25,10 +26,13 @@ public class StudentCancelAppointments {
                                           ModelAndView model) {
 
         SessionProfile profile = (SessionProfile) session.getAttribute("sessionUser");
-
-        appointmentManageService.cancelAppointment(appointmentId);
-
         model.setViewName("redirect:/student-view-appointments");
+        try{
+            appointmentManageService.cancelAppointment(appointmentId);
+        }catch (CancelAppointmentException e){
+            String msg = e.getMessage();
+        }
+        model.setViewName("redirect:/student/view-appointments");
         model.addObject(appointmentDao.findAllByStudent(profile.getUserId()));
         return model;
     }

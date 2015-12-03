@@ -44,9 +44,7 @@ public class TestingCenterInfoRetrieval {
         Query query = session.createQuery
                 ("FROM TestingCenterInfo T WHERE T.term = :tId");
         query.setParameter("tId", termId);
-
         TestingCenterInfo result = (TestingCenterInfo) query.uniqueResult();
-
         tx.commit();
         session.close();
         return result;

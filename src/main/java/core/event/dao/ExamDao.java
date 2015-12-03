@@ -21,8 +21,6 @@ public interface ExamDao {
 
     boolean insertExam(Exam exam);
 
-    boolean updateExam(Exam exam, String id);
-
     boolean deleteExam(String examId);
 
     void listExamByApprovedRequest(String exId);

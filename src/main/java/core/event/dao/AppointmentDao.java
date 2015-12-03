@@ -16,6 +16,10 @@ public interface AppointmentDao {
 
     List<Appointment> findAllAppointmentsByTerm(Term term);
 
+    boolean checkDuplicateExam(String netid, String examid);
+
+    boolean checkOverlap(Appointment newAppointment);
+
     /**
      * For Instructor's functionality seeing appointments and attendance details.
      * Attendance Detail can be calculated in the

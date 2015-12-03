@@ -31,6 +31,12 @@ public class Course {
 
     // Empty Constructor For Hibernate
     public Course() {
+        courseId = "DEFAULT_COURSEID";
+        subject = "DEFAULT_SUBJECT";
+        catalog = 0;
+        session = 1;
+        instructorID = "DEFAULT_INSTRUCTORID";
+        term = 1158;
     }
 
     public Course(String courseId, String subject, String catalog, String session, String instructorID, int term) {

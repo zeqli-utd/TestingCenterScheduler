@@ -131,7 +131,7 @@ public class ExamDaoImp implements ExamDao {
         try {
             tx = session.beginTransaction();
             Query query = session.createQuery
-                    ("FROM Exam E WHERE E.examId = :eId");
+                    ("FROM Exam as E WHERE E.examId = :eId");
             query.setParameter("eId", examId);
             exam = (Exam) query.uniqueResult();
             tx.commit();
@@ -149,12 +149,12 @@ public class ExamDaoImp implements ExamDao {
     public List<Exam> findByInstructorId(String instructorId) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
-        List<Exam> examList = new ArrayList<>();
+        List<Exam> examList = null;
         try {
             tx = session.beginTransaction();
             Query query = session.createQuery
-                    ("FROM Exam E WHERE E.instructorId = :insId");
-            query.setParameter("insId", instructorId);
+                    ("FROM core.event.Exam as E WHERE E.instructorId = :id");
+            query.setParameter("id", instructorId);
             examList = query.list();
             tx.commit();
         } catch (HibernateException he) {
@@ -270,28 +270,6 @@ public class ExamDaoImp implements ExamDao {
         return true;
     }
 
-    @Override
-    public boolean updateExam(Exam exam, String id) {
-        Session session = SessionManager.getInstance().openSession();
-        Transaction tx = null;
-        try {
-            tx = session.beginTransaction();
-            Query query = session.createQuery
-                    ("update Exam E set E  = :E where E.examId = :examId");
-            query.setParameter("E", exam);
-            query.setParameter("examId", id);
-            query.executeUpdate();
-            tx.commit();
-        } catch (HibernateException he) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            return false;
-        } finally {
-            session.close();
-        }
-        return true;
-    }
 
     @Override
     public boolean deleteExam(String examId) {
@@ -323,8 +301,9 @@ public class ExamDaoImp implements ExamDao {
             Query query = session.createQuery
                     ("FROM Exam E WHERE E.examId = :examId");
             query.setParameter("examId", exId);
-            tx.commit();
+
             Exam ex = (Exam) query.uniqueResult();
+            tx.commit();
         } catch (HibernateException he) {
             if (tx != null) {
                 tx.rollback();

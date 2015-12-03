@@ -111,8 +111,44 @@ public class UserDaoImp implements UserDao {
         return true;
     }
 
+    /**
+     *
+     * @param netid
+     * @return True if user is admin.
+     */
+    @Override
+    public boolean isAdmin(String netid) {
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        boolean isAdmin = false;
+        User user = null;
+        try {
+            tx = session.beginTransaction();
+            user = (User)session.get(User.class, netid);
+            tx.commit();
+        } catch (HibernateException he) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            return false;
+        } finally {
+            session.close();
+        }
+        if(user == null || !isAdmin(user.getAuthorization())){
+            return false;
+        }
+        return true;
+    }
 
-
-
-
+    /*------Helper Method--------*/
+    private boolean isAdmin(Authorization auth){
+        boolean isAdmin = false;
+        switch (auth){
+            case ADMINISTRATOR:
+            case ADMINISTRATOR_INSTRUCTOR:
+            case ADMINISTRATOR_STUDENT:
+            case TRINITY: isAdmin = true;
+        }
+        return isAdmin;
+    }
 }

@@ -1,5 +1,6 @@
 package core.controller.student;
 
+import core.MakeAppointmentException;
 import core.event.Appointment;
 import core.event.TestingCenterTimeSlots;
 import core.event.dao.ExamDao;
@@ -59,7 +60,11 @@ public class StudentAppointmentController {
                 (examDao.findByExamId
                         (appointment.getExamId()).getTerm());
 
-        appointmentManageService.makeAppointment(appointment, slot);
+        try{
+            appointmentManageService.makeAppointment(appointment, slot);
+        }catch (MakeAppointmentException e){
+            String msg = e.getMessage();
+        }
         return model;
     }
 }

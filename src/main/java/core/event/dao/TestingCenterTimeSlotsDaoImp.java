@@ -39,6 +39,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
     }
 
 
+    @Deprecated
     public List<TestingCenterTimeSlots> findAllAvailableTimeSlots(){
         List<TestingCenterTimeSlots> list = findAllTimeSlots();
         for (TestingCenterTimeSlots tcts: list){
@@ -52,8 +53,9 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
     public List<TestingCenterTimeSlots> findAllTimeSlotsByExamId(String examId){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
-        List result = null;
+        List<TestingCenterTimeSlots> result = null;
         try {
+            tx = session.beginTransaction();
             Query query = session.createQuery
                     ("FROM core.event.TestingCenterTimeSlots ts WHERE ts.examId = :exId");
             query.setParameter("exId", examId);
@@ -67,7 +69,6 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         } finally {
             session.close();
         }
-        session.close();
         return result;
     }
 
