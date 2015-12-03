@@ -3,7 +3,6 @@ package core.controller.instructor;
 import core.event.Exam;
 import core.event.ExamType;
 import core.service.ExamManageService;
-import core.user.SessionProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,11 +21,10 @@ public class ScheduleRequestController {
     public ModelAndView SubmitScheduleRequestForm(@ModelAttribute Exam exam,
                                                   HttpSession session,
                                                   ModelAndView model) {
-        SessionProfile profile = (SessionProfile) session.getAttribute("sessionUser");
         exam.setExamType(ExamType.REGULAR);
         model.setViewName("redirect:/instructor-view-requests");
 
-        if (!examManageService.addExam(exam, profile)) {
+        if (!examManageService.addExam(exam, exam.getInstructorId())) {
             model.addObject("errorMessage", "Could not add new exam.");
         }else {
             model.addObject("errorMessage", "Request submitted.");

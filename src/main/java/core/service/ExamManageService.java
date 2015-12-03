@@ -6,7 +6,6 @@ import core.event.dao.AppointmentDao;
 import core.event.dao.ExamDao;
 import core.event.dao.TestingCenterTimeSlotsDao;
 import core.helper.StringResources;
-import core.user.SessionProfile;
 import core.user.User;
 import core.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +53,7 @@ public class ExamManageService {
     }
 
     // Schedule an Exam
-    public boolean addExam(Exam newExam, SessionProfile profile) {
+    public boolean addExam(Exam newExam, String userId) {
         ExamType examType = newExam.getExamType();
         boolean result = true;
         if (examType.equals(ExamType.REGULAR)) {
@@ -66,7 +65,7 @@ public class ExamManageService {
             result = adhocExamDao.addAdhocExam((AdhocExam)newExam);
         }
         if(result){
-            User user = userDao.getUserById(profile.getUserId());
+            User user = userDao.getUserById(userId);
             String emailAddress = user.getEmail();
             try {
                 emailService.sendEmail(StringResources.EMAIL_HOST, StringResources.EMAIL_PORT,

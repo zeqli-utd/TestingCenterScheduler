@@ -6,7 +6,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Testing Center Scheduler</title>
-    <link rel="stylesheet" href="assets/css/styles.css" type="text/css">
+    <link rel="stylesheet" href="/assets/css/styles.css" type="text/css">
 </head>
 <body>
 <div class="header-wrapper">
@@ -29,7 +29,7 @@
             <jsp:include page="instructor-sidebar.jsp"/>
         </div>
         <div class="content">
-            <form action="/instructor/schedule-event/submit" method="post" name="term" id="request-form">
+            <form action="/instructor/schedule-event/submit" method="post" name="term" id="request-form" class="edit-info" style="margin-left: 2em">
                 <label>Instructor </label>
                 <input name="instructorId" type="text" placeholder="Instructor"/>
                 <br/>

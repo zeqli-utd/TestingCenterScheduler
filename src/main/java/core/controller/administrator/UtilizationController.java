@@ -23,11 +23,11 @@ public class UtilizationController {
         model.setViewName("util-get");
         List<Double> actualDates = new ArrayList<>();
         List<Double> expectedDates = new ArrayList<>();
-        List<LocalDate> dates = new ArrayList<>();
+        List<String> dates = new ArrayList<>();
         while (!startDate.isEqual(endDate)){
             actualDates.add(utilization.countUtilzActual(startDate));
             expectedDates.add(utilization.countUtilzExpection(startDate));
-            dates.add(startDate);
+            dates.add(startDate.toString());
             startDate.plusDays(1);
         }
         model.addObject("actualDates", actualDates);

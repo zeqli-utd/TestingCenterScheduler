@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class LoginController {
@@ -72,9 +70,7 @@ public class LoginController {
             }
         }
         profile.setAuthorization(authorization);
-        Map<String, Object> sessionAttributes = new HashMap<>();
-        sessionAttributes.put("sessionUser", profile);
-        session.setAttribute("sessionAttributes", sessionAttributes);
+        session.setAttribute("sessionUser", profile);
         return model;
     }
 }

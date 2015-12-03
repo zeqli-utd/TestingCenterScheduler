@@ -39,6 +39,12 @@ public class EditInfoController {
         return model;
     }
 
+    @RequestMapping("/admin/new-term")
+    public ModelAndView newTermForm (ModelAndView model) {
+        model.setViewName("admin-new-term");
+        return model;
+    }
+
     @RequestMapping("/admin/new-term/submit")
     public ModelAndView newTerm (@ModelAttribute Term term,
                                  ModelAndView model) {

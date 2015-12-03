@@ -30,12 +30,12 @@
             <jsp:include page="admin-sidebar.jsp" flush="true"/>
         </div>
         <div class="content">
-            <select name="viewedTerm" form="changeTerm">
+            <select style="margin-left: 2em" name="viewedTerm" form="changeTerm">
                 <c:forEach items="${terms}" var="term">
                     <option value="${term.termId}"><c:out value="${term.termName}"/></option>
                 </c:forEach>
             </select>
-            <form id="changeTerm" action="/admin/view-info/change-term">
+            <form style="margin-left: 2em" id="changeTerm" action="/admin/view-info/change-term">
                 <input type="submit" value="Change Term" class="submit-button" class="stand-alone">
             </form>
             <ul>

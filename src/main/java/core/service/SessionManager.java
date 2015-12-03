@@ -69,14 +69,12 @@ public class SessionManager {
 //        return sessionFactory;
 //    }
 
-
     /**
      * @return
      */
     public Session openSession() {
         return sessionFactory.openSession();
     }
-
 
     // USE CASE - SEE Administrator Class
 //    public Appointment getAppointment(String apptID){

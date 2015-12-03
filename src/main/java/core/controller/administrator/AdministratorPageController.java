@@ -6,15 +6,10 @@ import core.event.dao.ExamDao;
 import core.helper.StringResources;
 import core.service.TermManagerService;
 import core.service.TestingCenterInfoRetrieval;
-import core.user.Authorization;
-import core.user.SessionProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpSession;
-import java.util.Map;
 
 @Controller
 public class AdministratorPageController {
@@ -28,12 +23,7 @@ public class AdministratorPageController {
     private TermManagerService termManager;
 
     @RequestMapping("/admin/home")
-    public ModelAndView goToHome(HttpSession session) {
-        Map<String, Object> sessionAttributes = (Map<String, Object>) session.getAttribute("sessionAttributes");
-        SessionProfile profile = (SessionProfile) sessionAttributes.get("sessionUser");
-        if (profile == null || profile.getAuthorization() != Authorization.ADMINISTRATOR) {
-            return new ModelAndView("no-permission");
-        }
+    public ModelAndView goToHome() {
         return new ModelAndView("admin-home");
     }
 
@@ -113,12 +103,6 @@ public class AdministratorPageController {
     @RequestMapping("/admin/view-utilization")
     public ModelAndView viewUtilization (ModelAndView model) {
         model.setViewName("view-util");
-        return model;
-    }
-
-    @RequestMapping("/admin/new-term")
-    public ModelAndView newTerm(ModelAndView model) {
-        model.setViewName("admin-new-term");
         return model;
     }
 }

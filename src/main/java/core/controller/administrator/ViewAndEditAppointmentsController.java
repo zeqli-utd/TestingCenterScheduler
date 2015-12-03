@@ -1,5 +1,6 @@
 package core.controller.administrator;
 
+import core.MakeAppointmentException;
 import core.event.Appointment;
 import core.event.TestingCenterTimeSlots;
 import core.event.dao.AppointmentDao;
@@ -8,15 +9,11 @@ import core.event.dao.TestingCenterTimeSlotsDao;
 import core.service.AppointmentManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-
 @Controller
+@SessionAttributes("student")
 public class ViewAndEditAppointmentsController {
     @Autowired
     ExamDao examDao;
@@ -29,13 +26,10 @@ public class ViewAndEditAppointmentsController {
 
     @RequestMapping("/admin/make-appointment/student")
     public ModelAndView createAppointment(@RequestParam("studentId") String studentId,
-                                          HttpSession session,
                                           ModelAndView model) {
         model.setViewName("make-appointment-exams");
         model.addObject("exams", examDao.getAllAvailableExamsToStudent(studentId));
-        HashMap<String, Object> sessionAttributes = (HashMap<String, Object>) session.getAttribute("sessionAttributes");
-        sessionAttributes.put("studentId", studentId);
-        session.setAttribute("sessionAttributes", sessionAttributes);
+        model.addObject("student", studentId);
         return model;
     }
 
@@ -52,10 +46,8 @@ public class ViewAndEditAppointmentsController {
 
     @RequestMapping("/admin/make-appointment/commit/{id}")
     public ModelAndView commitAppointment(@PathVariable("id") String slotId,
-                                          HttpSession session,
+                                          @ModelAttribute("student") String studentId,
                                           ModelAndView model) {
-
-        HashMap<String, Object> sessionAttributes = (HashMap<String, Object>) session.getAttribute("sessionAttributes");
 
         model.setViewName("redirect:/admin/view-appointments");
         Appointment appointment = new Appointment();
@@ -63,7 +55,7 @@ public class ViewAndEditAppointmentsController {
         appointment.setExamId(slot.getExamId());
         appointment.setStartDateTime(slot.getBegin());
         appointment.setEndDateTime(slot.getEnd());
-        appointment.setStudentId((String) sessionAttributes.get("studentId"));
+        appointment.setStudentId(studentId);
         appointment.setExamName
                 (examDao.findByExamId
                         (slot.getExamId()).getExamName());
@@ -71,7 +63,11 @@ public class ViewAndEditAppointmentsController {
                 (examDao.findByExamId
                         (appointment.getExamId()).getTerm());
 
-        appointmentManageService.makeAppointment(appointment, slot);
+        try {
+            appointmentManageService.makeAppointment(appointment, slot);
+        } catch (MakeAppointmentException e) {
+            String msg = e.getMessage();
+        }
         return model;
     }
 }

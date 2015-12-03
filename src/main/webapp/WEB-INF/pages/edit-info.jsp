@@ -55,6 +55,7 @@
                 </label>
                 <input type="submit" class="submit-button" value="Continue">
             </form>
+            <a style="margin-left: 8em" class="button" href="/admin/new-term"/>
         </div>
     </div>
 </div>
