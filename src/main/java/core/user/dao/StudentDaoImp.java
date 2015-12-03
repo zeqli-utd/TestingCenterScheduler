@@ -27,7 +27,7 @@ public class StudentDaoImp implements StudentDao {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            session.saveOrUpdate(student);
+            session.save(student);
             tx.commit();
         } catch (HibernateException he) {
             if (tx != null) {

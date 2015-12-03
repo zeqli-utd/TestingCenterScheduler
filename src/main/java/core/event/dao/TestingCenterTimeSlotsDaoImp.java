@@ -98,7 +98,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            session.saveOrUpdate(timeSlots);
+            session.save(timeSlots);
             tx.commit();
         }
         catch (HibernateException he){

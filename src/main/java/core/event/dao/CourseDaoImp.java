@@ -55,7 +55,7 @@ public class CourseDaoImp implements CourseDao {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            session.saveOrUpdate(course);
+            session.save(course);
             tx.commit();
         }
         catch (HibernateException he){
