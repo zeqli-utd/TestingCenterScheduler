@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -26,7 +27,7 @@ public class LoginController {
 
     @RequestMapping(value = "authorizing")
     public ModelAndView authorizeUser (@ModelAttribute SessionProfile profile,
-                                       HttpSession session,
+                                       HttpServletRequest request,
                                        ModelAndView model) {
         String userId = profile.getUserId();
         String password = profile.getPassword();
@@ -69,6 +70,7 @@ public class LoginController {
                 model.setViewName("redirect:login");
             }
         }
+        HttpSession session = request.getSession();
         profile.setAuthorization(authorization);
         session.setAttribute("sessionUser", profile);
         return model;
