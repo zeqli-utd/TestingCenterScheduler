@@ -3,7 +3,7 @@
 <head>
     <title>Welcome</title>
     <meta http-equiv="refresh" content="1;login"/>
-    <link rel="stylesheet" type="text/css" href="../../assets/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/styles.css">
 </head>
 <body>
     <p class="welcome-message">Welcome To Testing Center</p>

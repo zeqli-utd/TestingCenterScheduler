@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/admin")
 public class AdministratorPageController {
     @Autowired
     private TestingCenterInfoRetrieval infoRetrieval;
@@ -23,11 +22,9 @@ public class AdministratorPageController {
     @Autowired
     private TermManagerService termManager;
 
-    @RequestMapping("home")
-    public ModelAndView goToHome(ModelAndView model) {
-        model.setViewName("admin/home");
-        model.addObject("pageHeader", "Home");
-        return model;
+    @RequestMapping("/admin/home")
+    public ModelAndView goToHome() {
+        return new ModelAndView("admin-home");
     }
 
     /**
@@ -35,13 +32,24 @@ public class AdministratorPageController {
      * this functionality is for administrator only
      * @return modelAndView
      */
-    @RequestMapping(value = "edit-info")
+    @RequestMapping("/admin/edit-info")
     public ModelAndView viewCenterInfo(ModelAndView model) {
-        model.setViewName("admin/edit-info");
+        model.setViewName("edit-info");
         model.addObject("pageHeader", StringResources.ADMINISTRATOR_VIEW_INFO);
         Term term = infoRetrieval.getCurrentTerm();
-        model.addObject("term", term);
+        model.addObject("currentTerm", term);
+        model.addObject("terms", termManager.getAllPopulatedTerms());
         model.addObject("centerInfo", infoRetrieval.findByTerm(term.getTermId()));
+        return model;
+    }
+
+    @RequestMapping("/admin/view-info")
+    public ModelAndView viewInfo (ModelAndView model) {
+        model.setViewName("admin-view-info");
+        model.addObject("info", infoRetrieval
+                .findByTerm(infoRetrieval
+                        .getCurrentTerm().getTermId()));
+        model.addObject("terms", termManager.getAllPopulatedTerms());
         return model;
     }
 
@@ -50,51 +58,51 @@ public class AdministratorPageController {
      * a file containing all users.
      * @return modelAndView
      */
-    @RequestMapping("upload")
+    @RequestMapping("/admin/upload")
     public ModelAndView uploadFile(ModelAndView model) {
-        model.setViewName("admin/upload");
-        model.addObject("pageHeader", StringResources.ADMINISTRATOR_UPLOAD);
+        model.setViewName("upload");
         model.addObject("terms", termManager.getAllPopulatedTerms());
         return model;
     }
 
-    @RequestMapping("view-requests")
+    @RequestMapping("/admin/view-requests")
     public ModelAndView viewRequests(ModelAndView model) {
-        model.setViewName("admin/view-requests");
-        model.addObject("pageHeader", StringResources.ADMINISTRATOR_VIEW_REQUESTS);
+        model.setViewName("admin-view-requests");
         model.addObject("requests", examDao.getAllPending());
         return model;
     }
 
-    @RequestMapping("view-appointments")
+    @RequestMapping("/admin/view-appointments")
     public ModelAndView viewAppointments(ModelAndView model) {
-        model.setViewName("admin/view-appointments");
-        model.addObject("pageHeader", StringResources.ADMINISTRATOR_VIEW_APPOINTMENTS);
+        model.setViewName("admin-view-appointments");
         model.addObject("appointments", appointmentDao.findAllAppointmentsByTerm(infoRetrieval.getCurrentTerm()));
         return model;
     }
 
-    @RequestMapping("check-in")
+    @RequestMapping("/admin/check-in")
     public ModelAndView checkIn(ModelAndView model) {
-        model.setViewName("admin/check-in");
+        model.setViewName("check-in");
         model.addObject("pageHeader", StringResources.ADMINISTRATOR_CHECK_IN);
 
         return model;
     }
 
-    @RequestMapping("make-appointment")
+    @RequestMapping("/admin/make-appointment")
     public ModelAndView makeAppointment(ModelAndView model) {
-        model.setViewName("admin/make-appointment");
-        model.addObject("pageHeader", StringResources.ADMINISTRATOR_MAKE_APPOINTMENT);
+        model.setViewName("make-appointment");
         return model;
     }
 
-    @RequestMapping("generate-report")
+    @RequestMapping("/admin/generate-report")
     public ModelAndView generateReport(ModelAndView model) {
-        model.setViewName("admin/report-term");
-        model.addObject("pageHeader", StringResources.ADMINISTRATOR_REPORT);
+        model.setViewName("report-term");
         model.addObject("terms", termManager.getAllPopulatedTerms());
-        model.addObject("term", new Term());
+        return model;
+    }
+
+    @RequestMapping("/admin/view-utilization")
+    public ModelAndView viewUtilization (ModelAndView model) {
+        model.setViewName("view-util");
         return model;
     }
 }

@@ -1,6 +1,5 @@
 package core.event.dao;
 
-import core.event.Exam;
 import core.event.Roster;
 import core.service.SessionManager;
 import org.hibernate.HibernateException;
@@ -8,8 +7,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public class RosterDaoImp implements RosterDao{
@@ -54,7 +51,7 @@ public class RosterDaoImp implements RosterDao{
         try {
             tx = session.beginTransaction();
             Query query = session.createQuery
-                    ("delete from roster where roster.term = :termId");
+                    ("delete from Roster where Roster.termId = :termId");
             query.setParameter("termId", termId);
             tx.commit();
         }
@@ -67,5 +64,25 @@ public class RosterDaoImp implements RosterDao{
             session.close();
         }
         return true;
+    }
+
+    @Override
+    public Roster findRoster(String classId, String netId, int term) {
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        Roster roster = null;
+        try {
+            tx = session.beginTransaction();
+            roster = (Roster)session.get(Roster.class, new Roster(classId, netId, term));
+            tx.commit();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+            return roster;
+        }
     }
 }

@@ -1,6 +1,8 @@
 package core.event.dao;
 
-import core.event.*;
+import core.event.Exam;
+import core.event.ExamStatusType;
+import core.event.TestingCenterInfo;
 import core.service.SessionManager;
 import core.service.TestingCenterInfoRetrieval;
 import org.hibernate.HibernateException;
@@ -10,9 +12,9 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -21,14 +23,14 @@ public class ExamDaoImp implements ExamDao {
     @Autowired
     private TestingCenterInfoRetrieval tciRe;
 
-    @Autowired
-    private TestingCenterTimeSlotsDao tctsDao;
+
 
     public ExamDaoImp() {
     }
 
     /**
      * Get All Exam Currently in Pending Status
+     *
      * @return a list of pending exam
      */
     public List getAllPending() {
@@ -37,13 +39,12 @@ public class ExamDaoImp implements ExamDao {
         List<Exam> list = null;
         try {
             tx = session.beginTransaction();
-            Query query = session.createQuery("from Exam as e where e.examType = :type");
+            Query query = session.createQuery("from Exam as e where e.statusType = :type");
             query.setParameter("type", ExamStatusType.PENDING);
             list = query.list();
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
-            e.printStackTrace();
         } finally {
             session.close();
         }
@@ -52,6 +53,7 @@ public class ExamDaoImp implements ExamDao {
 
     /**
      * Get All Exam Currently in Approved Status
+     *
      * @return a list of approved exam
      */
     public List getAllApproved() {
@@ -60,7 +62,7 @@ public class ExamDaoImp implements ExamDao {
         List<Exam> list = null;
         try {
             tx = session.beginTransaction();
-            Query query = session.createQuery("from Exam as e where e.examType = :type");
+            Query query = session.createQuery("from Exam as e where e.statusType = :type");
             query.setParameter("type", ExamStatusType.APROVED);
             list = query.list();
             tx.commit();
@@ -75,6 +77,7 @@ public class ExamDaoImp implements ExamDao {
 
     /**
      * Get All Exam Currently in Denied Status
+     *
      * @return a list of denied exam
      */
     public List getAllDenied() {
@@ -83,7 +86,7 @@ public class ExamDaoImp implements ExamDao {
         List<Exam> list = null;
         try {
             tx = session.beginTransaction();
-            Query query = session.createQuery("from Exam as e where e.examType = :type");
+            Query query = session.createQuery("from Exam as e where e.statusType = :type");
             query.setParameter("type", ExamStatusType.DENIED);
             list = query.list();
             tx.commit();
@@ -123,36 +126,54 @@ public class ExamDaoImp implements ExamDao {
     @Override
     public Exam findByExamId(String examId) {
         Session session = SessionManager.getInstance().openSession();
-        Transaction tx = session.beginTransaction();
-        Query query = session.createQuery
-                ("FROM Exam E WHERE E.examId = :eId");
-        query.setParameter("eId", examId);
-        tx.commit();
-        Exam result = (Exam) query.uniqueResult();
-        session.close();
-        return result;
+        Transaction tx = null;
+        Exam exam = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery
+                    ("FROM Exam as E WHERE E.examId = :eId");
+            query.setParameter("eId", examId);
+            exam = (Exam) query.uniqueResult();
+            tx.commit();
+        } catch (HibernateException he) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+            return exam;
+        }
     }
 
     @Override
-    public List findByInstructorId(String instructorId) {
-        List result;
+    public List<Exam> findByInstructorId(String instructorId) {
         Session session = SessionManager.getInstance().openSession();
-        Transaction tx = session.beginTransaction();
-        Query query = session.createQuery
-                ("FROM Exam E WHERE E.instructorId = :insId");
-        query.setParameter("insId", instructorId);
-        tx.commit();
-        result = query.list();
-        session.close();
-        return result;
+        Transaction tx = null;
+        List<Exam> examList = null;
+        try {
+            tx = session.beginTransaction();
+            Query query = session.createQuery
+                    ("FROM core.event.Exam as E WHERE E.instructorId = :id");
+            query.setParameter("id", instructorId);
+            examList = query.list();
+            tx.commit();
+        } catch (HibernateException he) {
+            if (tx != null) {
+                tx.rollback();
+            }
+        } finally {
+            session.close();
+            return examList;
+        }
     }
 
     /**
      * Check if the exam if legal to schedule
+     *
      * @param exam
      * @return
      */
-    public boolean checkLegalExam(Exam exam){
+    public boolean checkLegalExam(Exam exam) {
         TestingCenterInfo tci = tciRe.findByTerm(exam.getTerm());
         LocalTime open = tci.getOpen();
         LocalTime close = tci.getClose();
@@ -163,81 +184,50 @@ public class ExamDaoImp implements ExamDao {
         //check exam time between open hour and close hour
         LocalTime startTime = startDateTime.toLocalTime();
         LocalTime endTime = endDateTime.toLocalTime();
-        if(startTime.isBefore(open) || !startTime.isBefore(close) ||
+        if (startTime.isBefore(open) || !startTime.isBefore(close) ||
                 endTime.isAfter(close) || !endTime.isAfter(open))
             return false;
 
         //check exam time between reserved dateTimes
-        List<ETSTestTimeRangeTuple> reservedRanges = tci.getReserveRanges();
-        for (ETSTestTimeRangeTuple ets: reservedRanges){
-            LocalDateTime begin = ets.getTestDateTimeFrom();
-            LocalDateTime end = ets.getTeseDateTimeTo();
-            if ( !(startDateTime.isBefore(end)) ||
-                    !(endDateTime.isAfter(begin)) ) {
-                //continue;
-            }
-            else{
-                return false;
-            }
-        }
-
-        //check exam time between closed dates
-        LocalDate startDate = startDateTime.toLocalDate();
-        LocalDate endDate = endDateTime.toLocalDate();
-        List<CloseDateRangeTuple> closedRanges = tci.getCloseDateRanges();
-        for (CloseDateRangeTuple cTuple: closedRanges){
-            LocalDate begin = cTuple.getCloseDateFrom();
-            LocalDate end = cTuple.getCloseDateTo();
-            if ( startDate.isAfter(end) || endDate.isBefore(begin) ) {
-                //continue;
-            }
-            else{
-                return false;
-            }
-        }
+        //List<ETSTestTimeRangeTuple> reservedRanges = tci.getReserveRanges();
+        //for (ETSTestTimeRangeTuple ets: reservedRanges){
+        //    LocalDateTime begin = ets.getTestDateTimeFrom();
+        //    LocalDateTime end = ets.getTeseDateTimeTo();
+        //    if ( !(startDateTime.isBefore(end)) ||
+        //            !(endDateTime.isAfter(begin)) ) {
+        //        //continue;
+        //    }
+        //    else{
+        //        return false;
+        //    }
+        //}
+        //
+        ////check exam time between closed dates
+        //LocalDate startDate = startDateTime.toLocalDate();
+        //LocalDate endDate = endDateTime.toLocalDate();
+        //List<CloseDateRangeTuple> closedRanges = tci.getCloseDateRanges();
+        //for (CloseDateRangeTuple cTuple: closedRanges){
+        //    LocalDate begin = cTuple.getCloseDateFrom();
+        //    LocalDate end = cTuple.getCloseDateTo();
+        //    if ( startDate.isAfter(end) || endDate.isBefore(begin) ) {
+        //        //continue;
+        //    }
+        //    else{
+        //        return false;
+        //    }
+        //}
         return true;
 
     }
 
     /**
-     * Add Exam with schedubility check
+     * Add Exam with s
+     *
      * @param exam
      * @return
      */
     @Override
     public boolean addExam(Exam exam) {
-        //check  schedubility
-        //add  slots to database
-        Slots slot = new Slots(exam);
-        tctsDao.insertTimeSlots(slot.generateTimeSlots());
-        //add exam to database
-        Session session = SessionManager.getInstance().openSession();
-        Transaction tx = null;
-        try {
-            tx = session.beginTransaction();
-            if(checkLegalExam(exam))
-                session.save(exam);
-            else
-                return false;
-            tx.commit();
-        } catch (HibernateException he) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            return false;
-        } finally {
-            session.close();
-        }
-        return true;
-    }
-
-    /**
-     * Add Exam without Schedubility Check
-     * @param exam
-     * @return
-     */
-    @Override
-    public boolean insertExam(Exam exam) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
@@ -255,21 +245,22 @@ public class ExamDaoImp implements ExamDao {
         return true;
     }
 
+    /**
+     * Add Exam without Schedubility Check
+     *
+     * @param exam
+     * @return
+     */
     @Override
-    public boolean updateExam(Exam exam, String id) {
+    public boolean insertExam(Exam exam) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            Query query = session.createQuery
-                    ("update Exam E set E  = :E where E.examId = :examId");
-            query.setParameter("E", exam);
-            query.setParameter("examId", id);
-            query.executeUpdate();
+            session.saveOrUpdate(exam);
             tx.commit();
-        }
-        catch (HibernateException he){
-            if(tx != null){
+        } catch (HibernateException he) {
+            if (tx != null) {
                 tx.rollback();
             }
             return false;
@@ -279,17 +270,16 @@ public class ExamDaoImp implements ExamDao {
         return true;
     }
 
+
     @Override
     public boolean deleteExam(String examId) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-
             Query query = session.createQuery
                     ("delete from Exam E where E.examId = :examId");
             query.setParameter("examId", examId);
-
             tx.commit();
         } catch (HibernateException he) {
             if (tx != null) {
@@ -311,8 +301,9 @@ public class ExamDaoImp implements ExamDao {
             Query query = session.createQuery
                     ("FROM Exam E WHERE E.examId = :examId");
             query.setParameter("examId", exId);
-            tx.commit();
+
             Exam ex = (Exam) query.uniqueResult();
+            tx.commit();
         } catch (HibernateException he) {
             if (tx != null) {
                 tx.rollback();
@@ -322,21 +313,15 @@ public class ExamDaoImp implements ExamDao {
         }
     }
 
-    public boolean approveExam(String examId) {
-        //need to add time slot after approving exam request
-        tctsDao.insertTimeSlotsByExamId(examId);
-
+    public boolean updateExam(Exam examToUpdate){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            Exam e = (Exam)session.get(Exam.class, examId);
-            e.setStatusType(ExamStatusType.APROVED);
-            session.merge(e);
+            session.merge(examToUpdate);
             tx.commit();
-        }
-        catch (HibernateException he){
-            if(tx != null){
+        } catch (HibernateException he) {
+            if (tx != null) {
                 tx.rollback();
             }
             return false;
@@ -345,6 +330,8 @@ public class ExamDaoImp implements ExamDao {
         }
         return true;
     }
+
+
 
     @Override
     public List<Exam> getAllAvailableExamsToStudent(String studentId) {

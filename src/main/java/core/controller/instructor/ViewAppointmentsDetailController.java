@@ -17,7 +17,7 @@ public class ViewAppointmentsDetailController {
     @RequestMapping("view-appointments/{examId}")
     public ModelAndView viewRequests(@PathVariable("examId") String examId,
                                      ModelAndView model) {
-        model.setViewName("instructor/home");
+        model.setViewName("instructor-home");
         model.addObject("heading", StringResources.INSTRUCTOR_VIEW_APPOINTMENTS_DETAIL);
         model.addObject("appointments", appointmentDao.findAllAppointmentsByExamId(examId));
         return model;

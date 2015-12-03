@@ -5,9 +5,7 @@ import core.service.TermManagerService;
 
 import java.time.LocalDate;
 
-/**
- * Created by Zeqli on 11/30/2015.
- */
+
 public class DBInitialization {
 
     public static void main(String args[]){

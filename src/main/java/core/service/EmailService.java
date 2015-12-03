@@ -14,7 +14,7 @@ import java.util.Properties;
  */
 @Service
 public class EmailService {
-    public static void sendEmail (String host,
+    public void sendEmail (String host,
                                   String port,
                                   String userName,
                                   String password,

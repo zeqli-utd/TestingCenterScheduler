@@ -15,4 +15,6 @@ public interface RosterDao {
     boolean deleteRoster(String netId);
 
     boolean deleteRostersByTerm(int termId);
+
+    Roster findRoster(String classId, String netId, int term);
 }

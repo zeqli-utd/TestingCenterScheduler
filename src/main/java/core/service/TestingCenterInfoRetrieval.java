@@ -17,19 +17,18 @@ import java.util.Date;
 @Service
 public class TestingCenterInfoRetrieval {
 
-    public TestingCenterInfoRetrieval(){}
+    public TestingCenterInfoRetrieval() {
+    }
 
-    public boolean insertTestingCenterInfo(TestingCenterInfo testingCenterInfo){
+    public boolean insertTestingCenterInfo(TestingCenterInfo testingCenterInfo) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
-
         try {
             tx = session.beginTransaction();
-            session.save(testingCenterInfo);
-
-                    tx.commit();
+            session.saveOrUpdate(testingCenterInfo);
+            tx.commit();
         } catch (HibernateException e) {
-            if(tx != null) {
+            if (tx != null) {
                 tx.rollback();
             }
             return false;
@@ -37,7 +36,6 @@ public class TestingCenterInfoRetrieval {
             session.close();
         }
         return true;
-
     }
 
     public TestingCenterInfo findByTerm(int termId) {
@@ -46,15 +44,13 @@ public class TestingCenterInfoRetrieval {
         Query query = session.createQuery
                 ("FROM TestingCenterInfo T WHERE T.term = :tId");
         query.setParameter("tId", termId);
-
-        TestingCenterInfo result = (TestingCenterInfo)query.uniqueResult();
-
+        TestingCenterInfo result = (TestingCenterInfo) query.uniqueResult();
         tx.commit();
         session.close();
         return result;
     }
 
-    public Term getCurrentTerm(){
+    public Term getCurrentTerm() {
         LocalDate now = LocalDate.now();
         Term result = null;
         Session session = SessionManager.getInstance().openSession();
@@ -64,11 +60,11 @@ public class TestingCenterInfoRetrieval {
             Query query = session.createQuery
                     ("FROM Term T WHERE T.termStartDate <= :date AND  :date <= T.termEndDate");
             query.setTimestamp("date", Date.from(now.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+            result = (Term) query.uniqueResult();
             tx.commit();
-            result = (Term)query.uniqueResult();
-        }
-        catch (HibernateException he){
-            if(tx != null){
+
+        } catch (HibernateException he) {
+            if (tx != null) {
                 tx.rollback();
             }
 
@@ -80,11 +76,11 @@ public class TestingCenterInfoRetrieval {
 
     /**
      * Get numbering Term Id.
+     *
      * @param day
      * @return 4 digit representing Term id
      */
-    public int getTermByDay(LocalDateTime day){
-        LocalDate date = day.toLocalDate();
+    public int getTermByDay(LocalDate date) {
         Term result = null;
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
@@ -93,11 +89,10 @@ public class TestingCenterInfoRetrieval {
             Query query = session.createQuery
                     ("FROM Term T WHERE T.termStartDate <= :date AND  :date <= T.termEndDate");
             query.setTimestamp("date", Date.from(date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-            result = (Term)query.uniqueResult();
+            result = (Term) query.uniqueResult();
             tx.commit();
-        }
-        catch (HibernateException he){
-            if(tx != null){
+        } catch (HibernateException he) {
+            if (tx != null) {
                 tx.rollback();
             }
 
@@ -109,10 +104,11 @@ public class TestingCenterInfoRetrieval {
 
     /**
      * This method is for update TestingcenterInfo
+     *
      * @param tc
      * @return
      */
-    public boolean updateTestingCenterInfo(TestingCenterInfo tc){
+    public boolean updateTestingCenterInfo(TestingCenterInfo tc) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         boolean result = false;
@@ -120,9 +116,8 @@ public class TestingCenterInfoRetrieval {
             tx = session.beginTransaction();
             session.update(tc);
             tx.commit();
-        }
-        catch (HibernateException he){
-            if(tx != null){
+        } catch (HibernateException he) {
+            if (tx != null) {
                 tx.rollback();
             }
         } finally {
@@ -177,9 +172,8 @@ public class TestingCenterInfoRetrieval {
             }
             session.update(tc);
             tx.commit();
-        }
-        catch (HibernateException he){
-            if(tx != null){
+        } catch (HibernateException he) {
+            if (tx != null) {
                 tx.rollback();
             }
         } finally {
@@ -190,13 +184,14 @@ public class TestingCenterInfoRetrieval {
 
     /**
      * Specify closeDateRanges and reserveRanges
+     *
      * @param term
      * @param fieldName: closeDateRanges and reserveRanges
      * @param dates
      * @return
      */
     @Deprecated
-    public boolean addDates(Term term, String fieldName, Object dates){
+    public boolean addDates(Term term, String fieldName, Object dates) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         boolean result = false;
@@ -230,14 +225,15 @@ public class TestingCenterInfoRetrieval {
 
     /**
      * edit function for both closeDateRanges and reserveRanges
+     *
      * @param term
      * @param fieldName: closeDateRanges and reserveRanges
-     * @param i: index of the close dates that should be edited
+     * @param i:         index of the close dates that should be edited
      * @param dates
      * @return
      */
     @Deprecated
-    public boolean editDates(Term term, String fieldName, int i, Object dates){
+    public boolean editDates(Term term, String fieldName, int i, Object dates) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         boolean result = false;
@@ -271,12 +267,13 @@ public class TestingCenterInfoRetrieval {
 
     /**
      * Delete function for closeDateRanges and reserveRanges
+     *
      * @param term
-     * @param i: index of the close dates that should be removed
+     * @param i:   index of the close dates that should be removed
      * @return
      */
     @Deprecated
-    public boolean deleteCloseDates(Term term, String fieldName, int i){
+    public boolean deleteCloseDates(Term term, String fieldName, int i) {
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         boolean result = false;

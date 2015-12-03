@@ -6,11 +6,14 @@ import core.service.TestingCenterInfoRetrieval;
 import core.user.dao.InstructorDao;
 import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -18,6 +21,7 @@ import java.util.List;
 @Entity
 @Table(name = "Exam")
 public class Exam {
+
     @Id
     @Column (name = "exam_id")
     protected String examId;
@@ -58,13 +62,13 @@ public class Exam {
     @Column(name = "instructor_id" )
     protected String instructorId;    // NetId of the person who made this appointment
 
-    @Basic(optional = false)
+//    @Basic(optional = false)
     @Column(name = "course_id" )
     protected String courseId;    // CSE308-01_1158 or "adhoc" for ad hoc exam
 
     @Basic(optional = false)
     @Column(name = "duration")
-    protected int duration = 0;;   // Duration in minute
+    protected int duration = 10;;   // Duration in minute
 
     @Transient
     @Autowired
@@ -85,14 +89,24 @@ public class Exam {
     protected int numAppointments = 0;// num of students who have made appointments
 
     @Transient
-    protected double attendance  = 0.0;;  // Calculate on the fly.
+    protected double attendance  = 0.0;// Calculate on the fly.
 
     //the number of times of exams needed for all student to take this exam
     @Transient
     protected int numRemainingTime = 0;
 
-    public Exam(){
-
+    public Exam() {
+        this.duration = 10;
+        this.examId = "Default";
+        this.examName = "Default_Exam";
+        this.examType = ExamType.REGULAR;
+        this.statusType = ExamStatusType.PENDING;
+        this.capacity = 100;
+        this.term = 1158;
+        this.startDateTime = LocalDateTime.now();
+        this.endDateTime = LocalDateTime.now().plusDays(1);
+        this.instructorId = "Default_Instructor";
+        this.courseId = "Default_Course";
     }
 
     /**
@@ -112,6 +126,7 @@ public class Exam {
                 int duration,
                 int numApp,
                 int numNeed){
+        this();
         examId = Id;
         this.examType = type;
         this.startDateTime = start;
@@ -167,6 +182,7 @@ public class Exam {
                 String instructorId,
                 String courseId,
                 int duration) {//duration is minutes
+        this();
         this.examId = examId;
         this.examName = examName;
         this.examType = ExamType.REGULAR;
@@ -180,6 +196,7 @@ public class Exam {
         this.duration = duration;
     }
 
+    // Valid Time A Exam can use
     public int getActualDuration(){
         int actualDuration;
         TestingCenterInfoRetrieval tcir = new TestingCenterInfoRetrieval();
@@ -191,9 +208,8 @@ public class Exam {
             List<Appointment> appts = appointmentDao.findAllAppointmentByTime(LocalDateTime.now());
             //TODO TODO
             Appointment appt = new Appointment();
-            Appointment apptIter = new Appointment();
             for(int i = 0; i < appts.size(); i++){
-                apptIter = appts.get(i);
+                Appointment apptIter = appts.get(i);
                 if(apptIter.getExamId().equals(examId)){
                     appt = apptIter;
                 }
@@ -205,16 +221,9 @@ public class Exam {
         return actualDuration;
     }
 
-    /**
-     * to unburden the front end, this method returns the name of the course
-     * courseId is pointing to
-     * @return subject
-     */
-    public String getCourseName () {
-        return courseDao
-                .findByCourseId(this.courseId)
-                    .getSubject();
-    }
+
+
+
 
     public double getAttendance() {
         return attendance;
@@ -341,6 +350,7 @@ public class Exam {
     public void setNumRemainingTime(int numRemainingTime) {
         this.numRemainingTime = numRemainingTime;
     }
+
 
 // Legacy Code
 

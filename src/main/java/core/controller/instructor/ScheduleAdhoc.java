@@ -18,6 +18,7 @@ public class ScheduleAdhoc {
                                             ModelAndView model) {
         adhocDao.addAdhocExam(adhocExam);
         model.setViewName("redirect:/instructor/view-requests");
+        adhocDao.addAdhocExam(adhocExam);
         return model;
     }
 }

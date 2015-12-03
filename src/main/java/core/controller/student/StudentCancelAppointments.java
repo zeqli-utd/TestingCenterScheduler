@@ -1,6 +1,8 @@
 package core.controller.student;
 
+import core.CancelAppointmentException;
 import core.event.dao.AppointmentDao;
+import core.service.AppointmentManageService;
 import core.user.SessionProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,12 +17,21 @@ public class StudentCancelAppointments {
     @Autowired
     AppointmentDao appointmentDao;
 
+    @Autowired
+    AppointmentManageService appointmentManageService;
+
     @RequestMapping("/student/view-appointments/cancel/{id}")
-    public ModelAndView cancelAppointment(@PathVariable("id") String appointmentId,
+    public ModelAndView cancelAppointment(@PathVariable("id") int appointmentId,
                                           HttpSession session,
                                           ModelAndView model) {
+
         SessionProfile profile = (SessionProfile) session.getAttribute("sessionUser");
-        appointmentDao.deleteAppointment(appointmentId);
+        model.setViewName("redirect:/student-view-appointments");
+        try{
+            appointmentManageService.cancelAppointment(appointmentId);
+        }catch (CancelAppointmentException e){
+            String msg = e.getMessage();
+        }
         model.setViewName("redirect:/student/view-appointments");
         model.addObject(appointmentDao.findAllByStudent(profile.getUserId()));
         return model;

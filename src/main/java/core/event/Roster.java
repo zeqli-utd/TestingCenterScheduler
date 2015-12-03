@@ -16,6 +16,9 @@ public class Roster implements Serializable{
     private int termId;
 
     public Roster() {
+        classId = "DEFAULT_CLASSID";
+        netId = "DEFAULT_NETID";
+        termId = 1158;
     }
 
     public Roster(String classId, String netIds, int termId) {

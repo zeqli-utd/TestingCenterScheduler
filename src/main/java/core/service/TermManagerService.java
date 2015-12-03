@@ -11,7 +11,6 @@ import java.util.*;
 
 @Service
 public class TermManagerService {
-
     public List<Term> getAllPopulatedTerms(){
 
         Session session = SessionManager.getInstance().openSession();
@@ -39,7 +38,7 @@ public class TermManagerService {
 
         try {
             tx = session.beginTransaction();
-            session.save(term);
+            session.saveOrUpdate(term);
             tx.commit();
         } catch (HibernateException e) {
             if(tx != null) {
@@ -50,5 +49,26 @@ public class TermManagerService {
             session.close();
         }
         return true;
+    }
+
+    public Term getTermById(int termId){
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        Term term = null;
+        try {
+            tx = session.beginTransaction();
+            term = (Term)session.get(Term.class, termId);
+            tx.commit();
+        } catch (HibernateException e) {
+            if(tx != null) {
+                tx.rollback();
+            }
+            term = new Term();
+            return term;
+        } finally {
+            session.close();
+        }
+        return term;
+
     }
 }

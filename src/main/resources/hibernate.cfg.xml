@@ -42,6 +42,7 @@
       <mapping class="core.event.Term"/>
       <mapping class="core.event.TestingCenterInfo"/>
       <mapping class="core.event.TestingCenterTimeSlots"/>
+      <mapping class="core.event.Seat"/>
 
 
       <!--<mapping class="core.event.Reservation"></mapping>-->

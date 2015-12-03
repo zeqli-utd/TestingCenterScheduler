@@ -1,8 +1,6 @@
 package core.event.dao;
 
-import core.event.Appointment;
-import core.event.Exam;
-import core.event.Slots;
+
 import core.event.TestingCenterTimeSlots;
 import core.service.SessionManager;
 import org.hibernate.HibernateException;
@@ -11,12 +9,12 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
+
+    @Override
     public List<TestingCenterTimeSlots> findAllTimeSlots(){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
@@ -36,6 +34,8 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         return tscs;
     }
 
+
+    @Deprecated
     public List<TestingCenterTimeSlots> findAllAvailableTimeSlots(){
         List<TestingCenterTimeSlots> list = findAllTimeSlots();
         for (TestingCenterTimeSlots tcts: list){
@@ -45,11 +45,13 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         return list;
     }
 
+    @Override
     public List<TestingCenterTimeSlots> findAllTimeSlotsByExamId(String examId){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
-        List result = null;
+        List<TestingCenterTimeSlots> result = null;
         try {
+            tx = session.beginTransaction();
             Query query = session.createQuery
                     ("FROM core.event.TestingCenterTimeSlots ts WHERE ts.examId = :exId");
             query.setParameter("exId", examId);
@@ -63,15 +65,14 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         } finally {
             session.close();
         }
-        session.close();
         return result;
     }
 
+    @Override
     public TestingCenterTimeSlots findTimeSlotById(String timeSlotId){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
         TestingCenterTimeSlots result = null;
-        TestingCenterTimeSlots result1 = null;
         try {
             tx = session.beginTransaction();
             Query query = session.createQuery("FROM TestingCenterTimeSlots ts WHERE ts.timeSlotId = :tsId");
@@ -79,7 +80,6 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
             result = (TestingCenterTimeSlots)query.uniqueResult();
            // List a = query.list();
             tx.commit();
-            result1 = (TestingCenterTimeSlots)query.uniqueResult();
         }
         catch (HibernateException he){
             if(tx != null){
@@ -92,6 +92,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
     }
 
 
+    @Override
     public boolean insertTimeSlot(TestingCenterTimeSlots timeSlots){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;
@@ -111,33 +112,42 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
         return  true;
     }
 
+    @Override
     public boolean insertTimeSlots(List<TestingCenterTimeSlots> listTimeSlots){
-        boolean result = true;
-        for (TestingCenterTimeSlots t: listTimeSlots)
-            if(insertTimeSlot(t) == false)
-                result = false;
-        //result is false doesn't mean it failed
-        //it means it didn't import the complete list
-        return result;
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            for(int i  = 0; i< listTimeSlots.size(); i++){
+                session.save(listTimeSlots.get(i));
+                if ( i % 20 == 0 ) { //20, same as the JDBC batch size
+                    //flush a batch of inserts and release memory:
+                    session.flush();
+                    session.clear();
+                }
+            }
+
+            tx.commit();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+            return false;
+        } finally {
+            session.close();
+        }
+        return  true;
+
     }
 
+    @Override
     public boolean insertTimeSlotsByExamId(String examId){
-        ExamDaoImp examImp = new ExamDaoImp();
-        Exam exam = examImp.findByExamId(examId);
-        Slots slots = new Slots(exam);
-        List<TestingCenterTimeSlots> timeSlots = slots.generateTimeSlots();
-        TestingCenterTimeSlots tctsIter;
-        int i = 0;
-        if(timeSlots.size() <= 0)
-            return false;
-        while(i < timeSlots.size()){
-            tctsIter = timeSlots.get(i);
-            insertTimeSlot(tctsIter);
-            i++;
-        }
+
         return true;
     }
 
+    @Override
     public boolean deleteTimeSlot(String timeSlotId){
         Session session = SessionManager.getInstance().openSession();
         Transaction tx = null;

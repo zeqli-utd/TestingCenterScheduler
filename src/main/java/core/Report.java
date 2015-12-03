@@ -11,6 +11,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -27,6 +28,10 @@ public class Report {
     private Term startTerm;
     private Term endTerm;
 
+
+    @Autowired
+    AppointmentDao appointmentDao;
+
     public Report() {
 
     }
@@ -38,7 +43,6 @@ public class Report {
      */
     public String showDayReport(Term term) {
         // First get all appointments in a specified term.
-        AppointmentDao appointmentDao = new AppointmentDaoImp();
         appointments = appointmentDao.findAllAppointmentsByTerm(term);
 
         // Output the result in a String
@@ -74,7 +78,6 @@ public class Report {
      * @return
      */
     public String showWeekReport(Term term) {
-        AppointmentDao appointmentDao = new AppointmentDaoImp();
         appointments = appointmentDao.findAllAppointmentsByTerm(term);
 
         String header = "<div id=\"week_report\"><table>" +
@@ -140,9 +143,12 @@ public class Report {
             tx = session.beginTransaction();
 
             // Get all exams for this term.
-            Query query = session.createQuery("select e.examId from Exam e where  :startDate <= e.startDateTime and e.endDateTime <= :endDate");
-            query.setTimestamp("endDate", Date.from(term.getTermEndDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-            query.setTimestamp("startDate", Date.from(term.getTermStartDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+            Query query = session.createQuery
+                            ("select e.examId from Exam e where  :startDate <= e.startDateTime and e.endDateTime <= :endDate");
+            query.setTimestamp("endDate",
+                    Date.from(term.getTermEndDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+            query.setTimestamp("startDate",
+                    Date.from(term.getTermStartDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
 
             List<String> listResult = query.list();
             for(String row : listResult){
