@@ -114,13 +114,31 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
 
     @Override
     public boolean insertTimeSlots(List<TestingCenterTimeSlots> listTimeSlots){
-        boolean result = true;
-        for (TestingCenterTimeSlots t: listTimeSlots)
-            if(insertTimeSlot(t) == false)
-                result = false;
-        //result is false doesn't mean it failed
-        //it means it didn't import the complete list
-        return result;
+        Session session = SessionManager.getInstance().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            for(int i  = 0; i< listTimeSlots.size(); i++){
+                session.save(listTimeSlots.get(i));
+                if ( i % 20 == 0 ) { //20, same as the JDBC batch size
+                    //flush a batch of inserts and release memory:
+                    session.flush();
+                    session.clear();
+                }
+            }
+
+            tx.commit();
+        }
+        catch (HibernateException he){
+            if(tx != null){
+                tx.rollback();
+            }
+            return false;
+        } finally {
+            session.close();
+        }
+        return  true;
+
     }
 
     @Override
