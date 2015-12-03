@@ -120,7 +120,7 @@ public class TestingCenterTimeSlotsDaoImp implements TestingCenterTimeSlotsDao {
             tx = session.beginTransaction();
             for(int i  = 0; i< listTimeSlots.size(); i++){
                 session.save(listTimeSlots.get(i));
-                if ( i % 20 == 0 ) { //20, same as the JDBC batch size
+                if ( i % 50 == 0 ) { //50, SessionFactory
                     //flush a batch of inserts and release memory:
                     session.flush();
                     session.clear();

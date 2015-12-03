@@ -7,6 +7,8 @@ import java.util.List;
 public interface CourseDao {
     List getAllCourse();
 
+    boolean addCourseList(List<Course> courseList);
+
     Course findByCourseId(String courseId);
 
     boolean addCourse(Course course);

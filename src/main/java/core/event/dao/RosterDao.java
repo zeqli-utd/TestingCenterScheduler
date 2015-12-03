@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface RosterDao {
 
+    boolean addRosterList(List<Roster> rosters);
 
     boolean addRoster(Roster roster);
 
